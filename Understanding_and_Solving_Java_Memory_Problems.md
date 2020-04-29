@@ -38,7 +38,7 @@ It talks about the kind of problems that can happen to well-refactored and teste
 프로덕션에서 리팩토링되고 테스트 된 코드에서 발생할 수있는 문제에 대해 설명합니다.
 
 We'll be categorizing and explaining a whole series of problems that are related to memory, and we'll demonstrate how you can use freely available tooling and battle-tested approaches to solve these problems.
-우리는 메모리와 관련된 일련의 문제를 분류하고 설명 할 것이며, 자유롭게 사용할 수있는 툴링과 전투 테스트 방식을 사용하여 이러한 문제를 해결하는 방법을 보여줄 것입니다.
+우리는 메모리와 관련된 일련의 문제를 분류하고 설명 할 것이며, 자유롭게 사용할 수 있는 툴링과 전투 테스트 방식을 사용하여 이러한 문제를 해결하는 방법을 보여줄 것입니다.
 
 But before we get onto the problems themselves, I think we need to explain why you should care about memory problems at all in your Java application.
 그러나 문제 자체를 다루기 전에 Java 응용 프로그램에서 메모리 문제에 대해 왜 신경 써야하는지 설명해야한다고 생각합니다.
@@ -72,7 +72,7 @@ The code and the objects themselves are still king.
 
 Now when things go wrong in production, they can often go badly wrong, and sometimes without due warning.
 이제 운영 단계에서 문제가 발생하면 심각하게 잘못 될 수 있으며 때로는 적절한 경고없이 진행될 수 있습니다.
- 
+
 Now this is often the case with problems like a memory leak that can result in your application becoming completely unusable to its end users.
 이제는 종종 메모리 누수와 같은 문제가 발생하여 최종 사용자가 응용 프로그램을 완전히 사용할 수 없게 될 수 있습니다.
 
@@ -101,7 +101,7 @@ That is to say, a scientific approach.
 즉, 과학적 접근 방식입니다.
 
 We aim to give you repeatable solutions and a mental model that helps you think through and solve problems.
-우리는 반복 가능한 솔루션과 문제를 생각하고 해결하는 데 도움이되는 정신적 모델을 제공하는 것을 목표로합니다.
+우리는 반복 가능한 솔루션과 문제를 생각하고 해결하는 데 도움이되는 mental model을 제공하는 것을 목표로합니다.
 
 Of course, you still need to think through the issues themselves, it's not just algorithmic in nature, it still requires human thought and human interaction.
 물론, 당신은 여전히 문제 자체를 통해 생각할 필요가 있습니다. 그것은 단지 알고리즘적인 것이 아니라 여전히 인간의 사고와 인간의 상호 작용이 필요합니다.
@@ -176,14 +176,7 @@ Finally, we'll look at and investigate the costs of memory allocation.
 마지막으로 메모리 할당 비용을 살펴보고 조사합니다.
 
 Many developers have this idea that calling new in Java is basically free, but in practice, if you allocate a lot of memory, it does take up time and it can slow your application down.
-많은 개발자들이 Java에서 새로 전화하는 것은 기본적으로 무료라는 사실을 알고 있지만 실제로 많은 메모리를 할당하면 시간이 걸리고 응용 프로그램 속도가 느려질 수 있습니다.
+많은 개발자들이 Java에서 새로 new를 부르는 것은 기본적으로 무료라는 사실을 알고 있지만 실제로 많은 메모리를 할당하면 시간이 걸리고 응용 프로그램 속도가 느려질 수 있습니다.
 
 It can also cause increased latency in your application by putting a lot of pressure on certain types of garbage collectors, and increasing garbage collection pauses, and we'll show you how to investigate and solve these problems.
 또한 특정 유형의 가비지 수집기에 많은 압력을 가하고 가비지 수집 일시 중지를 증가시켜 응용 프로그램의 대기 시간을 증가시킬 수 있으며 이러한 문제를 조사하고 해결하는 방법을 보여줍니다.
-
-I hope you'll enjoy learning as much about this topic as I have enjoyed recording this course with Pluralsight.
-Pluralsight로이 과정을 녹음하는 것을 즐기면서이 주제에 대해 많은 것을 배우기를 바랍니다.
-
-Memory related problems are fascinating.
-메모리 관련 문제는 매력적입니다.
-
