@@ -12,3 +12,13 @@
 - `save(S)`: 새로운엔티티 저장, 이미 있는 엔티티는 merge
 - `getOne(ID)` : 엔티티 프록시 조회. `EntityManager.getReference()` 호출
 - `findAll(...)` : 모든 엔티티 조회. 정렬(`Sort`), 페이징(`Pageable`) 조건 파라메터로 제공
+
+## 메소드 이름으로 쿼리 생성
+
+메소드 이름으로 where, count, exists, limit 절 등을 정의
+
+Query Creation: https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation
+
+### 필요성
+- 조건이 2개 이하일때만 유효하다. 2개 이상이면 QueryDSL 로 푼다.
+- 짧은 쿼리를 빠르게 만들때 필요
