@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -146,6 +147,29 @@ class MemberRepositoryTest {
         for (Member member : members) {
             System.out.println("member = " + member);
         }
+    }
+
+    @Test
+    public void returnType() {
+        Member m1 = new Member("AAA", 10);
+        Member m2 = new Member("BBB", 20);
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+
+        Member findMember = memberRepository.findMemberByUsername("AAA");
+        System.out.println("findMember = " + findMember);
+
+        Member nullFindMember = memberRepository.findMemberByUsername("asdfasdf");
+        System.out.println("findMember = " + nullFindMember);
+
+        List<Member> findMembers = memberRepository.findByUsername("AAA");
+        System.out.println("List<Member> = " + findMembers + " size = " + findMembers.size());
+
+        List<Member> zeroFindMembers = memberRepository.findByUsername("asdfasdf");
+        System.out.println("List<Member> = " + zeroFindMembers + " size = " + zeroFindMembers.size());
+
+        Optional<Member> result = memberRepository.findOptionalByUsername("AAA");
+        System.out.println("Optional<Member> = " + result);
     }
 
 }

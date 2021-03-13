@@ -41,3 +41,10 @@ Query Creation: https://docs.spring.io/spring-data/jpa/docs/current/reference/ht
 
 - 이름 기반 vs 위치 기반? -> 무조건 이름 기반으로..
 - 컬렉션 파라메터 바인딩
+
+# 반환 타입
+
+- 컬랙션 반환에서 결과가 없으면 `size()` 는 0인 빈 컬랙션 반환된다.  
+- JPA 에서는 `getSingleResuit()` 결과가 없다면 `NoResultException`이 발생
+- Spring Data Jpa 에서 1개 반환 타입이면 `null` 이 온다.
+- 자세한 것 : https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repository-query-return-types
