@@ -22,3 +22,10 @@ Query Creation: https://docs.spring.io/spring-data/jpa/docs/current/reference/ht
 ### 필요성
 - 조건이 2개 이하일때만 유효하다. 2개 이상이면 QueryDSL 로 푼다.
 - 짧은 쿼리를 빠르게 만들때 필요
+
+
+## NamedQuery
+
+- NamedQuery -> 메소드 이름 쿼리 생성 우선순위 순으로 쿼리 생성
+- 장점: application 로딩 시점에 JPQL의 오류를 찾아낸다.
+- 실무에선 크게 사용성이 떨어짐 (@Query 로 대체 가능하기 때문)
