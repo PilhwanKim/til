@@ -36,3 +36,8 @@ Query Creation: https://docs.spring.io/spring-data/jpa/docs/current/reference/ht
   - application 로딩 시점에 JPQL의 오류를 찾아낸다(NamedQuery랑 같음)
   - Repository 에 직접 쿼리를 작성함으로 보기 편함.
   - 메소드 이름으로 작성하는 것에 비해 조건이 길어지면 유리하다
+
+## 파라메터 바인딩
+
+- 이름 기반 vs 위치 기반? -> 무조건 이름 기반으로..
+- 컬렉션 파라메터 바인딩
