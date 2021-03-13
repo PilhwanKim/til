@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.2"
+             xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+    <!-- 데이터베이스 별로 작성 -->
+    <persistence-unit name="hello">
+        <class>dev.leonkim.hellojpa.domain.Member</class>
+        <class>dev.leonkim.hellojpa.domain.Team</class>
+        <class>dev.leonkim.hellojpa.domain.Locker</class>
+        <class>dev.leonkim.hellojpa.domain.MemberProduct</class>
+        <class>dev.leonkim.hellojpa.domain.Product</class>
+        <class>dev.leonkim.hellojpa.domain.Order</class>
+        <class>dev.leonkim.hellojpa.domain.Inheritance.Item</class>
+        <class>dev.leonkim.hellojpa.domain.Inheritance.Album</class>
+        <class>dev.leonkim.hellojpa.domain.Inheritance.Book</class>
+        <class>dev.leonkim.hellojpa.domain.Inheritance.Movie</class>
+        <class>dev.leonkim.hellojpa.domain.cascade.Parent</class>
+        <class>dev.leonkim.hellojpa.domain.cascade.Child</class>
+        <class>dev.leonkim.jpashop.domain.Member</class>
+        <class>dev.leonkim.jpashop.domain.Item</class>
+        <class>dev.leonkim.jpashop.domain.Order</class>
+        <class>dev.leonkim.jpashop.domain.OrderItem</class>
+        <class>dev.leonkim.jpashop.domain.Category</class>
+        <class>dev.leonkim.jpashop.domain.Delivery</class>
+        <class>dev.leonkim.jpashop.domain.Album</class>
+        <class>dev.leonkim.jpashop.domain.Book</class>
+        <class>dev.leonkim.jpashop.domain.Movie</class>
+
+        <properties>
+            <!-- 필수 속성 javax 는 JPA 표준 -->
+            <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
+            <property name="javax.persistence.jdbc.user" value="sa"/>
+            <property name="javax.persistence.jdbc.password" value=""/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:h2:tcp://localhost/~/test"/>
+            <!-- dialect: 각 DB의 SQL 표준이 아닌 것을 번역한다. -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+
+            <!-- 옵션: hibernate 전용 옵션들 -->
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.use_sql_comments" value="true"/>
+            <!-- 개발환경에서만 create, update 사용 -->
+            <!-- 테스트 환경에서는 validate, update 사용 -->
+            <!-- 운영환경에서는 validate, none 사용 -->
+            <property name="hibernate.hbm2ddl.auto" value="create" />
+            <property name="hibernate.default_batch_fetch_size" value="100" />
+        </properties>
+    </persistence-unit>
+</persistence>
