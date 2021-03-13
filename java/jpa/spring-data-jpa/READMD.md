@@ -29,3 +29,10 @@ Query Creation: https://docs.spring.io/spring-data/jpa/docs/current/reference/ht
 - NamedQuery -> 메소드 이름 쿼리 생성 우선순위 순으로 쿼리 생성
 - 장점: application 로딩 시점에 JPQL의 오류를 찾아낸다.
 - 실무에선 크게 사용성이 떨어짐 (@Query 로 대체 가능하기 때문)
+
+## @Query
+
+- 장점
+  - application 로딩 시점에 JPQL의 오류를 찾아낸다(NamedQuery랑 같음)
+  - Repository 에 직접 쿼리를 작성함으로 보기 편함.
+  - 메소드 이름으로 작성하는 것에 비해 조건이 길어지면 유리하다
