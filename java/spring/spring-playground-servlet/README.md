@@ -20,3 +20,14 @@ https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-mvc-1
     - HTTP API 사용. JSON, XML, TEXT
     - 주로 JSON
     - POST, PUT, PATCH
+
+### HTTP 응답
+
+- HTTP 응답 코드 지정
+- 헤더 생성
+- 바디 생성
+- 편의 기능 제공
+   - Content-type
+   - Cookie
+   - Redirect
+   
