@@ -30,4 +30,9 @@ https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-mvc-1
    - Content-type
    - Cookie
    - Redirect
-   
+
+### HTTP 응답 데이터
+
+1. 단순 텍스트
+2. HTML 응답
+3. HTTP API - MessageBody에 JSON 응답
