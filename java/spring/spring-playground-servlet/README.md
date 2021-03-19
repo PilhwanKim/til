@@ -110,3 +110,29 @@ https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-mvc-1
 - 직접 기능 확장할 경우는 거의 없다. -> 먼저 개발된 것이 있는지 찾아봐라.
 - 이해해야 하는 이유는 이슈 파악과 해결을 위해서다.
 - 커스텀하게 확장하는 포인트는 있다.
+
+### 핸들러 매핑과 핸들러 어댑터
+
+- *HandlerMapping*(핸들러 매핑)
+    - 핸들러 매핑에서 이 컨트롤러를 찾을 수 있어야 한다.
+    - 예) 스프링 빈의 이름으로 핸들러를 찾을 수 있는 핸들러 매핑이 필요하다.
+- *HandlerAdapter*(핸들러 어댑터)
+    - 핸들러 매핑을 통해서 찾은 핸들러를 실행할 수 있는 핸들러 어댑터가 필요하다.
+    - 예) Controller 인터페이스를 실행할 수 있는 핸들러 어댑터를 찾고 실행해야 한다.
+
+#### 우선순위
+
+- *HandlerMapping*
+    - 0 = RequestMappingHandlerMapping : 애노테이션 기반의 컨트롤러인 @RequestMapping에서 사용
+    - 1 = BeanNameUrlHandlerMapping : 스프링 빈의 이름으로 핸들러를 찾는다.
+    - ...
+- *HandlerAdapter*
+    - 0 = RequestMappingHandlerAdapter : 애노테이션 기반의 컨트롤러인 @RequestMapping에서 사용
+    - 1 = HttpRequestHandlerAdapter : HttpRequestHandler 처리
+    - 2 = SimpleControllerHandlerAdapter : Controller 인터페이스(애노테이션X, 과거에 사용) 처리
+    - ...
+
+#### @RequestMapping
+
+- 가장 우선순위가 높은 핸들러 매핑과 핸들러 어뎁터는 `RequestMappingHandlerMapping`, `RequestMappingHandlerAdapter`
+- 현재 어노테이션 기반의 컨트롤러가 이 기반이다.(99% 사용)
