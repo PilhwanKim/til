@@ -136,3 +136,16 @@ https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-mvc-1
 
 - 가장 우선순위가 높은 핸들러 매핑과 핸들러 어뎁터는 `RequestMappingHandlerMapping`, `RequestMappingHandlerAdapter`
 - 현재 어노테이션 기반의 컨트롤러가 이 기반이다.(99% 사용)
+
+### 뷰 리졸버
+
+#### InternalResourceViewResolver
+
+- 스프링 부트는 InternalResourceViewResolver 라는 뷰 리졸버를 자동으로 등록 
+- application.properties 에 등록한 `spring.mvc.view.prefix`, `spring.mvc.view.suffix` 설정 정보를 사용해서 등록
+
+#### 스프링 부트가 자동 등록하는 뷰 리졸버
+
+1. BeanNameViewResolver : 빈 이름으로 뷰를 찾아서 반환한다.
+2. InternalResourceViewResolver : JSP를 처리할 수 있는 뷰를 반환한다.
+    - 내부애서 자원을 찾을때
