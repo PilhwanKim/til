@@ -57,3 +57,24 @@ log.debug("data={}", data)
     - HTTP 요청 Accept, produce
         - HTTP 요청의 Accept 헤더를 기반으로 미디어 타입으로 매핑
         - 맞지 않으면 HTTP 406 상태코드(Not Acceptable)을 반환
+
+## HTTP 요청 - 기본, 헤더 조회
+
+### MultiValueMap
+    - MAP과 유사한데, 하나의 키에 여러 값을 받을 수 있다.
+    - HTTP header, HTTP 쿼리 파라미터와 같이 하나의 키에 여러 값을 받을 때 사용한다.
+    - 예) keyA=value1&keyA=value2
+
+```java
+MultiValueMap<String, String> map = new LinkedMultiValueMap();
+map.add("keyA", "value1");
+map.add("keyA", "value2");
+//[value1,value2]
+List<String> values = map.get("keyA");
+```
+
+### 참고
+
+- @Controller
+    - 파라미터 목록 : https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#mvc-annarguments 
+    - 응답 값 목록 : https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#mvc-ann-return-types
