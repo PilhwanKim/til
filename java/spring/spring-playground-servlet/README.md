@@ -60,3 +60,53 @@ https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-mvc-1
       ![v5](img/v5.png)
 
 여기에 에노테이션 스타일로 컨트롤러를 만들려면 에노테이션 어뎁터를 추가하면 된다.
+
+## 스프링 MVC - 구조 이해
+
+### 스프링 MVC 전체 구조
+
+- 구조는 거의 유사하다.
+
+![스프링 MVC와 비교](img/mymvc-vs-spring-mvc.png)
+
+| my MVC            | Spring MVC        |
+|-------------------|-------------------|
+| FrontController   | DispatcherServlet |
+| handlerMappingMap | HandlerMapping    |
+| MyHandlerAdapter  | HandlerAdapter    | 
+| ModelView         | ModelAndView      | 
+| viewResolver      | ViewResolver      | 
+| MyView            | View              | 
+
+### DispatcherServlet 구조 살펴보기
+
+- 프론트 컨트롤러 패턴구현
+- 프론트 컨트롤러 = DispatcherServlet
+- `FrameworkServlet` -> `HttpServletBean` -> `HttpServlet` 을 상속받고 있음
+- 스프링 부트는 DispatcherServlet 을 서블릿으로 자동 등록. 모든 경로(urlPattern="/")로 매핑함
+
+#### 요청 흐름
+
+1. `HttpServlet.service()` 호출
+2. `FrameworkServlet` 이 `service()`를 오버라이드 해둠
+3. `FrameworkServlet.service()` -> `DispatcherServlet.doDispatch()` 가 호출
+
+#### 동작 순서
+![스프링 MVC](img/spring-mvc-flow.png)
+1. `핸들러 조회`: 핸들러 매핑을 통해 요청 URL에 매핑된 핸들러(컨트롤러)를 조회한다.
+2. `핸들러 어댑터 조회`: 핸들러를 실행할 수 있는 핸들러 어댑터를 조회한다.
+3. `핸들러 어댑터 실행`: 핸들러 어댑터를 실행한다.
+4. `핸들러 실행`: 핸들러 어댑터가 실제 핸들러를 실행한다.
+5. `ModelAndView 반환`: 핸들러 어댑터는 핸들러가 반환하는 정보를 ModelAndView로 변환해서
+   반환한다.
+6. `viewResolver 호출`: 뷰 리졸버를 찾고 실행한다.
+   JSP의 경우: InternalResourceViewResolver 가 자동 등록되고, 사용된다.
+7. `View 반환`: 뷰 리졸버는 뷰의 논리 이름을 물리 이름으로 바꾸고, 렌더링 역할을 담당하는 뷰 객체를
+   반환한다. JSP의 경우 InternalResourceView(JstlView) 를 반환하는데, 내부에 forward() 로직이 있다.
+8. `뷰 렌더링`: 뷰를 통해서 뷰를 렌더링 한다.
+
+#### 정리
+
+- 직접 기능 확장할 경우는 거의 없다. -> 먼저 개발된 것이 있는지 찾아봐라.
+- 이해해야 하는 이유는 이슈 파악과 해결을 위해서다.
+- 커스텀하게 확장하는 포인트는 있다.
