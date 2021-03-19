@@ -45,3 +45,15 @@ log.debug("data={}", data)
 - SLF4J - http://www.slf4j.org
 - Logback - http://logback.qos.ch
 - Spring Boot - https://docs.spring.io/spring-boot/docs/current/reference/html/spring-bootfeatures.html#boot-features-logging
+
+## 요청 매핑
+
+- 특정 파라미터 조건 매핑
+- 특정 헤더 조건 매핑
+- 미디어 타입 조건 매핑
+    - HTTP 요청 Content-Type, consume
+        - HTTP 요청의 Content-Type 헤더를 기반으로 미디어 타입으로 매핑
+        - 맞지 않으면 HTTP 415 상태코드(Unsupported Media Type)을 반환
+    - HTTP 요청 Accept, produce
+        - HTTP 요청의 Accept 헤더를 기반으로 미디어 타입으로 매핑
+        - 맞지 않으면 HTTP 406 상태코드(Not Acceptable)을 반환
