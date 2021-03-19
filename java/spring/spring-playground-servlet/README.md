@@ -149,3 +149,17 @@ https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-mvc-1
 1. BeanNameViewResolver : 빈 이름으로 뷰를 찾아서 반환한다.
 2. InternalResourceViewResolver : JSP를 처리할 수 있는 뷰를 반환한다.
     - 내부애서 자원을 찾을때
+
+## 스프링 MVC
+
+### @RequestMapping
+
+- annotation 을 활용하여, 유연하고 실용적으로 바뀜
+- `@RequestMapping` - 에노테이션 기반 컨트롤러
+    - 핸들러 매핑 - *RequestMappingHandlerMapping*
+    - 핸들러 어뎁터 - *RequestMappingHandlerAdapter*
+    - 요청 정보를 매핑. 해당 URL이 호출되면 메서드가 호출됨
+- `@Controller`
+    - 스프링이 자동으로 스프링 빈 등록
+    - 스프링 MVC 에서 애노테이션 기반 컨트롤러로 인식함
+- `ModelAndView` - 모델과 뷰 정보를 담아서 반환
