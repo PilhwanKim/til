@@ -163,3 +163,10 @@ https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-mvc-1
     - 스프링이 자동으로 스프링 빈 등록
     - 스프링 MVC 에서 애노테이션 기반 컨트롤러로 인식함
 - `ModelAndView` - 모델과 뷰 정보를 담아서 반환
+
+### 스프링 MVC 실용적인 방식
+
+- Model 파라미터 
+- viewName 직접 반환
+- @RequestParam 사용
+- @RequestMapping -> @GetMapping, @PostMapping
