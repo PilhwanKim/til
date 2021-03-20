@@ -224,3 +224,42 @@ HelloData에 @RequestBody 를 생략하면 @ModelAttribute 가 적용되어버�
 - HTML(X), 데이터(주로 JSON)를 담는경우
 - @RestController =  @Controller + 컨트롤러에 모두 @ResponseBody 가 적용.
 - dev.leonkim.springmvcplayground.basic.response.ResponseBodyController 예제 확인
+
+## HTTP 메시지 컨버터
+
+- 인터페이스: org.springframework.http.converter.HttpMessageConverter
+- 응답은 HTTP `Accept 헤더` 와 `컨트롤러 반환 타입` 등을 조합해서 HttpMessageConverter 를 선택함
+
+### HTTP 메시지 컨버터 적용 대상
+
+| 요청                            | 응답           |     
+|--------------------------------|--------------|
+| `@RequestBody` `HttpEntity(RequestEntity)` | `@ResponseBody` `HttpEntity(ResponseEntity)` |
+
+### 스프링 부트 기본 메시지 컨버터
+
+| 순위 | 이름         | 클래스 타입 | 미디어 타입 | 요청 예 | 응답 예|    
+|---|--------------|----------|---------|--------|-----|
+| 0 | ByteArrayHttpMessageConverter             | byte[]   | */* |`@RequestBody byte[] data`|`@ResponseBody return byte[]`|
+| 1 | StringHttpMessageConverter                | String   | */* |`@RequestBody String data`|`@ResponseBody return "ok"`|
+| 2 | MappingJackson2HttpMessageConverter       | HashMap or 객체 | application/json |`@RequestBody HelloData data`|`@ResponseBody return helloData`|
+
+### HTTP 요청 데이터 읽기 과정
+
+1. HTTP 요청이 오고, 컨트롤러에서 @RequestBody , HttpEntity 파라미터를 사용한다.
+2. 메시지 컨버터가 메시지를 읽을 수 있는지 확인하기 위해 canRead() 를 호출한다.
+   1. 대상 클래스 타입을 지원하는가.
+       1. 예) @RequestBody 의 대상 클래스 ( byte[] , String , HelloData )
+   2. HTTP 요청의 Content-Type 미디어 타입을 지원하는가.
+       1. 예) text/plain , application/json , */*
+3. canRead() 조건을 만족하면 read() 를 호출해서 객체 생성하고, 반환한다.
+
+### HTTP 응답 데이터 생성 과정
+
+1. 컨트롤러에서 @ResponseBody , HttpEntity 로 값이 반환된다.
+2. 메시지 컨버터가 메시지를 쓸 수 있는지 확인하기 위해 canWrite() 를 호출한다.
+    1. 대상 클래스 타입을 지원하는가.
+        1. 예) return의 대상 클래스 ( byte[] , String , HelloData )
+    2. HTTP 요청의 Accept 미디어 타입을 지원하는가.(더 정확히는 @RequestMapping 의 produces )
+        1. 예) text/plain , application/json , */*
+3. canWrite() 조건을 만족하면 write() 를 호출해서 HTTP 응답 메시지 바디에 데이터를 생성한다.
