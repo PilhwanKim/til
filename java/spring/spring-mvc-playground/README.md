@@ -263,3 +263,42 @@ HelloData에 @RequestBody 를 생략하면 @ModelAttribute 가 적용되어버�
     2. HTTP 요청의 Accept 미디어 타입을 지원하는가.(더 정확히는 @RequestMapping 의 produces )
         1. 예) text/plain , application/json , */*
 3. canWrite() 조건을 만족하면 write() 를 호출해서 HTTP 응답 메시지 바디에 데이터를 생성한다.
+
+## RequestMappingHandlerAdepter 구조
+
+- @RequestMapping 달린 핸들러들의 모든 메시지 컨버팅은 RequestMappingHandlerAdepter 에서 이루어진다.
+
+![동작 방식](img/request-mapping-handler-adepter.png)
+
+### ArgumentResolver
+
+- 컨트롤러(핸들러)가 필요로 하는 다양한 파라미터의 값(객체)을 생성한다.
+- 파리미터의 값이 모두 준비되면 컨트롤러를 호출하면서 값을 넘겨준다.
+- `org.springframework.web.method.support.HandlerMethodArgumentResolver`
+- 참고 : https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#mvc-annarguments
+
+### ReturnValueHandler
+
+- `ArgumentResolver`와 비슷, 응답 값을 변환하고 처리한다
+- `org.springframework.web.method.support.HandlerMethodReturnValueHandler`
+- 참고 : https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#mvc-annreturn-types
+
+### HttpMessageConverter
+
+- `ArgumentResolver` 와 `ReturnValueHandler` 가 사용
+- HTTP 요청
+    - `@RequestBody` 혹은 `HttpEntity` 담당 `ArgumentResolver`
+    - 위의 친구들이 메시지 컨버터를 호출해 필요 객체를 생성
+- HTTP 응답
+    - `@ResponseBody` 혹은 `HttpEntity` 담당 `ReturnValueHandler`
+    - 위의 친구들이 메시지 컨버터를 호출해 HTTP 응답 결과를 생성 
+- `@RequestBody` `@ResponseBody` 의 컨버팅은 `RequestResponseBodyMethodProcessor`
+- `HttpEntity`의 컨버팅은 `HttpEntityMethodProcessor` 이다.
+
+### 스프링 MVC 확장
+
+- 기능 확장은 `WebMvcConfigurer` 를 상속 받아서 스프링 빈으로 등록하면 된다.
+- 인터페이스 
+    - HandlerMethodArgumentResolver
+    - HandlerMethodReturnValueHandler
+    - HttpMessageConverter
