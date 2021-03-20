@@ -78,3 +78,53 @@ List<String> values = map.get("keyA");
 - @Controller
     - 파라미터 목록 : https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#mvc-annarguments 
     - 응답 값 목록 : https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#mvc-ann-return-types
+
+
+## HTTP 요청 파라미터(request parameter)
+
+### GET 의 쿼리 파라메터 전송
+
+```http request
+http://localhost:8080/request-param?uesrname=hello&age=20
+```
+
+### POST 의 HTML Form 전송
+
+```http request
+POST /request-param
+Content-Type: application/x-www-form-urlencoded
+
+uesrname=hello&age=20
+```
+
+### @RequestParam
+
+- @RequestParam 의 `name(value)` 속성이 파라미터 이름으로 사용
+- HTTP 파라미터 이름이 변수 이름과 같으면 `@RequestParam(name="xx")` 생략 가능 (이 방식 추천)
+- String , int , Integer 등의 단순 타입이면 @RequestParam 도 *생략 가능*
+- 파라메터 필수 여부 (`@RequestParam.required`)
+    - 기본값은 true
+    - 주의! - 파라미터 이름만 사용 
+      - /request-param?username=
+      - 파라미터 이름만 있고 값이 없는 경우 빈문자로 통과
+    - 주의! - 기본형(primitive)에 null 입력
+      - /request-param 요청
+      - `@RequestParam(required = false) int age`
+- default value
+- 파라메터를 Map으로 받기
+  - @RequestParam Map ,
+    - Map(key=value)
+  - @RequestParam MultiValueMap
+    - MultiValueMap(key=[value1, value2, ...] ex) (key=userIds, value=[id1, id2])
+
+### @ModelAttribute
+
+- 스프링MVC는 @ModelAttribute 가 있으면 다음을 실행
+  - HelloData 객체를 생성
+  - 요청 파라미터의 이름으로 HelloData 객체의 프로퍼티를 찾는다. 그리고 해당 프로퍼티의 setter를 호출해서 파라미터의 값을 입력(바인딩)
+  - 예) 파라미터 이름이 username 이면 setUsername() 메서드를 찾아서 호출하면서 값을 입력
+- 바인딩 오류: 파라메터에서 type 이 맞지 않으면 `BindException` 이 발생
+
+### 스프링은 해당 생략시 다음과 같은 규칙을 적용한다.
+- String , int , Integer 같은 단순 타입 = @RequestParam
+- 나머지 = @ModelAttribute (argument resolver 로 지정해둔 타입 외)
