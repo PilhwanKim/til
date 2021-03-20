@@ -188,3 +188,39 @@ HelloData에 @RequestBody 를 생략하면 @ModelAttribute 가 적용되어버�
   - JSON 요청 -> HTTP 메시지 컨버터 -> 객체 
 - @ResponseBody 응답
   - 객체 -> HTTP 메시지 컨버터 -> JSON 응답
+
+## HTTP 응답
+
+### 응답 데이터 종류
+
+- 정적 리소스(HTML, css, js 파일)
+- 뷰 텝플릿 사용(동적 HTML - 서버사이드 렌더링)
+- HTTP 메시지 사용(HTTP API)
+
+### 정적 리소스
+
+- 프로젝트의 아래 디렉토리의 정적 리소스 제공
+  - `/resources`
+  - `/static`
+  - `/public`
+  - `/META-INF/resources`
+
+- 경로
+    - 실 경로: resources/static/basic/hello-form.html
+    - URL 경로: http://localhost:8080/basic/hello-form.html
+
+### 뷰 템플릿
+
+- 기본 경로: `src/main/resources/templates`
+- dev.leonkim.springmvcplayground.basic.response.ResponseViewController 예제 확인
+- thymeleaf
+    - 기본 설정
+        - spring.thymeleaf.prefix=classpath:/templates/
+        - spring.thymeleaf.suffix=.html
+    - 참고 : https://docs.spring.io/spring-boot/docs/2.4.3/reference/html/appendix-applicationproperties.html#common-application-properties-templating
+    
+### HTTP API - 메시지 바디에 직접 입력
+
+- HTML(X), 데이터(주로 JSON)를 담는경우
+- @RestController =  @Controller + 컨트롤러에 모두 @ResponseBody 가 적용.
+- dev.leonkim.springmvcplayground.basic.response.ResponseBodyController 예제 확인
