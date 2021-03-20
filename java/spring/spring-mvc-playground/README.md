@@ -125,6 +125,66 @@ uesrname=hello&age=20
   - 예) 파라미터 이름이 username 이면 setUsername() 메서드를 찾아서 호출하면서 값을 입력
 - 바인딩 오류: 파라메터에서 type 이 맞지 않으면 `BindException` 이 발생
 
-### 스프링은 해당 생략시 다음과 같은 규칙을 적용한다.
-- String , int , Integer 같은 단순 타입 = @RequestParam
-- 나머지 = @ModelAttribute (argument resolver 로 지정해둔 타입 외)
+> 스프링은 해당 생략시 다음과 같은 규칙을 적용한다.
+> - String , int , Integer 같은 단순 타입 = @RequestParam
+> - 나머지 = @ModelAttribute (argument resolver 로 지정해둔 타입 외)
+
+## HTTP 요청 메시지
+
+요청 파라미터와 다르게, HTTP *메시지 바디*를 통해 데이터가 직접 데이터가 넘어오는 경우는 `@RequestParam` , `@ModelAttribute` 를 사용할 수 없다.
+
+### 단순 텍스트 요청 메시지
+
+- HttpEntity: HTTP header, body 정보를 편리하게 조회
+    - 메시지 바디 정보를 직접 조회
+    - 요청 파라미터를 조회하는 기능과 관계 없음 @RequestParam X, @ModelAttribute X
+- HttpEntity 는 응답에도 사용 가능
+    - 메시지 바디 정보 직접 반환
+    - 헤더 정보 포함 가능
+    - view 조회X
+- HttpEntity 상속
+    - RequestEntity
+        - HttpMethod, url 정보가 추가, 요청에서 사용
+    - ResponseEntity 
+        - HTTP 상태 코드 설정 가능, 응답에서 사용 
+        - return new ResponseEntity<String>("Hello World", responseHeaders, HttpStatus.CREATED)
+
+### 요청 파라메터 vs 메지시 바디
+
+| 요청 파라메터                      | 메지시 바디     |     
+|--------------------------------|--------------|
+| @RequestParam @ModelAttribute | @RequestBody |
+
+### @ResponseBody
+
+- 응답결과를 HTTP 메시지 바디에 직접 담아서 전달 할 수 있음
+- view 를 사용하지 않음
+
+### JSON 요청 메시지
+
+#### *@RequestBody* 객체 파라메터
+
+- 직접 만든 객체를 지정할 수 있다.
+- `HttpEntity` , `@RequestBody` 를 사용하면 HTTP 메시지 컨버터가 HTTP 메시지 바디의 내용을 우리가 원하는 문자나 객체 등으로 변환해준다.
+- HTTP 메시지 컨버터는 문자 뿐만 아니라 JSON도 객체로 변환해주는데, 우리가 방금 V2에서 했던 작업을 대신 처리해준다.
+
+> 스프링은 @ModelAttribute , @RequestParam 해당 생략시 다음과 같은 규칙을 적용한다.
+> - String , int , Integer 같은 단순 타입 = @RequestParam
+> - 나머지 = @ModelAttribute (argument resolver 로 지정해둔 타입 외)
+
+HelloData에 @RequestBody 를 생략하면 @ModelAttribute 가 적용되어버린다.
+
+> `HelloData data` -> `@ModelAttribute HelloData data`
+
+따라서 생략하면 HTTP 메시지 바디가 아니라 요청 파라미터를 처리하게 된다.
+
+> ### 주의
+> 
+> HTTP 요청시에 content-type이 application/json 이어야 JSON을 처리할 수 있는 HTTP 메시지 컨버터가 실행된다.
+
+#### 바디 메시지 처리 과정
+
+- @RequestBody 요청
+  - JSON 요청 -> HTTP 메시지 컨버터 -> 객체 
+- @ResponseBody 응답
+  - 객체 -> HTTP 메시지 컨버터 -> JSON 응답
