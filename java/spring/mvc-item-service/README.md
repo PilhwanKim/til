@@ -48,9 +48,17 @@
 - 예) 회원 가입, 상품 주문, HTML Form 사용
 
 #### @ModelAttribute - 요청 파라미터 처리
+
 - `@ModelAttribute` 는 Item 객체를 생성하고, 요청 파라미터의 값을 프로퍼티 접근법(setXxx)으로 입력해준다.
 
 #### @ModelAttribute - Model 추가
+
 - 모델(Model)에 `@ModelAttribute` 로 지정한 객체를 자동으로 넣어준다. 
 - `model.addAttribute("item", item)` 가 주석처리 되어 있어도 잘 동작하는 것을 확인할 수 있다.
 - `@ModelAttribute` 의 이름을 생략하면 모델에 저장될 때 클래스명을 사용한다. 이때 클래스의 첫글자만 소문자로 변경해서 등록한다. 
+
+### 리다이렉트
+
+- 상품 수정은 마지막에 뷰 템플릿을 호출하는 대신에 상품 상세 화면으로 이동하도록 리다이렉트를 호출한다.
+- 스프링은 `redirect:/...` 으로 편리하게 리다이렉트를 지원한다.
+- `redirect:/basic/items/{itemId}"` 컨트롤러에 매핑된 @PathVariable 의 값은 redirect 에도 사용 할 수 있다.
