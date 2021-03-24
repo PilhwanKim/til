@@ -41,3 +41,16 @@
     - `<span th:text="'Welcome to our application, ' + ${user.name} + '!'">`
 - 다음과 같이 리터럴 대체 문법을 사용하면, 더하기 없이 편리하게 사용할 수 있다.
     - `<span th:text="|Welcome to our application, ${user.name}!|">`
+  
+### POST - HTML Form
+- `content-type: application/x-www-form-urlencoded`
+- 메시지 바디에 쿼리 파리미터 형식으로 전달 `itemName=itemA&price=10000&quantity=10`
+- 예) 회원 가입, 상품 주문, HTML Form 사용
+
+#### @ModelAttribute - 요청 파라미터 처리
+- `@ModelAttribute` 는 Item 객체를 생성하고, 요청 파라미터의 값을 프로퍼티 접근법(setXxx)으로 입력해준다.
+
+#### @ModelAttribute - Model 추가
+- 모델(Model)에 `@ModelAttribute` 로 지정한 객체를 자동으로 넣어준다. 
+- `model.addAttribute("item", item)` 가 주석처리 되어 있어도 잘 동작하는 것을 확인할 수 있다.
+- `@ModelAttribute` 의 이름을 생략하면 모델에 저장될 때 클래스명을 사용한다. 이때 클래스의 첫글자만 소문자로 변경해서 등록한다. 
