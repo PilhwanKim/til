@@ -74,3 +74,9 @@
 ![PRG](img/prg.png)
 
 - 해결책(`PRG Post/Redirect/Get`) : 상품 저장 후에 뷰 템플릿으로 이동하는 것이 아니라, 상품 상세 화면으로 리다이렉트를 호출
+
+### RedirectAttributes
+
+- RedirectAttributes 를 사용하면 URL 인코딩도 해주고, pathVarible, 쿼리 파라미터까지 처리해준다.
+- `${param.status}` : 타임리프에서 쿼리 파라미터를 편리하게 조회하는 기능
+  - 원래는 컨트롤러에서 모델에 직접 담고 값을 꺼내야 한다. 그런데 쿼리 파라미터는 자주 사용해서 타임리프에서 직접 지원
