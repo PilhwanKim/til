@@ -299,4 +299,10 @@ class MemberRepositoryTest {
         //mysql 쿼리 = SELECT FOR UPDATE
         List<Member> result = memberRepository.findLockByUsername("member1");
     }
+
+    @Test
+    void callCustom() {
+        //사용자 정의 레포지토리가 실행되는지 확인
+        List<Member> result = memberRepository.findMemberCustom();
+    }
 }

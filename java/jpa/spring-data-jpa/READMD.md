@@ -97,3 +97,36 @@ Query Creation: https://docs.spring.io/spring-data/jpa/docs/current/reference/ht
 - `select for update` - 비관적 락: 해당 레코드를 변경 시도할 때 잠시 막음
 - 자세한 것은 영한님 JPA 책 마지막 장 보기
 - 응용: 실시간 서비스에는 지양, 정합성이 중요한 경우에 쓴다.
+
+## 확장 기능
+
+### 사용자 정의 리포지토리 구현
+
+- 스프링 데이터 JPA 리포지토리는 인터페이스로만 정의됨, 구현은 없음
+- 스프링 데이터 JPA 리포지토리로 한계가 있는 기능이 존재
+  - 복잡한 쿼리(통계)
+  - 동적 쿼리
+  - etc..
+- 다양한 이유로 인터페이스의 메서드를 직접 구현하고 싶을 때
+  - JPA 직접 사용
+  - JDBCTemplate
+  - MyBatis
+  - 데이터베이스 커넥션 직접 사용
+  - (추천) Querydsl 사용
+  
+
+- 규칙!: 구현체의 class 명
+  - (과거) `{리포지토리 인터페이스 이름} + Impl`
+  - (추천) `{사용자 정의 인터페이스 명} + Impl`
+
+  
+- Impl 대신 다른 이름으로 변경하고 싶으면?(왠만하면 관례를 따라 만드는걸 권장!)
+```java
+@EnableJpaRepositories(basePackages = "study.datajpa.repository",  repositoryImplementationPostfix = "Impl")
+```
+
+#### 응용
+- 모든 레포지토리를 사용자 정의로 만들진 말자.
+- 성격에 따라 아예 분리하는게 나을 수 있다.
+  - 커멘드 vs 쿼리 분리
+  - 핵심 비즈니스로직 vs 그 외(단순 화면조회용) 
