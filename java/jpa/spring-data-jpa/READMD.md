@@ -130,3 +130,22 @@ Query Creation: https://docs.spring.io/spring-data/jpa/docs/current/reference/ht
 - 성격에 따라 아예 분리하는게 나을 수 있다.
   - 커멘드 vs 쿼리 분리
   - 핵심 비즈니스로직 vs 그 외(단순 화면조회용) 
+
+### Auditing
+
+- 모든 테이블에 공통적으로 들어갈 칼럼
+  - 등록일
+  - 수정일
+  - 등록자
+  - 수정자
+
+- JPA 주요 이벤트 어노테이션
+  - `@PrePersis`
+  - `@PostPersis`
+  - `@PreUpdate`
+  - `@PostUpdate`
+
+- 좋은점
+  - 공통화: 모든 엔티티에 대해 한번에 적용할 수 있다.
+  
+
