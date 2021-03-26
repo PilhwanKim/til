@@ -48,3 +48,18 @@ Query Creation: https://docs.spring.io/spring-data/jpa/docs/current/reference/ht
 - JPA 에서는 `getSingleResuit()` 결과가 없다면 `NoResultException`이 발생
 - Spring Data Jpa 에서 1개 반환 타입이면 `null` 이 온다.
 - 자세한 것 : https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repository-query-return-types
+
+# 페이징과 정렬
+
+## 파라미터
+
+- `org.springframework.data.domain.Sort` : 정렬기능
+- `org.springframework.data.domain.Pageable` : 페이징 기능(내부 `Sort` 포함)
+  - page index 는 `0` 부터 시작한다.
+
+## 특별한 반환타입
+
+- `org.springframework.data.domain.Page` : count 쿼리 결과 포함된 페이징
+- `org.springframework.data.domain.Slice` : count 쿼리 없음. 다음 페이지 확인 가능
+- `List` : 추가 count 쿼리 없이 결과만 반환
+- *(중요)* API 단에 반환하지 마라. DTO 로 변환하여 반환해라.

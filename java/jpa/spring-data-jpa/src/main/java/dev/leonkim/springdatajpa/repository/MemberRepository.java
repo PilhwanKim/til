@@ -2,6 +2,8 @@ package dev.leonkim.springdatajpa.repository;
 
 import dev.leonkim.springdatajpa.dto.MemberDto;
 import dev.leonkim.springdatajpa.entity.Member;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -33,5 +35,10 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Member findMemberByUsername(String username);
 
     Optional<Member> findOptionalByUsername(String username);
+
+//  join 된 쿼리를 페이징 하는 경우가 생김, 이럴때는 카운트 쿼리를 분리하여 선언 가능하게 함
+//    @Query(value = "select m from Member m left join m.team t",
+//            countQuery = "select count(m.username) from Member m")
+    Page<Member> findByAge(int age, Pageable pageable);
 
 }
