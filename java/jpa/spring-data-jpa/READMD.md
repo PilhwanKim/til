@@ -148,4 +148,28 @@ Query Creation: https://docs.spring.io/spring-data/jpa/docs/current/reference/ht
 - 좋은점
   - 공통화: 모든 엔티티에 대해 한번에 적용할 수 있다.
   
+### web 확장
 
+- 다음 객체들이 컨트롤러의 파라메터로 설정 가능하다. 
+  - 도메인 클래스
+    - (추천하지 않음) 엔티티를 컨트롤러 단에서 쓰는건 좋지 않음
+  - 페이징과 정렬
+    - 예) `members?page=2&size=3&sort=username,desc`
+    - 접두사: 페이징 정보가 2개 이상일때 사용
+      - 예) `/members?member_page=0&order_page=1`
+      - ```java
+        public String list(
+        @Qualifier("member") Pageable memberPageable,
+        @Qualifier("order") Pageable orderPageable, ...
+        ```
+    - (중요!!) 페이지의 내용을 DTO 로 변환
+      - 엔티티를 API 에 노출하지 말자!
+      - 엔티티는 DTO 의존 X, DTO 는 엔티티에 의존 해도 됨
+    - 스프링 데이터는 Page를 0부터 시작한다.
+      - 만약 1부터 시작하려면?
+        1. Pageable, Page를 파리미터와 응답 값으로 사용히자 않고, 직접 클래스를 만들어서 처리한다. 그리고
+           직접 PageRequest(Pageable 구현체)를 생성해서 리포지토리에 넘긴다. 물론 응답값도 Page 대신에
+           직접 만들어서 제공해야 한다.
+        2. `spring.data.web.pageable.one-indexed-parameters` 를 `true` 로 설정한다. 그런데 이 방법은
+           web에서 page 파라미터를 -1 처리 할 뿐이다. 따라서 응답값인 Page 에 모두 0 페이지 인덱스를
+           사용하는 한계가 있다.
