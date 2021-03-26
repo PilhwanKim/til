@@ -173,3 +173,29 @@ Query Creation: https://docs.spring.io/spring-data/jpa/docs/current/reference/ht
         2. `spring.data.web.pageable.one-indexed-parameters` 를 `true` 로 설정한다. 그런데 이 방법은
            web에서 page 파라미터를 -1 처리 할 뿐이다. 따라서 응답값인 Page 에 모두 0 페이지 인덱스를
            사용하는 한계가 있다.
+
+## 스프링 데이터 JPA 구현체 분석
+
+### `SimpleJpaRepository<T, ID>`
+
+- `@Repository` 
+  - 스프링 빈 컴포넌트 스캔 대상
+  - 영속성 계층의 예외들을 서로 다른 기술의 Exception -> 스프링 Exception 으로 변환
+
+- `@Transactional`
+  - 일단 기본 메서드들은 읽기전용 트랜젝션을 결고 시작한다는 의미
+  - JPA 의 변경은 모든 것들이 트렌젝션 안에서 실행되어야 한다
+  - 서비스 계층에서 트랜잭션을 시작하지 않으면 리파지토리에서 트랜잭션 시작 
+  - 서비스 계층에서 트랜잭션을 시작하면 리파지토리는 해당 트랜잭션을 전파 받아서 사용
+  - 트렌젝션이 없어도 등록,변경 가능한 이유
+    - 예) `save(S entity)`
+  
+- `@Transactional(readOnly = true)`
+  - flush 생략함 -> 약간의 성능향상
+  - dirty checking(변경감지) 없음
+  
+- (중요!!)`save()` 메시드
+  - 새로운 엔티티면 저장 `persist`
+  - 새로운 엔티티가 아니면 병합 `merge`
+    - DB에 이미 존재하는지 읽기 쿼리를 먼저 1번 함(성능상 불리함)
+    - update 용도가 아님!
