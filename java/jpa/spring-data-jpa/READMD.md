@@ -83,3 +83,17 @@ Query Creation: https://docs.spring.io/spring-data/jpa/docs/current/reference/ht
 - 응용
   - 간단한 join 쿼리 경우 `@EntityGraph`
   - 복잡해지면 JPQL(`@Query`) 에서 직접 지정이 더 낫다. 
+
+## JPA Hint & Lock
+
+### JPA Hint
+
+- 예) `@QueryHints(value = @QueryHint(name = "org.hibernate.readOnly", value = "true"))`
+  - dirty checking skip
+- QueryHint 는 JPA 구현체의 특정 기능 사용 가능하게 구멍을 만듦
+
+### Lock
+
+- `select for update` - 비관적 락: 해당 레코드를 변경 시도할 때 잠시 막음
+- 자세한 것은 영한님 JPA 책 마지막 장 보기
+- 응용: 실시간 서비스에는 지양, 정합성이 중요한 경우에 쓴다.

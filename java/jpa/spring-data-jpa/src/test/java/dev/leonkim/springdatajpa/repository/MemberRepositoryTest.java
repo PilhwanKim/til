@@ -269,4 +269,34 @@ class MemberRepositoryTest {
 
         //then
     }
+
+    @Test
+    void queryHint() {
+        //given
+        Member member1 = new Member("member1", 10);
+        memberRepository.save(member1);
+        em.flush();
+        em.clear();
+
+        //when
+        Member findMember = memberRepository.findReadOnlyByUsername("member1");
+        findMember.setUsername("member2");
+
+        // dirty checking skip - QueryHint 는 JPA 구현체의 특정 기능 사용 가능하게 구멍을 만듦
+        em.flush();
+
+        //then
+    }
+
+    @Test
+    void lock() {
+        //given
+        Member member1 = new Member("member1", 10);
+        memberRepository.save(member1);
+        em.flush();
+        em.clear();
+
+        //mysql 쿼리 = SELECT FOR UPDATE
+        List<Member> result = memberRepository.findLockByUsername("member1");
+    }
 }
