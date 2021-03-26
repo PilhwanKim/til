@@ -42,24 +42,30 @@ Query Creation: https://docs.spring.io/spring-data/jpa/docs/current/reference/ht
 - 이름 기반 vs 위치 기반? -> 무조건 이름 기반으로..
 - 컬렉션 파라메터 바인딩
 
-# 반환 타입
+## 반환 타입
 
 - 컬랙션 반환에서 결과가 없으면 `size()` 는 0인 빈 컬랙션 반환된다.  
 - JPA 에서는 `getSingleResuit()` 결과가 없다면 `NoResultException`이 발생
 - Spring Data Jpa 에서 1개 반환 타입이면 `null` 이 온다.
 - 자세한 것 : https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repository-query-return-types
 
-# 페이징과 정렬
+## 페이징과 정렬
 
-## 파라미터
+### 파라미터
 
 - `org.springframework.data.domain.Sort` : 정렬기능
 - `org.springframework.data.domain.Pageable` : 페이징 기능(내부 `Sort` 포함)
   - page index 는 `0` 부터 시작한다.
 
-## 특별한 반환타입
+### 특별한 반환타입
 
 - `org.springframework.data.domain.Page` : count 쿼리 결과 포함된 페이징
 - `org.springframework.data.domain.Slice` : count 쿼리 없음. 다음 페이지 확인 가능
 - `List` : 추가 count 쿼리 없이 결과만 반환
 - *(중요)* API 단에 반환하지 마라. DTO 로 변환하여 반환해라.
+
+## 벌크성 수정 쿼리
+
+- `@Modifying` 
+  - `@Query` 가 변경 쿼리임을 선언해 줘야 함
+  - `(주의)` 벌크 연산 전의 영속성 컨텍스트와 불일치 이슈 존재 -> clear()를 꼭 해야주어야 한다.
