@@ -231,4 +231,42 @@ class MemberRepositoryTest {
         assertThat(resultCount).isEqualTo(3);
     }
 
+    @Test
+    void findMemberLazy() {
+        //given
+        Team teamA = new Team("teamA");
+        Team teamB = new Team("teamB");
+        teamRepository.save(teamA);
+        teamRepository.save(teamB);
+
+        Member member1 = new Member("member1", 10, teamA);
+        Member member2 = new Member("member1", 10, teamB);
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+        em.flush();
+        em.clear();
+
+        //when
+
+        // (lazy loading)
+//        List<Member> members = memberRepository.findAll();
+        // (eager loading)
+        List<Member> members = memberRepository.findMemberEntityGraph();
+//        List<Member> members = memberRepository.findMemberFetchJoin();
+//        List<Member> members = memberRepository.findEntityByUsername("member1");
+
+        // findAll vs findMemberFetchJoin - N + 1 문제 확인. fetch join(EAGER LOADING) 효과
+        for (Member member : members) {
+            System.out.println("member = " + member.getUsername());
+            // (lazy loading) findAll() 은 프록시로 들어옴
+            // (eager loading) findMemberFetchJoin() 은 Team 객체로 들어옴
+            System.out.println("member.teamClass = " + member.getTeam().getClass());
+            // (lazy loading) findAll() 은 별개의 team 쿼라 조회
+            // (eager loading) findMemberFetchJoin() 은 이미 조회가 끝나있음
+            System.out.println("member.team = " + member.getTeam().getName());
+        }
+
+        //then
+    }
 }

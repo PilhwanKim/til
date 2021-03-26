@@ -69,3 +69,17 @@ Query Creation: https://docs.spring.io/spring-data/jpa/docs/current/reference/ht
 - `@Modifying` 
   - `@Query` 가 변경 쿼리임을 선언해 줘야 함
   - `(주의)` 벌크 연산 전의 영속성 컨텍스트와 불일치 이슈 존재 -> clear()를 꼭 해야주어야 한다.
+
+## @EntityGraph
+
+- 지연 로딩 - 연관관계를 실제 사용할 때 DB 조회를 함
+  - 지연 상태의 엔티티는 (임시로) 엔티티 프록시 객체로 채워 놓는다(초기화 한다).
+  - 실제 연관관계 객체의 프로퍼티를 사용할 때! -> 조회쿼리를 실행(lazy loading)한다. 
+- 지연 로딩 인한 문제점
+  - N + 1 문제 : 지연로딩으로 인해 나중에 추가로 N건 으로 조회를 나중에 하는 것
+- 해결책 : 페치 조인
+  - JPQL 의 join fetch
+  - 패치조인 기능 wrapper `@EntityGraph`
+- 응용
+  - 간단한 join 쿼리 경우 `@EntityGraph`
+  - 복잡해지면 JPQL(`@Query`) 에서 직접 지정이 더 낫다. 
