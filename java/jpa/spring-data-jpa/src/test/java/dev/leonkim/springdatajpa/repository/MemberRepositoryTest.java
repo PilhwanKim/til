@@ -1,11 +1,10 @@
 package dev.leonkim.springdatajpa.repository;
 
 import dev.leonkim.springdatajpa.dto.MemberDto;
+import dev.leonkim.springdatajpa.dto.projections.MemberProjection;
 import dev.leonkim.springdatajpa.dto.projections.NestedClosedProjections;
-import dev.leonkim.springdatajpa.dto.projections.UsernameOnlyDto;
 import dev.leonkim.springdatajpa.entity.Member;
 import dev.leonkim.springdatajpa.entity.Team;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -330,5 +329,28 @@ class MemberRepositoryTest {
             System.out.println("nestedClosedProjections = " + nestedClosedProjections);
         }
 
+    }
+
+    @Test
+    void nativeQuery() {
+        //given
+        Team teamA = new Team("teamA");
+        teamRepository.save(teamA);
+
+        Member member1 = new Member("member1", 10, teamA);
+        Member member2 = new Member("member2", 10, teamA);
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+        em.flush();
+        em.clear();
+
+        //when
+        Page<MemberProjection> result = memberRepository.findByNativeProjection(PageRequest.of(0, 10));
+        List<MemberProjection> content = result.getContent();
+        for (MemberProjection memberProjection : content) {
+            System.out.println("memberProjection.getUsername() = " + memberProjection.getUsername());
+            System.out.println("memberProjection.getTeamName() = " + memberProjection.getTeamName());
+        }
     }
 }

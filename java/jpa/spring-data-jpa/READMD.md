@@ -235,3 +235,16 @@ Query Creation: https://docs.spring.io/spring-data/jpa/docs/current/reference/ht
   - 프로젝션 대상이 root 엔티티를 넘어가면 JPQL SELECT 최적화가 안된다!
   - 실무의 복잡한 쿼리를 해결하기에는 한계가 있다.
   - 실무에서는 단순할 때만 사용하고, 조금만 복잡해지면 `QueryDSL` 을 사용하자
+
+### Native Query
+
+가급적 사용하지 않도록 함 -> *네이티브 SQL을 DTO로 조회할 때는 `JdbcTemplate` or `myBatis` 권장*
+
+#### Projections 활용
+
+- 새로 들어온 기능
+
+#### 동적 네이티브 쿼리
+
+- 하이버네이트를 직접 활용
+- 스프링 `JdbcTemplate`, `myBatis`, `jooq` 같은 외부 라이브러리 사용
