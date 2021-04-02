@@ -199,3 +199,14 @@ Query Creation: https://docs.spring.io/spring-data/jpa/docs/current/reference/ht
   - 새로운 엔티티가 아니면 병합 `merge`
     - DB에 이미 존재하는지 읽기 쿼리를 먼저 1번 함(성능상 불리함)
     - update 용도가 아님!
+    - (중요) merge 는 쓸 일이 별로 없다.
+
+- 새로운 엔티티를 구별하는 방법
+  - 식별자가 객체일 때 null 로 판단 
+  - 식별자가 자바 기본 타입(primitive type)일 때 0 으로 판단
+  - `Persistable` 인터페이스를 구현해서 판단 로직 변경 가능
+
+- 참고: JPA 식별자 생성 전략이 `@Id` 만 사용해서 직접 할당
+  - 이미 식별자 값이 있는 상태로 save() 를 호출
+  - 따라서 이 경우 merge() 가 호출
+  - (결론) Persistable 를 사용해서 새로운 엔티티 확인 여부를 직접 구현하게는 효과적
