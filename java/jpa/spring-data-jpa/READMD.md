@@ -201,12 +201,37 @@ Query Creation: https://docs.spring.io/spring-data/jpa/docs/current/reference/ht
     - update 용도가 아님!
     - (중요) merge 는 쓸 일이 별로 없다.
 
-- 새로운 엔티티를 구별하는 방법
+
+### 새로운 엔티티를 구별하는 방법
   - 식별자가 객체일 때 null 로 판단 
   - 식별자가 자바 기본 타입(primitive type)일 때 0 으로 판단
   - `Persistable` 인터페이스를 구현해서 판단 로직 변경 가능
 
-- 참고: JPA 식별자 생성 전략이 `@Id` 만 사용해서 직접 할당
+참고: 엔티티의 JPA 식별자 생성 전략이 `@Id` 만 사용해서 직접 할당할 경우
   - 이미 식별자 값이 있는 상태로 save() 를 호출
   - 따라서 이 경우 merge() 가 호출
   - (결론) Persistable 를 사용해서 새로운 엔티티 확인 여부를 직접 구현하게는 효과적
+
+## 나머지 기능들
+
+### Projections
+
+엔티티 대신에 DTO를 조회할 때 사용
+- 예) 전체 엔티티가 아니라 회원 이름만 조회하기
+
+- 종류
+  - 인터페이스 기반 Closed Projections
+  - 인터페이스 기반 Open Proejctions
+  - 클래스 기반 Projection
+  - 동적 프로젝션
+  - 중첩 구조 처리
+    - 프로젝션 대상이 root 엔티티면, JPQL SELECT 절 최적화 가능 
+    - 프로젝션 대상이 ROOT가 아니면
+      - LEFT OUTER JOIN 처리
+      - 모든 필드를 SELECT해서 엔티티로 조회한 다음에 계산
+  
+- 정리
+  - 프로젝션 대상이 root 엔티티면 유용하다.
+  - 프로젝션 대상이 root 엔티티를 넘어가면 JPQL SELECT 최적화가 안된다!
+  - 실무의 복잡한 쿼리를 해결하기에는 한계가 있다.
+  - 실무에서는 단순할 때만 사용하고, 조금만 복잡해지면 `QueryDSL` 을 사용하자

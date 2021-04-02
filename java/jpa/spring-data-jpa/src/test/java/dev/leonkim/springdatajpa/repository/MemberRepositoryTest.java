@@ -1,8 +1,11 @@
 package dev.leonkim.springdatajpa.repository;
 
 import dev.leonkim.springdatajpa.dto.MemberDto;
+import dev.leonkim.springdatajpa.dto.projections.NestedClosedProjections;
+import dev.leonkim.springdatajpa.dto.projections.UsernameOnlyDto;
 import dev.leonkim.springdatajpa.entity.Member;
 import dev.leonkim.springdatajpa.entity.Team;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -304,5 +307,28 @@ class MemberRepositoryTest {
     void callCustom() {
         //사용자 정의 레포지토리가 실행되는지 확인
         List<Member> result = memberRepository.findMemberCustom();
+    }
+
+    @Test
+    void projections() {
+        //given
+        Team teamA = new Team("teamA");
+        teamRepository.save(teamA);
+
+        Member member1 = new Member("member1", 10, teamA);
+        Member member2 = new Member("member2", 10, teamA);
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+        em.flush();
+        em.clear();
+
+        //when - UsernameOnly, UsernameOnlyDto, NestedClosedProjections dto로 각기 변경하면서 차이점 보기
+        List<NestedClosedProjections> result = memberRepository.findProjectionsByUsername("member1", NestedClosedProjections.class);
+
+        for (NestedClosedProjections nestedClosedProjections : result) {
+            System.out.println("nestedClosedProjections = " + nestedClosedProjections);
+        }
+
     }
 }
