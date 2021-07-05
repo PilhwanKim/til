@@ -302,13 +302,15 @@ HelloData에 @RequestBody 를 생략하면 @ModelAttribute 가 적용되어버�
 ### 스프링 MVC 확장
 
 - 기능 확장은 `WebMvcConfigurer` 를 상속 받아서 스프링 빈으로 등록하면 된다.
-- 인터페이스 
-    - HandlerMethodArgumentResolver
-    - HandlerMethodReturnValueHandler
-    - HttpMessageConverter
-
+- 인터페이스
+  - HandlerMethodArgumentResolver
+  - HandlerMethodReturnValueHandler
+  - HttpMessageConverter
 
 ## 스프링 MVC - 백엔드 웹 개발 활용 기술
 
 ### 타임 리프
 
+- 서버 사이드 렌더링(SSR): 서버에서 HTML을 동적으로 렌더링 하는 용도
+- 네추럴 템플릿(natural templates): 순수 HTML을 유지하는 템플릿. 서버 랜더링 하지 않고 html 파일을 열어도 브라우져에서 볼 수 있음
+- 스프링 통합 지원: 다음 섹션에서 적어 보자!(TODO)
