@@ -3,7 +3,11 @@
 아래 강의 실습 프로젝트이다.
 https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-mvc-1
 
-## 서블릿
+본 프로젝트는 servlet -> JSP -> MVC 패턴 -> Spring MVC 로 점진적으로 변화하는 코드를 포함하고 있다.
+
+스프링 MVC 의 전체 흐름을 이해하기 위해 반드시 필요한 내용이다.
+
+## Servlet
 
 ### HTTP 요청 데이터
 
