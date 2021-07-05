@@ -1,4 +1,8 @@
-# 
+# Spring MVC Features
+
+## 설명 
+
+본 프로젝트는 스프링 MVC 각 요소에 대한 예제와 설명이 담긴 프로젝트이다.
 
 ## 로깅!
 
@@ -287,18 +291,46 @@ HelloData에 @RequestBody 를 생략하면 @ModelAttribute 가 적용되어버�
 
 - `ArgumentResolver` 와 `ReturnValueHandler` 가 사용
 - HTTP 요청
-    - `@RequestBody` 혹은 `HttpEntity` 담당 `ArgumentResolver`
-    - 위의 친구들이 메시지 컨버터를 호출해 필요 객체를 생성
+  - `@RequestBody` 혹은 `HttpEntity` 담당 `ArgumentResolver`
+  - 위의 친구들이 메시지 컨버터를 호출해 필요 객체를 생성
 - HTTP 응답
-    - `@ResponseBody` 혹은 `HttpEntity` 담당 `ReturnValueHandler`
-    - 위의 친구들이 메시지 컨버터를 호출해 HTTP 응답 결과를 생성 
+  - `@ResponseBody` 혹은 `HttpEntity` 담당 `ReturnValueHandler`
+  - 위의 친구들이 메시지 컨버터를 호출해 HTTP 응답 결과를 생성
 - `@RequestBody` `@ResponseBody` 의 컨버팅은 `RequestResponseBodyMethodProcessor`
 - `HttpEntity`의 컨버팅은 `HttpEntityMethodProcessor` 이다.
 
 ### 스프링 MVC 확장
 
 - 기능 확장은 `WebMvcConfigurer` 를 상속 받아서 스프링 빈으로 등록하면 된다.
-- 인터페이스 
-    - HandlerMethodArgumentResolver
-    - HandlerMethodReturnValueHandler
-    - HttpMessageConverter
+- 인터페이스
+  - HandlerMethodArgumentResolver
+  - HandlerMethodReturnValueHandler
+  - HttpMessageConverter
+
+## 스프링 MVC - 백엔드 웹 개발 활용 기술
+
+### 타임 리프
+
+- 서버 사이드 렌더링(SSR): 서버에서 HTML을 동적으로 렌더링 하는 용도
+- 네추럴 템플릿(natural templates): 순수 HTML을 유지하는 템플릿. 서버 랜더링 하지 않고 html 파일을 열어도 브라우져에서 볼 수 있음
+- 스프링 통합 지원: 다음 섹션에서 적어 보자!(TODO)
+
+### 텍스트 - text, utext
+
+기본적인 텍스트 치환하여 출력
+
+#### 주의 - Escape
+
+- 우리가 바라는 것(강조) : `Hello <b>Spring!</b>`
+- 실제 출력되는 것(바뀜!) : `Hello &lt;b&gt;Spring!&lt;/b&gt;`
+
+- HTML 엔티티 
+  - `<` 를 테그의 시작으로 인식
+  - 우리는 그대로 보여주길 원함
+
+#### Un-escape
+
+- 이스케이프 기능을 끔!
+- 타임리프의 기능 지원
+  - `th:text` -> `th:utext`
+  - `[[...]]` -> `[(...)]`
