@@ -149,7 +149,7 @@ uesrname=hello&age=20
         - HTTP 상태 코드 설정 가능, 응답에서 사용 
         - return new ResponseEntity<String>("Hello World", responseHeaders, HttpStatus.CREATED)
 
-### 요청 파라메터 vs 메지시 바디
+### 요청 파라메터 vs 메시지 바디
 
 | 요청 파라메터                      | 메시지 바디     |     
 |--------------------------------|--------------|
@@ -194,7 +194,7 @@ HelloData에 @RequestBody 를 생략하면 @ModelAttribute 가 적용되어버�
 ### 응답 데이터 종류
 
 - 정적 리소스(HTML, css, js 파일)
-- 뷰 텝플릿 사용(동적 HTML - 서버사이드 렌더링)
+- 뷰 템플릿 사용(동적 HTML - 서버사이드 렌더링)
 - HTTP 메시지 사용(HTTP API)
 
 ### 정적 리소스
@@ -212,23 +212,23 @@ HelloData에 @RequestBody 를 생략하면 @ModelAttribute 가 적용되어버�
 ### 뷰 템플릿
 
 - 기본 경로: `src/main/resources/templates`
-- dev.leonkim.springmvcplayground.basic.response.ResponseViewController 예제 확인
+- `dev.leonkim.springmvcplayground.basic.response.ResponseViewController` 예제 확인
 - thymeleaf
     - 기본 설정
-        - spring.thymeleaf.prefix=classpath:/templates/
-        - spring.thymeleaf.suffix=.html
+        - `spring.thymeleaf.prefix=classpath:/templates/`
+        - `spring.thymeleaf.suffix=.html`
     - 참고 : https://docs.spring.io/spring-boot/docs/2.4.3/reference/html/appendix-applicationproperties.html#common-application-properties-templating
     
 ### HTTP API - 메시지 바디에 직접 입력
 
 - HTML(X), 데이터(주로 JSON)를 담는경우
 - @RestController =  @Controller + 컨트롤러에 모두 @ResponseBody 가 적용.
-- dev.leonkim.springmvcplayground.basic.response.ResponseBodyController 예제 확인
+- `dev.leonkim.springmvcplayground.basic.response.ResponseBodyController` 예제 확인
 
 ## HTTP 메시지 컨버터
 
-- 인터페이스: org.springframework.http.converter.HttpMessageConverter
-- 응답은 HTTP `Accept 헤더` 와 `컨트롤러 반환 타입` 등을 조합해서 HttpMessageConverter 를 선택함
+- 인터페이스: `org.springframework.http.converter.HttpMessageConverter`
+- 응답은 HTTP `Accept 헤더` 와 `컨트롤러 반환 타입` 등을 조합해서 `HttpMessageConverter` 를 선택함
 
 ### HTTP 메시지 컨버터 적용 대상
 
@@ -240,18 +240,18 @@ HelloData에 @RequestBody 를 생략하면 @ModelAttribute 가 적용되어버�
 
 | 순위 | 이름         | 클래스 타입 | 미디어 타입 | 요청 예 | 응답 예|    
 |---|--------------|----------|---------|--------|-----|
-| 0 | ByteArrayHttpMessageConverter             | byte[]   | */* |`@RequestBody byte[] data`|`@ResponseBody return byte[]`|
-| 1 | StringHttpMessageConverter                | String   | */* |`@RequestBody String data`|`@ResponseBody return "ok"`|
+| 0 | ByteArrayHttpMessageConverter             | byte[]   | `*/*` |`@RequestBody byte[] data`|`@ResponseBody return byte[]`|
+| 1 | StringHttpMessageConverter                | String   | `*/*` |`@RequestBody String data`|`@ResponseBody return "ok"`|
 | 2 | MappingJackson2HttpMessageConverter       | HashMap or 객체 | application/json |`@RequestBody HelloData data`|`@ResponseBody return helloData`|
 
 ### HTTP 요청 데이터 읽기 과정
 
-1. HTTP 요청이 오고, 컨트롤러에서 @RequestBody , HttpEntity 파라미터를 사용한다.
+1. HTTP 요청이 오고, 컨트롤러에서 `@RequestBody` , `HttpEntity` 파라미터를 사용한다.
 2. 메시지 컨버터가 메시지를 읽을 수 있는지 확인하기 위해 canRead() 를 호출한다.
    1. 대상 클래스 타입을 지원하는가.
-       1. 예) @RequestBody 의 대상 클래스 ( byte[] , String , HelloData )
+       1. 예) `@RequestBody` 의 대상 클래스 ( byte[] , String , HelloData )
    2. HTTP 요청의 Content-Type 미디어 타입을 지원하는가.
-       1. 예) text/plain , application/json , */*
+       1. 예) `text/plain` , `application/json` , `*/*`
 3. canRead() 조건을 만족하면 read() 를 호출해서 객체 생성하고, 반환한다.
 
 ### HTTP 응답 데이터 생성 과정
@@ -266,7 +266,7 @@ HelloData에 @RequestBody 를 생략하면 @ModelAttribute 가 적용되어버�
 
 ## RequestMappingHandlerAdepter 구조
 
-- @RequestMapping 달린 핸들러들의 모든 메시지 컨버팅은 RequestMappingHandlerAdepter 에서 이루어진다.
+- `@RequestMapping`이 달린 핸들러들의 모든 메시지 컨버팅은 `RequestMappingHandlerAdepter` 에서 이루어진다.
 
 ![동작 방식](img/request-mapping-handler-adepter.png)
 
