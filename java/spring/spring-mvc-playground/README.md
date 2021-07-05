@@ -334,3 +334,23 @@ HelloData에 @RequestBody 를 생략하면 @ModelAttribute 가 적용되어버�
 - 타임리프의 기능 지원
   - `th:text` -> `th:utext`
   - `[[...]]` -> `[(...)]`
+
+### 변수 - SpringEL
+
+- Object
+  - `${user.username}` -> user의 username을 프로퍼티 접근
+  - `${user['username']}` = 위와 같음
+  - `${user.getUsername()}` = user의 `getUsername()` 을 직접 호출
+- List
+  - `${users[0].username}` = List에서 첫 번째 회원을 찾고 username 프로퍼티 접근
+  - `${users[0]['username']}` = 위와 같음
+  - `${users[0].getUsername()}` = List에서 첫 번째 회원을 찾고 메서드 직접 호출
+- Map
+  - `${userMap['userA'].username}` = Map에서 userA를 찾고, username 프로퍼티 접근
+  - `${userMap['userA']['username']}` = 위와 같음
+  - `${userMap['userA'].getUsername()}` = Map에서 userA를 찾고 메서드 직접 호출
+
+#### 지역 변수 선언
+
+- `th:with`로 선언해 사용.
+- 선언한 테그 안에서만 사용 가능
