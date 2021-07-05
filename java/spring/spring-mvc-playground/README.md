@@ -151,7 +151,7 @@ uesrname=hello&age=20
 
 ### 요청 파라메터 vs 메지시 바디
 
-| 요청 파라메터                      | 메지시 바디     |     
+| 요청 파라메터                      | 메시지 바디     |     
 |--------------------------------|--------------|
 | @RequestParam @ModelAttribute | @RequestBody |
 
