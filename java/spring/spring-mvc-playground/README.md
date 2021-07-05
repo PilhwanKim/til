@@ -1,4 +1,8 @@
-# 
+# Spring MVC Features
+
+## 설명 
+
+본 프로젝트는 스프링 MVC 각 요소에 대한 예제와 설명이 담긴 프로젝트이다.
 
 ## 로깅!
 
@@ -302,3 +306,9 @@ HelloData에 @RequestBody 를 생략하면 @ModelAttribute 가 적용되어버�
     - HandlerMethodArgumentResolver
     - HandlerMethodReturnValueHandler
     - HttpMessageConverter
+
+
+## 스프링 MVC - 백엔드 웹 개발 활용 기술
+
+### 타임 리프
+
