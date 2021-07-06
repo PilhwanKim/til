@@ -407,3 +407,28 @@ HelloData에 @RequestBody 를 생략하면 @ModelAttribute 가 적용되어버�
 - 상대경로, 절대경로, 프로토콜 기준을 표현할 수 도 있다.
   - `/hello` : 절대 경로
   - `hello` : 상대 경로
+
+### 리터럴
+
+- 리터럴: 소스 코드상에 고정된 값
+- 쉬워 보이지만 많이 실수하니 잘 정리하자.
+
+```java
+String a = "Hello"
+int a = 10 * 20
+```
+
+- 문자: `'hello'`
+- 숫자: `10`
+- 불린: `true` , `false`
+- null: `null`
+
+- *(주의)* 타임리프에서 문자 리터럴은 항상 ' (작은 따옴표)로 감싸야 한다.
+  - `<span th:text="'hello'">`
+- 이건 귀찮은 경우가 많으므로 *공백없이 쭉 이어진다면* 하나의 의미있는 토큰으로 인지해서 다음과 같이 작은 따옴표를 생략할 수 있다.
+  - 룰: A-Z, a-z, 0-9, [], ., -, _
+  - `<span th:text="hello">`
+
+- 오류 : `<span th:text="hello world!"></span>` -> 수정 : `<span th:text="'hello world!'"></span>`
+
+- 리터럴 대체(Literal substitutions): `<span th:text="|hello ${data}|">`
