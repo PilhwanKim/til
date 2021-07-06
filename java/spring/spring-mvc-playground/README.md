@@ -370,3 +370,23 @@ HelloData에 @RequestBody 를 생략하면 @ModelAttribute 가 적용되어버�
   - 예) `${session.sessionData}`
 - 스프링 빈 접근: `@`
   - 예) `${@helloBean.hello('Spring!')}`
+
+### 유틸리티 객체와 날짜
+
+| 필요할 때 찾아서 사용하면 된다.
+| 공식 문서에서 예제를 찾아서 쓰자!
+
+- #message : 메시지, 국제화 처리
+- #uris : URI 이스케이프 지원
+- #dates : java.util.Date 서식 지원 #calendars : java.util.Calendar 서식 지원 #temporals : 자바8 날짜 서식 지원
+- #numbers : 숫자 서식 지원
+- #strings : 문자 관련 편의 기능
+- #objects : 객체 관련 기능 제공
+- #bools : boolean 관련 기능 제공
+- #arrays : 배열 관련 기능 제공
+- #lists , #sets , #maps : 컬렉션 관련 기능 제공 #ids : 아이디 처리 관련 기능 제공, 뒤에서 설명
+
+#### 자바8 날짜
+
+- `thymeleaf-extras-java8time` : 자바8 날짜 지원 라이브러리
+- `#temporals` : 자바8 날짜용 유틸리티 객체

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,13 +18,13 @@ import java.util.Map;
 @RequestMapping("/basic")
 public class BasicController {
 
-    @GetMapping("text-basic")
+    @GetMapping("/text-basic")
     public String textBasic(Model model) {
         model.addAttribute("data", "Hello Spring!");
         return "thymeleaf/basic/text-basic";
     }
 
-    @GetMapping("text-unescaped")
+    @GetMapping("/text-unescaped")
     public String textUnescapeds(Model model) {
         model.addAttribute("data", "Hello <b>Spring!</b>");
         return "thymeleaf/basic/text-unescaped";
@@ -53,6 +54,12 @@ public class BasicController {
     public String basicObjects(HttpSession session) {
         session.setAttribute("sessionData", "Hello Session");
         return "thymeleaf/basic/basic-objects";
+    }
+
+    @GetMapping("/date")
+    public String date(Model model) {
+        model.addAttribute("localDateTime", LocalDateTime.now());
+        return "thymeleaf/basic/date";
     }
 
     @Component("helloBean")
