@@ -354,3 +354,19 @@ HelloData에 @RequestBody 를 생략하면 @ModelAttribute 가 적용되어버�
 
 - `th:with`로 선언해 사용.
 - 선언한 테그 안에서만 사용 가능
+
+### 기본 객체들
+
+- `${#request}`
+- `${#response}`
+- `${#session}`
+- `${#servletContext}`
+- `${#locale}`
+
+- 편의 객체 : requset 객체에서 꺼내는게 귀찮으므로 쉽게 조회하도록 함
+- HTTP 요청 파라미터 접근: `param`
+  - 예) `${param.paramData}`
+- HTTP 세션 접근: `session`
+  - 예) `${session.sessionData}`
+- 스프링 빈 접근: `@`
+  - 예) `${@helloBean.hello('Spring!')}`
