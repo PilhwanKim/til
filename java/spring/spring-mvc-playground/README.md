@@ -432,3 +432,11 @@ int a = 10 * 20
 - 오류 : `<span th:text="hello world!"></span>` -> 수정 : `<span th:text="'hello world!'"></span>`
 
 - 리터럴 대체(Literal substitutions): `<span th:text="|hello ${data}|">`
+
+### 연산
+
+- 비교연산: HTML 엔티티를 사용해야 하는 부분을 주의하자,
+  - > (gt), < (lt), >= (ge), <= (le), ! (not), == (eq), != (neq, ne)
+- 조건식: 자바의 조건식과 유사하다.
+- Elvis 연산자: 조건식의 편의 버전
+- No-Operation: _ 인 경우 마치 타임리프가 실행되지 않는 것 처럼 동작한다. 이것을 잘 사용하면 HTML 의 내용 그대로 활용할 수 있다. 마지막 예를 보면 데이터가 없습니다. 부분이 그대로 출력된다.

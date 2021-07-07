@@ -75,6 +75,13 @@ public class BasicController {
         return "thymeleaf/basic/literal";
     }
 
+    @GetMapping("/operation")
+    public String operation(Model model) {
+        model.addAttribute("nullData", null);
+        model.addAttribute("data", "Spring!");
+        return "thymeleaf/basic/operation";
+    }
+
     @Component("helloBean")
     static class HelloBean {
         public String hello(String data) {
