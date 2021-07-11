@@ -80,3 +80,105 @@
 - RedirectAttributes 를 사용하면 URL 인코딩도 해주고, pathVarible, 쿼리 파라미터까지 처리해준다.
 - `${param.status}` : 타임리프에서 쿼리 파라미터를 편리하게 조회하는 기능
   - 원래는 컨트롤러에서 모델에 직접 담고 값을 꺼내야 한다. 그런데 쿼리 파라미터는 자주 사용해서 타임리프에서 직접 지원
+
+## 타임리프 스프링 통합
+
+- 기본 메뉴얼 : https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html
+- 스프링 통합 메뉴얼 : https://www.thymeleaf.org/doc/tutorials/3.0/thymeleafspring.html
+- 스프링 부트가 제공하는 타임리프 설정 :
+https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-applicationproperties.html#common-application-properties-templating
+
+### 입력 폼 처리
+
+- `th:object` : 커맨드 객체 지정
+- `*{...}` : 선택 변수식. `th:object` 에서 선택한 객체에 접근
+- `th:field` : HTML 테그의 `id`, `name`, `value` 속성을 자동으로 처리함
+
+`<input type="text" th:field="*{itemName}" />` -> 렌더링 -> `<input type="text" id="itemName" name="itemName" th:value="*{itemName}" />`
+
+- 이 기능의 진가는 validation(검증)에서 나타난다.
+
+### 요구사항 추가
+
+- 판매여부
+  - 판매 오픈 여부
+  - 체크 박스로 선택할 수 있다.
+- 등록 지역
+  - 서울, 부산, 제주
+  - 체그 박스로 다중 선택할 수 있다.
+- 상품 종류
+  - 도서, 식품, 기타
+  - 라디오 버튼으로 하나만 선택할 수 있다.
+- 배송 방식
+  - 빠른 배송
+  - 일반 배송
+  - 느린 배송
+  - 셀렉트 박스로 하나만 선택할 수 있다.
+
+![예시](./img/req-form.png)
+
+### 체크 박스 - 단일 Ver 1
+
+| 주의) HTML checkbox는 선택이 안되면 클라이언트에서 서버로 값 자체를 보내지 않음!
+
+- 서버 구현에 따라서 값이 오지 않은 것으로 판단해서 값을 변경하지 않게 하면 문제가 될수 있다.
+- 이런 문제 해결을 위해 스프링 MVC는 약간의 트릭을 사용
+  - 히든 필드 `_open` 과 같이 기존 체크박스 이름앞에 `_`를 붙여 전송하며 체크를 해제했다고 인식하게 한다.
+
+- 체크 해제를 인식하기 위한 히든 필드
+`<input type="hidden" name="_open" value="on"/>`
+
+- 체크 박스 체크
+  - `open=on&_open=on`
+  - _open 무시하고, open 값 확인
+- 체크 박스 미체크
+  - `_open=on`
+  - _open 만 있는 것을 확인, open 값이 체크되지 않았다고 인식!
+
+### 체크 박스 - 단일 Ver 2
+
+- 하지만 위의 기능을 타임리프가 간결하게 제공한다.
+- `<input type="checkbox" id="open" th:field="*{open}" class="form-checkinput">`
+
+### 체크 박스 - 멀티
+
+```java
+@ModelAttribute("regions")
+public Map<String, String> regions() {
+    Map<String, String> regions = new LinkedHashMap<>();
+    regions.put("SEOUL", "서울");
+    regions.put("BUSAN", "부산");
+    regions.put("JEJU", "제주");
+    return regions;
+}
+```
+
+- @ModelAttribute 의 특별 사용법
+  - 컨트롤러 안에서 별도의 메서드에 위에처럼 적용해주면?
+  - 해당 컨트롤러의 모든 요청에 model 에 `regions` 이름으로 어트리뷰트로 자동으로 다 담기게된다.
+
+- `th:for="${#ids.prev('open')}"`
+  - 멀티 체크박스는 같은 이름의 여러 체크박스를 만들 수 있다. 그런데 문제는 반복해서 HTML 태그를 생성할 때, 생성된 HTML 태그 속성에서 `name` 은 같아도 `id`는 모두 달라야 한다. 따라서 타임리프는 체크박스를 `each` 루프 안에서 반복해서 만들 때 임의로 1,2,3 숫자를 뒤에 붙여준다.
+
+### 라디오 버튼
+
+- 자바 ENUM을 활용해 보자!
+- 라디오 버튼은 하나만 선택 가능!
+
+```log
+item.itemType=FOOD: 값이 있을 때
+item.itemType=null: 값이 없을 때
+```
+
+- 타임리프에서 ENUM 적접 접근
+
+```html
+<div th:each="type : ${T(hello.itemservice.domain.item.ItemType).values()}">
+```
+
+- 패키지 위치 변경되면? 너무 귀찮아지니 권장하진 않음
+
+### 셀렉트 박스
+
+- 여러 선택지 중 하나 선택
+- `selected="selected"` -> 타임리프가 자동으로 해주는 랜더링
