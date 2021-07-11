@@ -481,3 +481,11 @@ int a = 10 * 20
 - even, odd : 홀수, 짝수 여부(boolean)
 - first, last : 처음, 마지막 여부(boolean)
 - current: 현재 객체
+
+### 조건부 평가
+
+- if, unless
+  - 타임리프는 해당 조건이 맞지 않으면 태그 자체를 렌더링하지 않는다.
+  - `<span th:text="' 성년 '" th:if="${user.age lt 20}"></span>`
+- switch
+  - `*` 은 만족하는 조건이 없을 때 사용하는 디폴트이다.

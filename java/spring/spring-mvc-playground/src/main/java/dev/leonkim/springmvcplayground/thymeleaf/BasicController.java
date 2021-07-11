@@ -93,6 +93,12 @@ public class BasicController {
         return "thymeleaf/basic/each";
     }
 
+    @GetMapping("/condition")
+    public String condition(Model model) {
+        addUsers(model);
+        return "thymeleaf/basic/condition";
+    }
+
     private void addUsers(Model model) {
         List<User> list = new ArrayList<>();
         list.add(new User("UserA", 10));
