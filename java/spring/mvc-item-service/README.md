@@ -182,3 +182,6 @@ item.itemType=null: 값이 없을 때
 
 - 여러 선택지 중 하나 선택
 - `selected="selected"` -> 타임리프가 자동으로 해주는 랜더링
+
+## 메시지, 국제화
+
