@@ -462,3 +462,22 @@ int a = 10 * 20
 - 타임리프의 `th:checked` 는 값이 `false` 인 경우 checked 속성을 제거한다.
 
 `<input type="checkbox" name="active" th:checked="false" />` -> 타임리프 렌더링 -> `<input type="checkbox" name="active" />`
+
+### 반복 기능
+
+`<tr th:each="user : ${users}">`
+- 반복시 컬랙션 ${users} 의 값을 하나씩 꺼내서 왼쪽 변수(user) 에 담아 테그를 반복실행한다.
+- List 뿐만 아니라 Iterable, Enumeration 을 구현한 모든 객체를 반복에 사용 가능하다. Map 도 사용가능(변수에 담기는 값은 Map.Entry)
+
+#### 반복 상태 유지
+
+`<tr th:each="user, userStat : ${users}">`
+
+- 반복의 두번째 파라메터는 반복의 상태 확인에 쓴다.
+- 생략 가능하다 생력하면 `변수명(user) + Stat` 이 된다.
+- index : 0 부터 시작하는 값
+- count : 1 부터 시작하는 값
+- size : 전체 사이즈
+- even, odd : 홀수, 짝수 여부(boolean)
+- first, last : 처음, 마지막 여부(boolean)
+- current: 현재 객체
