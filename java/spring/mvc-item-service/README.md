@@ -216,3 +216,31 @@ item.quantity=수량 
 - 이 메시지 파일을 각 나라별로 별도로 관리하도록 한다.
 - 예) 영어: `messages_en.propertis`, 한국어: `messages_ko.propertis`
 - 한국에서 접근한 것인지, 영어에서 접근한 것인지 인식하는 방법은 HTTP `accept-language` 해더 값을 보고나, 사용자가 직접 화면에서 선택하게 한다.
+
+### 스프링 메시지 소스 설정
+
+#### 직접 등록
+
+```java
+@Bean
+public MessageSource messageSource() {
+    ResourceBundleMessageSource messageSource = new
+    ResourceBundleMessageSource();
+    messageSource.setBasenames("messages", "errors");
+    messageSource.setDefaultEncoding("utf-8");
+    return messageSource;
+}
+```
+
+#### 스프링 부트
+
+- `MessageSource`를 자동으로 스프링 빈으로 등록함
+- `application.properties` 에서 메시지 소스 설정을 할 수 있다.
+
+```properties
+spring.messages.basename=messages,config.i18n.messages
+```
+
+- 스프링 부트 메시지 소스 기본 값
+  - `spring.messages.basename=messages`
+  - 따라서 `messages_en.properties`, `messages_ko.properties`, `messages.properties` 파일만 자동으로 인식됨
