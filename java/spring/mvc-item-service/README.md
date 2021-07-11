@@ -88,3 +88,12 @@
 - 스프링 부트가 제공하는 타임리프 설정 :
 https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-applicationproperties.html#common-application-properties-templating
 
+### 입력 폼 처리
+
+- `th:object` : 커맨드 객체 지정
+- `*{...}` : 선택 변수식. `th:object` 에서 선택한 객체에 접근
+- `th:field` : HTML 테그의 `id`, `name`, `value` 속성을 자동으로 처리함
+
+`<input type="text" th:field="*{itemName}" />` -> 렌더링 -> `<input type="text" id="itemName" name="itemName" th:value="*{itemName}" />`
+
+- 이 기능의 진가는 validation(검증)에서 나타난다.
