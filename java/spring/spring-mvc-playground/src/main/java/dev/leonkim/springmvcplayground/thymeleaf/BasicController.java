@@ -105,6 +105,12 @@ public class BasicController {
         return "thymeleaf/basic/comments";
     }
 
+    @GetMapping("/block")
+    public String block(Model model) {
+        addUsers(model);
+        return "thymeleaf/basic/block";
+    }
+
     private void addUsers(Model model) {
         List<User> list = new ArrayList<>();
         list.add(new User("UserA", 10));
