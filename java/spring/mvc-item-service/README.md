@@ -139,3 +139,23 @@ https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-applicat
 
 - 하지만 위의 기능을 타임리프가 간결하게 제공한다.
 - `<input type="checkbox" id="open" th:field="*{open}" class="form-checkinput">`
+
+### 체크 박스 - 멀티
+
+```java
+@ModelAttribute("regions")
+public Map<String, String> regions() {
+    Map<String, String> regions = new LinkedHashMap<>();
+    regions.put("SEOUL", "서울");
+    regions.put("BUSAN", "부산");
+    regions.put("JEJU", "제주");
+    return regions;
+}
+```
+
+- @ModelAttribute 의 특별 사용법
+  - 컨트롤러 안에서 별도의 메서드에 위에처럼 적용해주면?
+  - 해당 컨트롤러의 모든 요청에 model 에 `regions` 이름으로 어트리뷰트로 자동으로 다 담기게된다.
+
+- `th:for="${#ids.prev('open')}"`
+  - 멀티 체크박스는 같은 이름의 여러 체크박스를 만들 수 있다. 그런데 문제는 반복해서 HTML 태그를 생성할 때, 생성된 HTML 태그 속성에서 `name` 은 같아도 `id`는 모두 달라야 한다. 따라서 타임리프는 체크박스를 `each` 루프 안에서 반복해서 만들 때 임의로 1,2,3 숫자를 뒤에 붙여준다.
