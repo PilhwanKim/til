@@ -116,3 +116,21 @@ https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-applicat
   - 셀렉트 박스로 하나만 선택할 수 있다.
 
 ![예시](./img/req-form.png)
+
+### 체크 박스 - 단일 Ver 1
+
+| 주의) HTML checkbox는 선택이 안되면 클라이언트에서 서버로 값 자체를 보내지 않음!
+
+- 서버 구현에 따라서 값이 오지 않은 것으로 판단해서 값을 변경하지 않게 하면 문제가 될수 있다.
+- 이런 문제 해결을 위해 스프링 MVC는 약간의 트릭을 사용
+  - 히든 필드 `_open` 과 같이 기존 체크박스 이름앞에 `_`를 붙여 전송하며 체크를 해제했다고 인식하게 한다.
+
+- 체크 해제를 인식하기 위한 히든 필드
+`<input type="hidden" name="_open" value="on"/>`
+
+- 체크 박스 체크
+  - `open=on&_open=on`
+  - _open 무시하고, open 값 확인
+- 체크 박스 미체크
+  - `_open=on`
+  - _open 만 있는 것을 확인, open 값이 체크되지 않았다고 인식!
