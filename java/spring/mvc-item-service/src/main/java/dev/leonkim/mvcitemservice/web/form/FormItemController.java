@@ -2,6 +2,7 @@ package dev.leonkim.mvcitemservice.web.form;
 
 import dev.leonkim.mvcitemservice.domain.item.Item;
 import dev.leonkim.mvcitemservice.domain.item.ItemRepository;
+import dev.leonkim.mvcitemservice.domain.item.ItemType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -34,6 +35,11 @@ public class FormItemController {
         return regions;
     }
 
+    @ModelAttribute("itemTypes")
+    public ItemType[] itemTypes() {
+        return ItemType.values();
+    }
+
     @GetMapping
     public String items(Model model) {
         List<Item> items = itemRepository.findAll();
@@ -58,6 +64,7 @@ public class FormItemController {
     public String addItem(@ModelAttribute Item item, RedirectAttributes redirectAttributes) {
         log.info("item.open={}", item.getOpen());
         log.info("item.regions={}", item.getRegions());
+        log.info("item.itemType={}", item.getItemType());
 
         Item savedItem = itemRepository.save(item);
         redirectAttributes.addAttribute("itemId", savedItem.getId());

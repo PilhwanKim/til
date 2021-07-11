@@ -159,3 +159,21 @@ public Map<String, String> regions() {
 
 - `th:for="${#ids.prev('open')}"`
   - 멀티 체크박스는 같은 이름의 여러 체크박스를 만들 수 있다. 그런데 문제는 반복해서 HTML 태그를 생성할 때, 생성된 HTML 태그 속성에서 `name` 은 같아도 `id`는 모두 달라야 한다. 따라서 타임리프는 체크박스를 `each` 루프 안에서 반복해서 만들 때 임의로 1,2,3 숫자를 뒤에 붙여준다.
+
+### 라디오 버튼
+
+- 자바 ENUM을 활용해 보자!
+- 라디오 버튼은 하나만 선택 가능!
+
+```log
+item.itemType=FOOD: 값이 있을 때
+item.itemType=null: 값이 없을 때
+```
+
+- 타임리프에서 ENUM 적접 접근
+
+```html
+<div th:each="type : ${T(hello.itemservice.domain.item.ItemType).values()}">
+```
+
+- 패키지 위치 변경되면? 너무 귀찮아지니 권장하진 않음
