@@ -82,6 +82,11 @@ public class BasicController {
         return "thymeleaf/basic/operation";
     }
 
+    @GetMapping("/attribute")
+    public String attribute(Model model) {
+        return "thymeleaf/basic/attribute";
+    }
+
     @Component("helloBean")
     static class HelloBean {
         public String hello(String data) {

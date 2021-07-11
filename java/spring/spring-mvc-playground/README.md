@@ -440,3 +440,25 @@ int a = 10 * 20
 - 조건식: 자바의 조건식과 유사하다.
 - Elvis 연산자: 조건식의 편의 버전
 - No-Operation: _ 인 경우 마치 타임리프가 실행되지 않는 것 처럼 동작한다. 이것을 잘 사용하면 HTML 의 내용 그대로 활용할 수 있다. 마지막 예를 보면 데이터가 없습니다. 부분이 그대로 출력된다.
+
+### 속성 값 설정
+
+여기서 말하는 속성은 html 테그의 속성(attribute)을 말함
+
+타임리프는 `th:*` 로 속성을 지정하면 기존 속성을 대체하거나 없으면 새로 만든다.
+
+`<input type="text" name="mock" th:name="userA" />` -> 타임리프 렌더링 -> `<input type="text" name="userA" />`
+
+#### 속성 추가
+
+- `th:attrappend` : 속성 값의 앞에 값을 추가
+- `th:attrprepend` : 속성 값의 뒤에 값을 추가
+- `th:classappend` : class 속성에 자연스럽게 추가
+
+#### checked 처리
+
+- HTML 에서는 `<input type="checkbox" name="active" checked="false" />` -> HTML 에서 checked 속성은 checked 속성의 값에 상관없이 실제 체크박스에 체크되어 있다.
+- true, false 여부로 판단하는 개발자 입장에선 불편하다.
+- 타임리프의 `th:checked` 는 값이 `false` 인 경우 checked 속성을 제거한다.
+
+`<input type="checkbox" name="active" th:checked="false" />` -> 타임리프 렌더링 -> `<input type="checkbox" name="active" />`
