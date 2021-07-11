@@ -185,3 +185,34 @@ item.itemType=null: 값이 없을 때
 
 ## 메시지, 국제화
 
+메시지란?
+
+- 화면, API, email 등등 서비스에서 사용하는 각종 text 를 통합하여 관리하고 싶을 때
+- 어떠한 비즈니스의 문구를 정의해 두고 여러 곳에서 정의한 것을 사용할 때
+
+스프링의 해결책!
+
+- `messages.properties` 에 정의해 두고 이 값들을 여러곳에서 사용할 수 있다.
+- key - value 형식
+- 예시
+
+```properteis
+item=상품
+item.id=상품 ID
+item.itemName=상품명   
+item.price=가격
+item.quantity=수량 
+```
+
+- 타임리프에서 사용
+
+```html
+<label for="itemName" th:text="#{item.itemName}"></label>
+```
+
+국제화란?
+
+- 메시지에서 확장해 생각하자
+- 이 메시지 파일을 각 나라별로 별도로 관리하도록 한다.
+- 예) 영어: `messages_en.propertis`, 한국어: `messages_ko.propertis`
+- 한국에서 접근한 것인지, 영어에서 접근한 것인지 인식하는 방법은 HTTP `accept-language` 해더 값을 보고나, 사용자가 직접 화면에서 선택하게 한다.
