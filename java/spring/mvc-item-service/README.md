@@ -134,3 +134,8 @@ https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-applicat
 - 체크 박스 미체크
   - `_open=on`
   - _open 만 있는 것을 확인, open 값이 체크되지 않았다고 인식!
+
+### 체크 박스 - 단일 Ver 2
+
+- 하지만 위의 기능을 타임리프가 간결하게 제공한다.
+- `<input type="checkbox" id="open" th:field="*{open}" class="form-checkinput">`
