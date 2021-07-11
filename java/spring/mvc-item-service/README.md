@@ -97,3 +97,22 @@ https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-applicat
 `<input type="text" th:field="*{itemName}" />` -> 렌더링 -> `<input type="text" id="itemName" name="itemName" th:value="*{itemName}" />`
 
 - 이 기능의 진가는 validation(검증)에서 나타난다.
+
+### 요구사항 추가
+
+- 판매여부
+  - 판매 오픈 여부
+  - 체크 박스로 선택할 수 있다.
+- 등록 지역
+  - 서울, 부산, 제주
+  - 체그 박스로 다중 선택할 수 있다.
+- 상품 종류
+  - 도서, 식품, 기타
+  - 라디오 버튼으로 하나만 선택할 수 있다.
+- 배송 방식
+  - 빠른 배송
+  - 일반 배송
+  - 느린 배송
+  - 셀렉트 박스로 하나만 선택할 수 있다.
+
+![예시](./img/req-form.png)
