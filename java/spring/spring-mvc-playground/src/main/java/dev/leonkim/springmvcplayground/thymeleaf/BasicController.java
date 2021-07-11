@@ -99,6 +99,12 @@ public class BasicController {
         return "thymeleaf/basic/condition";
     }
 
+    @GetMapping("/comments")
+    public String comments(Model model) {
+        model.addAttribute("data", "Spring!");
+        return "thymeleaf/basic/comments";
+    }
+
     private void addUsers(Model model) {
         List<User> list = new ArrayList<>();
         list.add(new User("UserA", 10));
