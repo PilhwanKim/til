@@ -376,15 +376,15 @@ HelloData에 @RequestBody 를 생략하면 @ModelAttribute 가 적용되어버�
 | 필요할 때 찾아서 사용하면 된다.
 | 공식 문서에서 예제를 찾아서 쓰자!
 
-- #message : 메시지, 국제화 처리
-- #uris : URI 이스케이프 지원
-- #dates : java.util.Date 서식 지원 #calendars : java.util.Calendar 서식 지원 #temporals : 자바8 날짜 서식 지원
-- #numbers : 숫자 서식 지원
-- #strings : 문자 관련 편의 기능
-- #objects : 객체 관련 기능 제공
-- #bools : boolean 관련 기능 제공
-- #arrays : 배열 관련 기능 제공
-- #lists , #sets , #maps : 컬렉션 관련 기능 제공 #ids : 아이디 처리 관련 기능 제공, 뒤에서 설명
+- `#message` : 메시지, 국제화 처리
+- `#uris` : URI 이스케이프 지원
+- `#dates` : java.util.Date 서식 지원 #calendars : java.util.Calendar 서식 지원 #temporals : 자바8 날짜 서식 지원
+- `#numbers` : 숫자 서식 지원
+- `#strings` : 문자 관련 편의 기능
+- `#objects` : 객체 관련 기능 제공
+- `#bools` : boolean 관련 기능 제공
+- `#arrays` : 배열 관련 기능 제공
+- `#lists` , #sets , #maps : 컬렉션 관련 기능 제공 #ids : 아이디 처리 관련 기능 제공, 뒤에서 설명
 
 #### 자바8 날짜
 
@@ -432,3 +432,127 @@ int a = 10 * 20
 - 오류 : `<span th:text="hello world!"></span>` -> 수정 : `<span th:text="'hello world!'"></span>`
 
 - 리터럴 대체(Literal substitutions): `<span th:text="|hello ${data}|">`
+
+### 연산
+
+- 비교연산: HTML 엔티티를 사용해야 하는 부분을 주의하자,
+  - > (gt), < (lt), >= (ge), <= (le), ! (not), == (eq), != (neq, ne)
+- 조건식: 자바의 조건식과 유사하다.
+- Elvis 연산자: 조건식의 편의 버전
+- No-Operation: _ 인 경우 마치 타임리프가 실행되지 않는 것 처럼 동작한다. 이것을 잘 사용하면 HTML 의 내용 그대로 활용할 수 있다. 마지막 예를 보면 데이터가 없습니다. 부분이 그대로 출력된다.
+
+### 속성 값 설정
+
+여기서 말하는 속성은 html 테그의 속성(attribute)을 말함
+
+타임리프는 `th:*` 로 속성을 지정하면 기존 속성을 대체하거나 없으면 새로 만든다.
+
+`<input type="text" name="mock" th:name="userA" />` -> 타임리프 렌더링 -> `<input type="text" name="userA" />`
+
+#### 속성 추가
+
+- `th:attrappend` : 속성 값의 앞에 값을 추가
+- `th:attrprepend` : 속성 값의 뒤에 값을 추가
+- `th:classappend` : class 속성에 자연스럽게 추가
+
+#### checked 처리
+
+- HTML 에서는 `<input type="checkbox" name="active" checked="false" />` -> HTML 에서 checked 속성은 checked 속성의 값에 상관없이 실제 체크박스에 체크되어 있다.
+- true, false 여부로 판단하는 개발자 입장에선 불편하다.
+- 타임리프의 `th:checked` 는 값이 `false` 인 경우 checked 속성을 제거한다.
+
+`<input type="checkbox" name="active" th:checked="false" />` -> 타임리프 렌더링 -> `<input type="checkbox" name="active" />`
+
+### 반복 기능
+
+`<tr th:each="user : ${users}">`
+- 반복시 컬랙션 ${users} 의 값을 하나씩 꺼내서 왼쪽 변수(user) 에 담아 테그를 반복실행한다.
+- List 뿐만 아니라 Iterable, Enumeration 을 구현한 모든 객체를 반복에 사용 가능하다. Map 도 사용가능(변수에 담기는 값은 Map.Entry)
+
+#### 반복 상태 유지
+
+`<tr th:each="user, userStat : ${users}">`
+
+- 반복의 두번째 파라메터는 반복의 상태 확인에 쓴다.
+- 생략 가능하다 생력하면 `변수명(user) + Stat` 이 된다.
+- index : 0 부터 시작하는 값
+- count : 1 부터 시작하는 값
+- size : 전체 사이즈
+- even, odd : 홀수, 짝수 여부(boolean)
+- first, last : 처음, 마지막 여부(boolean)
+- current: 현재 객체
+
+### 조건부 평가
+
+- if, unless
+  - 타임리프는 해당 조건이 맞지 않으면 태그 자체를 렌더링하지 않는다.
+  - `<span th:text="' 성년 '" th:if="${user.age lt 20}"></span>`
+- switch
+  - `*` 은 만족하는 조건이 없을 때 사용하는 디폴트이다.
+
+### 주석
+
+1. 표준 HTML 주석
+   1. 타임리프가 렌더링하지 않음. 브라우져에서 보이진 않음
+2. 타임리프 파서 주석
+   1. 타임리프 렌더링 시에 주석부분 제거함
+3. 타임리프 프로토타입 주석
+   1. HTML 파일로 열면 렌더링 X
+   2. 타임리프 렌더링 거치면 보임
+
+### 블록
+
+- `<th:block>` 타임리프의 유일한 자체 태그
+- 테그 2개 이상을 `th:each` 대상으로 해서 반복 렌더링 하는 경우 사용한다(묶어서 타임리프 렌더링 처리하고 싶은 경우)
+- `<th:block>` 자체는 렌더링할때 사라짐
+
+### 자바스크립트 인라인
+
+자바스크립트에서 타임리프를 편리하게 사용할 수 있는 기능제공
+
+`<script th:inline="javascript">` -> 여기부터는 자바스크립트 영역이다. 선언하는 것!
+
+제공하는 이유?
+
+- 타임리프에서 자바스크립트로 값을 전달하는 것은 생각보다 쉽지 않다.
+
+종류
+
+- 자바스크립트의 알맞은 값으로 변환함
+- 네추럴 템플릿이 가능함
+  - var username2 = /*[[${user.username}]]*/ "test username";
+    - 인라인 사용 전: `var username2 = /*userA*/ "test username";`
+    - 인라인 사용 후: `var username2 = "userA";`
+- 객체 -> json 으로 넣어줌
+- 자바스트립트 인라인 each
+
+### 템플릿 조각
+
+- 사용하는 이유
+  - 웹페이지는 공통영역이 많음 (상단, 하단, 좌측 카테고리 영역)
+  - 복사 붙여넣기 하기 시작하면 코드 관리가 어려워진다.
+
+- 종류
+  - 부분 포함 insert
+    - 현재 태그(div) 내부에 추가
+  - 부분 포함 replace
+    - 현재 태그(div) 대체함
+  - 부분 포함 단순 표현식
+    - `~{...}` 를 사용하는 것이 원칙이지만 단순하게 표현 가능
+  - 파라미터 사용
+    - 파라미터 전달하여 동적으로 조각을 렌더링 한다.
+
+### 템플릿 레이아웃
+
+- `common_header(~{::title},~{::link})` 
+  - `::title` 은 현재 패이지의 `title` 태그들을 전달한다.
+  - `::link` 는 현재 페이지의 `link` 태그들을 전달한다.
+
+- 이 방식은 앞서 배운 코드 조각을 조금 더 적극적으로 사용하는 방식이다.
+- 레이아웃 개념을 두고 그 레이아웃에 팰요한 코드 조각을 전달해서 완성하는 것
+
+#### 템플릿 레이아웃 확장
+
+- 페이지 100개, 레이아웃의 모양 공통으로 바꿔 적용하라!
+  - (반복된) 100개 다 바꾸면? X
+  - (관리 가능하게!) Layout 을 따로 만들어 공통으로 관리할 수 있는 템플릿을 만든다!
