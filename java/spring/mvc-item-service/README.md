@@ -258,3 +258,20 @@ spring.messages.basename=messages,config.i18n.messages
 - 버튼에 적용
   - `<button type="submit">상품 등록</button>`
     - `<button type="submit" th:text="#{button.save}">저장</button>`
+
+### 웹 애플리케이션에 국제화 적용하기
+
+- `messages_en.properties` 영어 메시지는 여기다 적용
+- 이걸로 거의 끝남~
+
+#### 웹으로 확인하기
+
+- 웹 브라우저 언어 설정 값을 변경해서 국제화 적용 확인
+- 크롬 > 설정 > 언어 > 영어로 바꿈
+- 크롬이 HTTP 요청시 Accept-Language 값 우선순위가 바뀐다.
+
+#### 스프링의 국제화 메시지 선택
+
+- LocaleResolver 인터페이스 : Locale 선택방식을 변경할 때 이 인터페이스를 구현함
+- 스프링 부트 기본 : `Accept-Language` 사용하는 `AcceptHeaderLocaleResolver` 를 사용
+- 커스텀한 Locale 정책을 개발하고 싶다면 `LocaleResolver` 상속받아 개발해 사용한다.
