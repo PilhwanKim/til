@@ -244,3 +244,17 @@ spring.messages.basename=messages,config.i18n.messages
 - 스프링 부트 메시지 소스 기본 값
   - `spring.messages.basename=messages`
   - 따라서 `messages_en.properties`, `messages_ko.properties`, `messages.properties` 파일만 자동으로 인식됨
+
+### 웹 애플리케이션에 메시지 적용하기
+
+`<h2 th:text="#{label.item}"></h2>` -> 렌더링 -> `<h2>상품</h2>`
+
+- 페이지 이름에 적용
+  - `<h2>상품 등록 폼</h2>`
+    - `<h2 th:text="#{page.addItem}"> 상품 등록 </h2>`
+- 레이블에 적용
+  - `<label for="itemName">상품명</label>`
+    - `<label for="itemName" th:text="#{label.item.itemName}">상품명</label>`
+- 버튼에 적용
+  - `<button type="submit">상품 등록</button>`
+    - `<button type="submit" th:text="#{button.save}">저장</button>`
