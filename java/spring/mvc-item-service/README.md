@@ -507,3 +507,14 @@ if (!StringUtils.hasText(item.getItemName())) { bindingResult.rejectValue("itemN
 ValidationUtils.rejectIfEmptyOrWhitespace(bindingResult, "itemName",
      "required");
 ```
+
+### 스프링이 직접 만든 오류 메시지 처리
+
+price 필드에 문자 "A"를 입력해보자.
+로그를 확인해보면 BindingResult 에 FieldError 가 담겨있고, 다음과 같은 메시지 코드들이 생성된 것을 확인할 수 있다.
+
+다음과 같이 4가지 메시지 코드가 입력되어 있다.
+- typeMismatch.item.price
+- typeMismatch.price
+- typeMismatch.java.lang.Integer
+- typeMismatch
