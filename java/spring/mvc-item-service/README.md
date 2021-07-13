@@ -331,7 +331,7 @@ spring.messages.basename=messages,config.i18n.messages
 
 ## 검증2 - Validation
 
-### BindingResult 1
+### BindingResult
 
 - 아래 코드와 리소스로 확인한다.
 - `ValidationItemControllerV2.java` - 컨트롤러
@@ -366,3 +366,25 @@ public ObjectError(String objectName, String defaultMessage) {}
   - `#fields` : `#fields` 로 `BindingResult` 가 제공하는 검증 오류에 접근할 수 있다.
   - `th:errors` : 해당 필드에 오류가 있는 경우에 태그를 출력한다. `th:if` 의 편의 버전이다. 
   - `th:errorclass` : `th:field` 에서 지정한 필드에 오류가 있으면 `class` 정보를 추가한다.
+
+#### BindingResult 정리
+
+- `@ModelAttribute` 의 값을 binding 하고 있음
+- binding 에 문제가 있는 결과를 담음
+- 결과적으로 ModelAttribute 에 데이터 바인딩 시 오류가 발생해도 컨트롤러가 호출함
+  - 개발자에게 처리와 선택을 맡김
+  - 없으면 컨트롤러 호출 없이 400 에러 남
+
+`BindingResult`에 검증 오류를 적용하는 3가지 방법
+1. `@ModelAttribute` 의 객체에 타입 오류 등으로 바인딩이 실패하는 경우 **스프링이 FieldError 생성**해서 BindingResult 에 넣어준다.
+2. 개발자가 직접 넣어준다.
+3. Validator 사용 이것은 뒤에서 설명
+
+주의
+- `BindingResult` 는 검증할 대상 바로 다음에 와야한다. 순서가 중요하다. 
+  - 예를 들어서 `@ModelAttribute Item item` , 바로 다음에 `BindingResult` 가 와야 한다.
+- `BindingResult` 는 `Model`에 자동으로 포함된다.
+
+`BeanPropertyBindingResult`(구현체) -> `BindingResult`(인터페이스) -> `Errors`(인터페이스)
+
+남아있는 문제 - 오류가 발생하는 경우 고객이 입력한 내용이 모두 사라진다.
