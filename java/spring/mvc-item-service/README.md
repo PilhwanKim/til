@@ -450,3 +450,10 @@ void rejectValue(@Nullable String field, String errorCode,
 ```properties
 range.item.price=가격은 {0} ~ {1} 까지 허용합니다.
 ```
+
+중요!
+- 메시지를 단순하게 만들면 범용성이 좋아서 여러곳에서 사용할 수 있지만, 메시지를 세밀하게 작성하기 어렵다.
+- 메시지를 너무 자세하게 만들면 범용성이 떨어진다.
+- 가장 좋은 방법: **범용성으로 사용하다가, 세밀하게 작성해야 하는 경우에는 세밀한 내용이 적용되도록 메시지에 단계를 두는 방법**
+- 에러 메시지 우선순위 : 디테일 -> 범용 (`required.item.itemName` -> `required` -> defaultMessage)
+- 결론 : 스프링은 `MessageCodesResolver` 라는 것으로 이러한 기능을 지원
