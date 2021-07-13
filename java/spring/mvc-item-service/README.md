@@ -480,3 +480,30 @@ range.item.price=가격은 {0} ~ {1} 까지 허용합니다.
 2. `FieldError` , `ObjectError` 의 생성자를 보면, 오류 코드를 하나가 아니라 여러 오류 코드를 가질 수 있다. MessageCodesResolver 를 통해서 생성된 순서대로 오류 코드를 보관한다.
 3. 이 부분을 BindingResult 의 로그를 통해서 확인해보자.
      - `codes [range.item.price, range.price, range.java.lang.Integer, range]`
+
+### 오류 코드 관리 전략
+
+- 핵심은 구체적인 것에서! 덜 구체적인 것으로!
+  - MessageCodesResolver 의 전략
+  - 메시지와 관련된 공통 전략을 편리하게 도입이 목적
+- 왜 이렇게 복잡하게 사용하는가?
+  - 모든 오류 코드에 대해서 메시지를 각각 다 정의하기 힘듦
+  - 정말 중요한 메시지를 구체적으로 정의하기
+
+실행
+- Level1 전부 주석해보자
+- Level2,3 전부 주석해보자
+- Level4 전부 주석해보자 못찾으면 코드에 작성한 디폴트 메시지를 사용한다. 
+- Object 오류도 Level1, Level2로 재활용 가능하다.
+
+#### ValidationUtils 활용
+
+```java
+if (!StringUtils.hasText(item.getItemName())) { bindingResult.rejectValue("itemName", "required", "기본: 상품 이름은
+필수입니다."); }
+```
+
+```java
+ValidationUtils.rejectIfEmptyOrWhitespace(bindingResult, "itemName",
+     "required");
+```
