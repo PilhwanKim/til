@@ -457,3 +457,26 @@ range.item.price=가격은 {0} ~ {1} 까지 허용합니다.
 - 가장 좋은 방법: **범용성으로 사용하다가, 세밀하게 작성해야 하는 경우에는 세밀한 내용이 적용되도록 메시지에 단계를 두는 방법**
 - 에러 메시지 우선순위 : 디테일 -> 범용 (`required.item.itemName` -> `required` -> defaultMessage)
 - 결론 : 스프링은 `MessageCodesResolver` 라는 것으로 이러한 기능을 지원
+
+### MessageCodesResolver
+
+- 검증 오류 코드로 메시지 코드들을 생성
+- 기본 구현체 : `DefaultMessageCodesResolver`
+
+#### DefaultMessageCodesResolver의 기본 메시지 생성 규칙
+
+- 객체 오류
+  1. code + "." + object name
+  2. code
+- 필드 오류
+  1. code + "." + object name + "." + field
+  2. code + "." + field
+  3. code + "." + field type
+  4. code
+
+#### DefaultMessageCodesResolver 의 동작 방식
+
+1. `rejectValue()`, `reject()` 는 내부에서 `MessageCodesResolver` 를 사용한다. 여기에서 메시지 코드들을 생성한다.
+2. `FieldError` , `ObjectError` 의 생성자를 보면, 오류 코드를 하나가 아니라 여러 오류 코드를 가질 수 있다. MessageCodesResolver 를 통해서 생성된 순서대로 오류 코드를 보관한다.
+3. 이 부분을 BindingResult 의 로그를 통해서 확인해보자.
+     - `codes [range.item.price, range.price, range.java.lang.Integer, range]`
