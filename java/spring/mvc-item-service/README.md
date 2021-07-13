@@ -427,3 +427,26 @@ public ObjectError(String objectName, String defaultMessage) {}
 - `codes` : required.item.itemName 를 사용해서 메시지 코드를 지정한다. 메시지 코드는 하나가 아니라 배열로 여러 값을 전달할 수 있는데, 순서대로 매칭해서 처음 매칭되는 메시지가 사용된다.
 - `arguments` : `Object[]{1000, 1000000}` 를 사용해서 코드의 `{0}` , `{1}` 로 치환할 값을 전달한다.
 
+목적 : `FieldError` , `ObjectError` 는 다루기 너무 번거롭다. 좀 더 코드를 줄여보자.
+
+- **`BindingResult` 는 이미 본인이 검증해야 할 객체인 target 을 알고 있다.**
+
+#### `rejectValue()`
+
+```java
+void rejectValue(@Nullable String field, String errorCode,
+        @Nullable Object[] errorArgs, @Nullable String defaultMessage);
+```
+
+- `field` : 오류 필드명
+- `errorCode` : 오류 코드(이 오류 코드는 메시지에 등록된 코드가 아니다. 뒤에서 설명할 messageResolver를 위한 오류 코드이다.)
+- `errorArgs` : 오류 메시지에서 {0} 을 치환하기 위한 값 
+- `defaultMessage` : 오류 메시지를 찾을 수 없을 때 사용하는 기본 메시지
+
+#### 축약된 오류 코드
+
+여기선 오류 코드를 `range` 로 간단하게 입력했다. 그래도 오류 메시지를 잘 찾아서 출력한다. 무언가 규칙이 있는 것 처럼 보인다. 이 부분을 이해하려면 **`₩MessageCodesResolver`** 를 이해해야 한다.
+
+```properties
+range.item.price=가격은 {0} ~ {1} 까지 허용합니다.
+```
