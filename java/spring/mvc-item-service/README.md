@@ -388,3 +388,32 @@ public ObjectError(String objectName, String defaultMessage) {}
 `BeanPropertyBindingResult`(구현체) -> `BindingResult`(인터페이스) -> `Errors`(인터페이스)
 
 남아있는 문제 - 오류가 발생하는 경우 고객이 입력한 내용이 모두 사라진다.
+
+### FieldError, ObjectError
+
+목표
+- 사용자 입력 오류 메시지가 화면에 남도록 하자.
+  - 예) 가격을 1000원 미만으로 설정시 입력한 값이 남아있어야 한다.
+- `FieldError` , `ObjectError` 에 대해서 더 자세히 알아보자.
+
+#### FieldError 생성자
+
+```java
+  public FieldError(String objectName, String field, String defaultMessage);
+  public FieldError(String objectName, String field, @Nullable Object
+  rejectedValue, boolean bindingFailure, @Nullable String[] codes, @Nullable
+  Object[] arguments, @Nullable String defaultMessage)
+```
+
+파라미터 목록
+- `objectName` : 오류가 발생한 객체 이름
+- `field` : 오류 필드
+- `rejectedValue` : **사용자가 입력한 값(거절된 값)**
+- `bindingFailure` : 타입 오류 같은 바인딩 실패인지, 검증 실패인지 구분 값 codes : 메시지 코드
+- `arguments` : 메시지에서 사용하는 인자
+- `defaultMessage` : 기본 오류 메시지
+
+`th:field="*{price}"`
+  - 타임리프의 th:field 는 매우 똑똑하게 동작함
+    - 정상 상황에는 모델 객체의 값을 사용 
+    - 오류가 발생하면 FieldError 에서 보관한 값을 사용해서 값을 출력
