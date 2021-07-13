@@ -521,6 +521,8 @@ price 필드에 문자 "A"를 입력해보자.
 
 ## Validation 분리
 
+### ItemValidator 직접 호출하기
+
 - 복잡한 검증로직 별도 분리!
 - `ValidationItemControllerV2.addItemV5()` 메서드 참고
 - 스프링은 검증을 체계적으로 제공하기 위해 다음 인터페이스를 제공한다.
@@ -534,3 +536,30 @@ public interface Validator {
 
 - `supports() {}` : 해당 검증기를 지원하는 여부 확인(뒤에서 설명) 
 - `validate(Object target, Errors errors)` : 검증 대상 객체와 `BindingResult`
+
+### @Validated 적용
+
+- `WebDataBinder` 로 검증기 추가
+- `@Validated` 를 ModelAttribute 에 추가
+
+#### @Validated 동작
+
+`@Validated` 는 검증기를 실행하라는 애노테이션이다.
+이 애노테이션이 붙으면 앞서 `WebDataBinder` 에 등록한 검증기를 찾아서 실행한다. 
+그런데 여러 검증기를 등록한다면 그 중에 어떤 검증기가 실행되어야 할지 구분이 필요하다. 이때 `supports()` 가 사용된다.
+
+#### Validator 글로벌 설정
+
+```java
+@SpringBootApplication
+  public class ItemServiceApplication implements WebMvcConfigurer {
+      public static void main(String[] args) {
+          SpringApplication.run(ItemServiceApplication.class, args);
+      }
+      
+      @Override
+      public Validator getValidator() {
+          return new ItemValidator();
+      }
+}
+```
