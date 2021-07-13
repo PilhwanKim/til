@@ -518,3 +518,19 @@ price 필드에 문자 "A"를 입력해보자.
 - typeMismatch.price
 - typeMismatch.java.lang.Integer
 - typeMismatch
+
+## Validation 분리
+
+- 복잡한 검증로직 별도 분리!
+- `ValidationItemControllerV2.addItemV5()` 메서드 참고
+- 스프링은 검증을 체계적으로 제공하기 위해 다음 인터페이스를 제공한다.
+
+```java
+public interface Validator {
+    boolean supports(Class<?> clazz);
+    void validate(Object target, Errors errors);
+}
+```
+
+- `supports() {}` : 해당 검증기를 지원하는 여부 확인(뒤에서 설명) 
+- `validate(Object target, Errors errors)` : 검증 대상 객체와 `BindingResult`
