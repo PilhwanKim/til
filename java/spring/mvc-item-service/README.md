@@ -306,3 +306,25 @@ spring.messages.basename=messages,config.i18n.messages
 
 - 검증에 실패한 경우 고객에게 다시 상품 등록 폼을 보여줌
 - 어떤 값을 잘못 입력했는지 알려 줌
+
+### 검증 직접 처리 - 개발
+
+- 아래 코드와 리소스로 확인한다.
+- `ValidationItemControllerV1.java` - 컨트롤러
+- `resources/templates/validation/v1/addForm.html` - 템플릿
+
+> 참고 Safe Navigation Operator
+> 만약 여기에서 `errors` 가 `null` 이라면 어떻게 될까?
+> 생각해보면 등록폼에 진입한 시점에는 errors 가 없다.
+> 따라서 `errors.containsKey()` 를 호출하는 순간 `NullPointerException` 이 발생한다.
+> `errors?.` 은 errors 가 null 일때 NullPointerException 이 발생하는 대신, null 을 반환하는 문법이다.
+> `th:if` 에서 `null` 은 실패로 처리되므로 오류 메시지가 출력되지 않는다.
+
+### V1 방식의 문제점
+
+- 뷰 템플릿에 중복이 많음
+- 타입 오류는 처리가 불가
+  - 컨트롤러에 진입 전에 예외가 발생
+  - 400 응답
+- 타입 오류가 발생해도 고객이 입력한 문자는 남겨야 함
+  - 결론은 고객이 입력한 겂도 어딘가 별도 보관 필요
