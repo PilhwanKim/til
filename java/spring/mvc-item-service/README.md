@@ -624,4 +624,21 @@ public Validator getValidator() {
 
 예시)
 - `itemName` 에 문자 "A" 입력 -> 타입 변환 성공 -> `itemName` 필드에 BeanValidation 적용 
-- `price` 에 문자 "A" 입력 -> "A"를 숫자 타입 변환 시도 실패 -> typeMismatch FieldError 추가 -> `price` 필드는 BeanValidation 적용 X
+- `price` 에 문자 "A" 입력 -> "A"를 숫자 타입 변환 시도 실패 -> typeMismatch FieldError 추가 -> `price` 필드는 BeanValidation 적용 안함
+
+### Bean Validation - 에러 코드
+
+NotBlank 라는 오류 코드를 기반으로 MessageCodesResolver 를 통해 다양한 메시지 코드가 순서대로 생성
+
+**@NotBlank**
+- NotBlank.item.itemName
+- NotBlank.itemName
+- NotBlank.java.lang.String
+- NotBlank
+
+**@Range**
+- Range.item.price
+- Range.price
+- Range.java.lang.Integer
+- Range
+
