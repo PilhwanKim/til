@@ -691,3 +691,20 @@ BeanValidation을 수정 요구사항에 맞춰놓으면 등록에 문제 발생
   - 단점: 폼 데이터를 기반으로 컨트롤러에서 Item 객체를 생성하는 변환 과정이 추가된다.
 
 실제 구현은 `ValidationItemControllerV4` 참고
+
+## Bean Validation - HTTP 메시지 컨버터
+
+> **필수! 리마인드**
+>
+> `@ModelAttribute` 는 HTTP 요청 파라미터(URL 쿼리 스트링, POST Form)를 다룰 때 사용한다.
+> `@RequestBody` 는 HTTP Body의 데이터를 객체로 변환할 때 사용한다. 주로 API JSON 요청을 다룰 때
+사용한다.
+
+API의 경우 3가지 경우를 나누어 생각해야 한다.
+- 성공 요청: 성공
+- 실패 요청: JSON을 객체로 생성하는 것 자체가 실패함
+- 검증 오류 요청: JSON을 객체로 생성하는 것은 성공했고, 검증에서 실패함
+
+**@ModelAttribute vs @RequestBody**
+- @ModelAttribute : 특정 필드가 바인딩 되지 않아도 나머지 필드는 정상 바인딩 되고, Validator를 사용한 검증도 적용할 수 있다.
+- @RequestBody : HttpMessageConverter 단계에서 JSON 데이터를 객체로 변경하지 못하면 이후 단계 자체가 진행되지 않고 예외가 발생한다. 컨트롤러도 호출되지 않고, Validator도 적용할 수 없다.
