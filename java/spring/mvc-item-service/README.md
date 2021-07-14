@@ -577,10 +577,51 @@ public interface Validator {
 - 공식 메뉴얼: https://docs.jboss.org/hibernate/validator/6.2/reference/en-US/html_single/ 검증 
 - 애노테이션 모음: https://docs.jboss.org/hibernate/validator/6.2/reference/en-US/ html_single/#validator-defineconstraints-spec
 
-#### 검증 애노테이션
+### 검증 애노테이션
 
 - `@NotBlank` : 빈값 + 공백만 있는 경우를 허용하지 않는다.
 - `@NotNull` : null 을 허용하지 않는다.
 - `@Range(min = 1000, max = 1000000)` : 범위 안의 값이어야 한다. 
   - `org.hibernate.validator.constraints.Range` 하이버네이트 구현체에서만 제공한다.
 - `@Max(9999)` : 최대 9999까지만 허용한다.
+
+### 스프링 MVC는 어떻게 Bean Validator를 사용?
+
+- `spring-boot-starter-validation` 라이브러리를 넣으면 자동으로 Bean Validator를 인지하고 스프링에 통합
+- 스프링 부트는 자동으로 `LocalValidatorFactoryBean` 을 글로벌 Validator로 등록
+- 검증 오류가 발생하면, `FieldError` , `ObjectError` 를 생성해서 BindingResult 에 담아줌
+
+> 주의!
+> 다음과 같이 직접 글로벌 Validator를 직접 등록하면 스프링 부트는 Bean Validator를 글로벌 Validator 로 등록하지 않는다. 따라서 애노테이션 기반의 빈 검증기가 동작하지 않는다. 다음 부분은 제거하자.
+
+```java
+@SpringBootApplication
+    public class ItemServiceApplication implements WebMvcConfigurer {
+// 글로벌 검증기 추가
+@Override
+public Validator getValidator() {
+          return new ItemValidator();
+      }
+// ...
+}
+```
+
+- `@Validated`
+  - 스프링 전용 검증 애노테이션
+  - 내부에 `groups` 라는 기능을 포함
+- `@Valid`
+  - 자바 표준 검증 애노테이션
+  - 의존관계 추가 필요 `implementation 'org.springframework.boot:spring-boot-starter-validation'`
+
+### 검증 순서
+
+1. @ModelAttribute 각각의 필드에 타입 변환 시도
+   1. 성공하면 다음으로
+   2. 실패하면 typeMismatch 로 FieldError 추가
+2. Validator 적용
+   1. **바인딩에 성공한 필드만 Bean Validation 적용**
+   2. 일단 모델 객체에 바인딩 받는 값이 정상으로 들어와야 검증도 의미가 있다
+
+예시)
+- `itemName` 에 문자 "A" 입력 -> 타입 변환 성공 -> `itemName` 필드에 BeanValidation 적용 
+- `price` 에 문자 "A" 입력 -> "A"를 숫자 타입 변환 시도 실패 -> typeMismatch FieldError 추가 -> `price` 필드는 BeanValidation 적용 X
