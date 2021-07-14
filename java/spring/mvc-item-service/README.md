@@ -659,8 +659,13 @@ NotBlank 라는 오류 코드를 기반으로 MessageCodesResolver 를 통해 �
 BeanValidation을 수정 요구사항에 맞춰놓으면 등록에 문제 발생한다.
 -> 등록시에는 id 에 값도 없고, quantity 수량 제한 최대 값인 9999도 적용되지 않는 문제가 발생
 
-과연 어떻게 해야하는가?
+과연 어떻게 해야하는가?(Conflict 문제 해결법 필요)
 
 **대안 2가지**
 1. BeanValidation의 `groups` 기능을 사용
-2. Item을 직접 사용하지 않고, ItemSaveForm, ItemUpdateForm 같은 **폼 전송을 위한 별도의 모델 객체를 만들어서 사용**
+2. Item을 직접 사용하지 않고, ItemSaveForm, ItemUpdateForm 같은 **폼 전송을 위한 별도의 모델 객체를 만들어서 사용**(추천)
+
+### BeanValidation groups 기능 사용
+
+- 동일 모델 객체로 등록/수정 각각 다르게 검증하는 방법
+- groups 기능은 비추천힌다. 이유는 실무에서는 주로 다음에 등장하는 **등록용 폼 객체와 수정용 폼 객체를 분리해서 사용**하기 때문 -> 등록 / 수정시 입력 데이터는 완전 다름
