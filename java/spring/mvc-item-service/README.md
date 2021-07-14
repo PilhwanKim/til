@@ -577,3 +577,10 @@ public interface Validator {
 - 공식 메뉴얼: https://docs.jboss.org/hibernate/validator/6.2/reference/en-US/html_single/ 검증 
 - 애노테이션 모음: https://docs.jboss.org/hibernate/validator/6.2/reference/en-US/ html_single/#validator-defineconstraints-spec
 
+#### 검증 애노테이션
+
+- `@NotBlank` : 빈값 + 공백만 있는 경우를 허용하지 않는다.
+- `@NotNull` : null 을 허용하지 않는다.
+- `@Range(min = 1000, max = 1000000)` : 범위 안의 값이어야 한다. 
+  - `org.hibernate.validator.constraints.Range` 하이버네이트 구현체에서만 제공한다.
+- `@Max(9999)` : 최대 9999까지만 허용한다.
