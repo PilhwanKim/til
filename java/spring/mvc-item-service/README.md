@@ -563,3 +563,17 @@ public interface Validator {
       }
 }
 ```
+
+## 검증3 - Bean Validation
+
+### Bean Validation 소개
+
+- 검증로직의 공통화, 표준화
+- 간편하게 `@`(에노테이션만) 붙이면 검증 로직 적용됨
+- JSR-380(기술 표준) - 하이버네이터 Validator(구현체)
+
+관련 링크
+- 공식 사이트: http://hibernate.org/validator/
+- 공식 메뉴얼: https://docs.jboss.org/hibernate/validator/6.2/reference/en-US/html_single/ 검증 
+- 애노테이션 모음: https://docs.jboss.org/hibernate/validator/6.2/reference/en-US/ html_single/#validator-defineconstraints-spec
+
