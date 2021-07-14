@@ -642,3 +642,9 @@ NotBlank 라는 오류 코드를 기반으로 MessageCodesResolver 를 통해 �
 - Range.java.lang.Integer
 - Range
 
+### Bean Validation - 오브젝트 오류
+
+- 실제 사용해보면 제약이 많고 복잡
+- 실무에서는 검증 기능이 해당 객체의 범위를 넘어서는 경우들도 종종 등장하는데, 그런 경우 대응이 어렵다
+- 이런 오브젝트 관련 오류는 직접 자바 코드로 작성하길 권장
+
