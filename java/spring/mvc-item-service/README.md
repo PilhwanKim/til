@@ -563,3 +563,148 @@ public interface Validator {
       }
 }
 ```
+
+## 검증3 - Bean Validation
+
+### Bean Validation 소개
+
+- 검증로직의 공통화, 표준화
+- 간편하게 `@`(에노테이션만) 붙이면 검증 로직 적용됨
+- JSR-380(기술 표준) - 하이버네이터 Validator(구현체)
+
+관련 링크
+- 공식 사이트: http://hibernate.org/validator/
+- 공식 메뉴얼: https://docs.jboss.org/hibernate/validator/6.2/reference/en-US/html_single/ 검증 
+- 애노테이션 모음: https://docs.jboss.org/hibernate/validator/6.2/reference/en-US/ html_single/#validator-defineconstraints-spec
+
+### 검증 애노테이션
+
+- `@NotBlank` : 빈값 + 공백만 있는 경우를 허용하지 않는다.
+- `@NotNull` : null 을 허용하지 않는다.
+- `@Range(min = 1000, max = 1000000)` : 범위 안의 값이어야 한다. 
+  - `org.hibernate.validator.constraints.Range` 하이버네이트 구현체에서만 제공한다.
+- `@Max(9999)` : 최대 9999까지만 허용한다.
+
+### 스프링 MVC는 어떻게 Bean Validator를 사용?
+
+- `spring-boot-starter-validation` 라이브러리를 넣으면 자동으로 Bean Validator를 인지하고 스프링에 통합
+- 스프링 부트는 자동으로 `LocalValidatorFactoryBean` 을 글로벌 Validator로 등록
+- 검증 오류가 발생하면, `FieldError` , `ObjectError` 를 생성해서 BindingResult 에 담아줌
+
+> 주의!
+> 다음과 같이 직접 글로벌 Validator를 직접 등록하면 스프링 부트는 Bean Validator를 글로벌 Validator 로 등록하지 않는다. 따라서 애노테이션 기반의 빈 검증기가 동작하지 않는다. 다음 부분은 제거하자.
+
+```java
+@SpringBootApplication
+    public class ItemServiceApplication implements WebMvcConfigurer {
+// 글로벌 검증기 추가
+@Override
+public Validator getValidator() {
+          return new ItemValidator();
+      }
+// ...
+}
+```
+
+- `@Validated`
+  - 스프링 전용 검증 애노테이션
+  - 내부에 `groups` 라는 기능을 포함
+- `@Valid`
+  - 자바 표준 검증 애노테이션
+  - 의존관계 추가 필요 `implementation 'org.springframework.boot:spring-boot-starter-validation'`
+
+### 검증 순서
+
+1. @ModelAttribute 각각의 필드에 타입 변환 시도
+   1. 성공하면 다음으로
+   2. 실패하면 typeMismatch 로 FieldError 추가
+2. Validator 적용
+   1. **바인딩에 성공한 필드만 Bean Validation 적용**
+   2. 일단 모델 객체에 바인딩 받는 값이 정상으로 들어와야 검증도 의미가 있다
+
+예시)
+- `itemName` 에 문자 "A" 입력 -> 타입 변환 성공 -> `itemName` 필드에 BeanValidation 적용 
+- `price` 에 문자 "A" 입력 -> "A"를 숫자 타입 변환 시도 실패 -> typeMismatch FieldError 추가 -> `price` 필드는 BeanValidation 적용 안함
+
+### Bean Validation - 에러 코드
+
+NotBlank 라는 오류 코드를 기반으로 MessageCodesResolver 를 통해 다양한 메시지 코드가 순서대로 생성
+
+**@NotBlank**
+- NotBlank.item.itemName
+- NotBlank.itemName
+- NotBlank.java.lang.String
+- NotBlank
+
+**@Range**
+- Range.item.price
+- Range.price
+- Range.java.lang.Integer
+- Range
+
+### Bean Validation - 오브젝트 오류
+
+- 실제 사용해보면 제약이 많고 복잡
+- 실무에서는 검증 기능이 해당 객체의 범위를 넘어서는 경우들도 종종 등장하는데, 그런 경우 대응이 어렵다
+- 이런 오브젝트 관련 오류는 직접 자바 코드로 작성하길 권장
+
+### Bean Validation - 한계
+
+데이터를 등록할 때와 수정할 때는 요구사항이 다를 경우
+
+수정시 요구사항
+- 등록시에는 quantity 수량을 최대 9999까지 등록할 수 있지만 `수정시에는 수량을 무제한으로 변경`할 수 있다.
+- 등록시에는 id 에 값이 없어도 되지만, 수정시에는 `id 값이 필수`이다.
+
+BeanValidation을 수정 요구사항에 맞춰놓으면 등록에 문제 발생한다.
+-> 등록시에는 id 에 값도 없고, quantity 수량 제한 최대 값인 9999도 적용되지 않는 문제가 발생
+
+과연 어떻게 해야하는가?(Conflict 문제 해결법 필요)
+
+**대안 2가지**
+1. BeanValidation의 `groups` 기능을 사용
+2. Item을 직접 사용하지 않고, ItemSaveForm, ItemUpdateForm 같은 **폼 전송을 위한 별도의 모델 객체를 만들어서 사용**(추천)
+
+### BeanValidation groups 기능 사용
+
+- 동일 모델 객체로 등록/수정 각각 다르게 검증하는 방법
+- groups 기능은 비추천힌다. 이유는 실무에서는 주로 다음에 등장하는 **등록용 폼 객체와 수정용 폼 객체를 분리해서 사용**하기 때문 -> 등록 / 수정시 입력 데이터는 완전 다름
+
+### Form 전송 객체 분리
+
+실무에서는 groups 를 잘 사용하지 않는 이유?
+
+- 등록시 폼에서 전달하는 데이터가 Item 도메인 객체와 딱 맞지 않기 때문
+- Item 과 관계없는 수 많은 부가 데이터가 넘어옴
+- 복잡한 폼의 데이터를 컨트롤러까지 전달할 별도의 객체를 만들어서 전달
+- 폼을 전달받는 전용 객체를 만들어서 @ModelAttribute 로 사용함
+
+폼 데이터 전달에 Item 도메인 객체 사용
+- HTML Form -> Item -> Controller -> Item -> Repository
+  - 장점: Item 도메인 객체를 컨트롤러, 리포지토리 까지 직접 전달해서 중간에 Item을 만드는 과정이 없어서 간단하다.
+  - 단점: 간단한 경우에만 적용할 수 있다. 수정시 검증이 중복될 수 있고, groups를 사용해야 한다.
+
+폼 데이터 전달을 위한 별도의 객체 사용
+- HTML Form -> ItemSaveFrom -> Controller -> Item 생성 -> Repository
+  - 장점: 전송하는 폼 데이터가 복잡해도 거기에 맞춘 별도의 폼 객체를 사용해서 데이터를 전달 받을 수
+  있다. 보통 등록과, 수정용으로 별도의 폼 객체를 만들기 때문에 검증이 중복되지 않는다.
+  - 단점: 폼 데이터를 기반으로 컨트롤러에서 Item 객체를 생성하는 변환 과정이 추가된다.
+
+실제 구현은 `ValidationItemControllerV4` 참고
+
+## Bean Validation - HTTP 메시지 컨버터
+
+> **필수! 리마인드**
+>
+> `@ModelAttribute` 는 HTTP 요청 파라미터(URL 쿼리 스트링, POST Form)를 다룰 때 사용한다.
+> `@RequestBody` 는 HTTP Body의 데이터를 객체로 변환할 때 사용한다. 주로 API JSON 요청을 다룰 때
+사용한다.
+
+API의 경우 3가지 경우를 나누어 생각해야 한다.
+- 성공 요청: 성공
+- 실패 요청: JSON을 객체로 생성하는 것 자체가 실패함
+- 검증 오류 요청: JSON을 객체로 생성하는 것은 성공했고, 검증에서 실패함
+
+**@ModelAttribute vs @RequestBody**
+- @ModelAttribute : 특정 필드가 바인딩 되지 않아도 나머지 필드는 정상 바인딩 되고, Validator를 사용한 검증도 적용할 수 있다.
+- @RequestBody : HttpMessageConverter 단계에서 JSON 데이터를 객체로 변경하지 못하면 이후 단계 자체가 진행되지 않고 예외가 발생한다. 컨트롤러도 호출되지 않고, Validator도 적용할 수 없다.
