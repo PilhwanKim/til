@@ -17,12 +17,15 @@
 ## 로그인 처리하기 - 쿠키 사용
 
 쿠키 생성
+
 ![쿠키 생성](./image/cookie-1.png)
 
 클라이언트 쿠키 전달 1
+
 ![클라이언트 쿠키 전달 1](./image/cookie-2.png)
 
 클라이언트 쿠키 전달 2
+
 ![클라이언트 쿠키 전달 2](./image/cookie-3.png)
 
 쿠키 종류
@@ -76,9 +79,11 @@ response.addCookie(cookie);
 - 추정 불가능한 임의의 식별자 값으로 연결
 
 로그인
+
 ![로그인](./image/session-1.png)
 
 세션 생성
+
 ![세션 생성](./image/session-2.png)
 - 세션 ID를 생성하는데, 추정 불가능해야 한다. 
 - UUID는 추정이 불가능하다.
@@ -86,6 +91,7 @@ response.addCookie(cookie);
 - 생성된 세션 ID와 세션에 보관할 값(`memberA`)을 서버의 세션 저장소에 보관한다.
 
 세션id를 응답 쿠키로 전달
+
 ![세션id를 응답 쿠키로 전달](./image/session-3.png)
 
 클라이언트와 서버는 결국 쿠키로 연결이 되어야 한다.
@@ -93,6 +99,7 @@ response.addCookie(cookie);
 - 클라이언트는 쿠키 저장소에 `mySessionId` 쿠키를 보관한다.
 
 로그인 이후 접근
+
 ![로그인 이후 접근](./image/session-4.png)
 
 - 클라이언트는 요청시 항상 `mySessionId` 쿠키를 전달한다.
@@ -193,3 +200,57 @@ session.setMaxInactiveInterval(1800); //1800초
 - 세션의 타임아웃 시간은 해당 세션과 관련된 `JSESSIONID` 를 전달하는 HTTP 요청이 있으면 현재 시간으로 다시 초기화 된다. 이렇게 초기화 되면 세션 타임아웃으로 설정한 시간동안 세션을 추가로 사용할 수 있다. 
 - `session.getLastAccessedTime()` : 최근 세션 접근 시간
 - `LastAccessedTime` 이후로 timeout 시간이 지나면, WAS가 내부에서 해당 세션을 제거한다.
+
+# 스프링 MVC - 필터, 인터셉터
+
+## 서블릿 필터 - 소개
+
+공통 관심사(cross-cutting concern)
+  
+- 등록, 수정, 삭제, 조회 등등 상품관리의 모든 컨트롤러 로직에 공통으로 로그인 여부를 확인하고 있음
+- 등록, 수정, 삭제, 조회 등등 여러 로직에서 공통으로 **인증**에 대해서 관심을 가지고 있는 것
+- 애플리케이션 여러 로직에서 공통으로 관심이 있는 있는 것 이것이 **공통 관심사** 이다.
+- 웹과 관련된 공통 관심사는 (스프링 AOP 보다는) 지금부터 설명할 서블릿 필터 또는 스프링 인터셉터를 사용하는 것이 좋다.
+
+### 필터 흐름
+
+```
+HTTP 요청 -> WAS-> 필터 -> 서블릿(spring 디스페쳐 서블릿) -> 컨트롤러
+```
+
+- 필터는 특정 URL 패턴에 적용 가능
+
+### 필터 제한
+
+```
+HTTP 요청 -> WAS -> 필터 -> 서블릿 -> 컨트롤러 //로그인 사용자
+HTTP 요청 -> WAS -> 필터(적절하지 않은 요청이라 판단, 서블릿 호출X) //비 로그인 사용자
+```
+
+- 적절하지 않은 요청을 판단하여 차단한다.
+
+### 필터 체인
+
+```
+HTTP 요청 -> WAS -> 필터1 -> 필터2 -> 필터3 -> 서블릿 -> 컨트롤러
+```
+
+- 중간에 필터의 추가, 삭제도 가능하다.
+
+### 필터 인터페이스
+
+```java
+public interface Filter {
+      public default void init(FilterConfig filterConfig) throws ServletException {}
+      public void doFilter(ServletRequest request, ServletResponse response,
+              FilterChain chain) throws IOException, ServletException;
+      public default void destroy() {}
+   }
+```
+
+필터 인터페이스를 구현하고 등록하면 서블릿 컨테이너가 필터를 싱글톤 객체로 생성하고, 관리한다. 
+
+- `init()`: 필터 초기화 메서드, 서블릿 컨테이너가 생성될 때 호출된다.
+- `doFilter()`: 고객의 요청이 올 때 마다 해당 메서드가 호출된다. 필터의 로직을 구현하면 된다. 
+- `destroy()`: 필터 종료 메서드, 서블릿 컨테이너가 종료될 때 호출된다.
+
