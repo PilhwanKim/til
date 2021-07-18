@@ -423,3 +423,15 @@ postHandle, afterCompletion
 
 서블릿 필터와 비교해서 스프링 인터셉터가 개발자 입장에서 훨씬 편리하다는 것을 코드로 이해했을 것이다. 
 특별한 문제가 없다면 인터셉터를 사용하는 것이 좋다.
+
+## ArgumentResolver 활용
+
+해당 기능을 사용해서 로그인 회원을 조금 편리하게 찾아보자. 아래처럼
+
+```java
+@GetMapping("/")
+  public String homeLoginV3ArgumentResolver(@Login Member loginMember, Model
+  model) {
+```
+
+(코드 참조)
