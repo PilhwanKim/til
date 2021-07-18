@@ -413,3 +413,13 @@ postHandle, afterCompletion
 - `excludePathPatterns("/css/**", "/*.ico", "/error")` : 인터셉터에서 제외할 패턴을 지정한다.
 - 패턴 참고 : https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/ springframework/web/util/pattern/PathPattern.html
 
+## 스프링 인터셉터 - 인증 체크
+
+인터셉터를 적용하거나 하지 않을 부분은 `addPathPatterns` 와 `excludePathPatterns` 에 작성하면 된다.
+기본적으로 모든 경로에 해당 인터셉터를 적용하되 ( /** ), 홈( / ), 회원가입( /members/add ), 로그인( /login ), 리소스 조회( /css/** ), 오류( /error )와 같은 부분은 로그인 체크 인터셉터를 적용하지 않는다. 
+서블릿 필터와 비교해보면 매우 편리한 것을 알 수 있다.
+
+### 정리
+
+서블릿 필터와 비교해서 스프링 인터셉터가 개발자 입장에서 훨씬 편리하다는 것을 코드로 이해했을 것이다. 
+특별한 문제가 없다면 인터셉터를 사용하는 것이 좋다.
