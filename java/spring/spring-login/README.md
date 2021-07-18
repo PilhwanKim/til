@@ -131,3 +131,20 @@ HttpSession 소개
 세션에 로그인 회원 정보 보관
 - `session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);`
 - 하나의 세션에 여러 값을 저장
+
+## 로그인 처리하기 - 서블릿 HTTP 세션 (스프링)
+
+@SessionAttribute
+
+- 스프링에서 세션을 편리하게 사용할수 있도록 지원하는 에노테이션
+- `@SessionAttribute(name = "loginMember", required = false) Member loginMember`
+- 단 세션을 새로 생성하진 않음
+
+TrackingModes
+
+- `http://localhost:8080/;jsessionid=F59911518B921DF62D09F0DF8F83F872`
+- 웹 브라우저가 쿠키를 지원하지 않을 때 쿠키 대신 URL을 통해서 세션을 유지하는 방법
+- 이 방법을 사용하려면 URL에 이 값을 계속 포함해서 전달
+- 서버 입장에서 웹 브라우저가 쿠키를 지원하는지 하지 않는지 최초에는 판단하지 못하므로, 쿠키 값도 전달하고, URL에 `jsessionid` 도 함께 전달
+- application.propteris 에서 해당 모드를 끌수 있음
+  - `server.servlet.session.tracking-modes=cookie`
