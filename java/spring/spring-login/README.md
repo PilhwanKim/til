@@ -107,3 +107,27 @@ response.addCookie(cookie);
 - 서블릿이 공식 지원하는 세션은 우리가 직접 만든 세션과 동작 방식이 거의 같다
 - 추가로 세션을 일정시간 사용하지 않으면 해당 세션을 삭제하는 기능을 제공한다.
 
+## 로그인 처리하기 - 서블릿 HTTP 세션
+
+HttpSession 소개
+
+- 서블릿은 세션기능을 지원하기 위해 `HttpSession` 을 제공
+- 우리가 지금까지 직접 구현한 세션개념이 있다. (`SessionManager` 와 동작 방식이 거의 유사)
+- `HttpSession`을 생성하면 쿠키이름이 `JSESSIONID` 이며 값이 추정 불가능한 렌덤값을 가진 쿠키를 생성한다.
+
+세션 생성과 조회
+
+- 세션을 생성하려면 `request.getSession(true)` 를 사용
+  - `public HttpSession getSession(boolean create);`
+  - 파라메터 생략시 기본값은 `true`
+- create 옵션 
+  - `request.getSession(true)`
+    - 세션이 있으면 기존 세션을 반환한다.
+    - 세션이 없으면 새로운 세션을 생성해서 반환한다.
+  - `request.getSession(false)`
+    - 세션이 있으면 기존 세션을 반환한다.
+    - 세션이 없으면 새로운 세션을 생성하지 않는다. `null` 을 반환한다.
+
+세션에 로그인 회원 정보 보관
+- `session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);`
+- 하나의 세션에 여러 값을 저장
