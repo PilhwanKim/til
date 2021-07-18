@@ -278,3 +278,21 @@ public interface Filter {
 > 실무에서 HTTP 요청시 같은 요청의 로그에 모두 같은 식별자를 자동으로 남기는 방법은 **logback mdc**로
 검색해보자.
 
+## 서블릿 필터 - 인증 체크
+
+### LoginCheckFilter - 인증 체크 필터
+
+(코드 참고)
+
+### WebConfig - loginCheckFilter() 추가
+
+(코드 참고)
+
+### RedirectURL 처리
+
+(코드 참고)
+
+> 참고
+> 
+> 필터에는 다음에 설명할 스프링 인터셉터는 제공하지 않는, 아주 강력한 기능이 있는데
+`chain.doFilter(request, response);` 를 호출해서 다음 필터 또는 서블릿을 호출할 때 `request` , `response` 를 다른 객체로 바꿀 수 있다. `ServletRequest` , `ServletResponse` 를 구현한 다른 객체를 만들어서 넘기면 해당 객체가 다음 필터 또는 서블릿에서 사용된다. 잘 사용하는 기능은 아니니 참고만 해두자.
