@@ -230,3 +230,55 @@ server.error.include-binding-errors=on_param
 - API를 요청했는데, 정상의 경우 API로 JSON 형식으로 데이터가 정상 반환된다.
 - 그런데 오류가 발생하면 우리가 미리 만들어둔 오류 페이지 HTML이 반환된다.
 - 클라이언트는 정상 요청이든, 오류 요청이든 JSON이 반환되기를 기대한다.
+
+## API 예외 처리 - 스프링 부트 기본 오류 처리
+
+API 예외 처리도 스프링 부트가 제공하는 기본 오류 방식 사용 가능
+
+### BasicErrorController 코드
+
+```java
+@Controller
+@RequestMapping("${server.error.path:${error.path:/error}}")
+public class BasicErrorController extends AbstractErrorController {
+    ...생략...
+
+	@RequestMapping(produces = MediaType.TEXT_HTML_VALUE)
+	public ModelAndView errorHtml(HttpServletRequest request, HttpServletResponse response) {
+		HttpStatus status = getStatus(request);
+		Map<String, Object> model = Collections
+				.unmodifiableMap(getErrorAttributes(request, getErrorAttributeOptions(request, MediaType.TEXT_HTML)));
+		response.setStatus(status.value());
+		ModelAndView modelAndView = resolveErrorView(request, response, status, model);
+		return (modelAndView != null) ? modelAndView : new ModelAndView("error", model);
+	}
+
+	@RequestMapping
+	public ResponseEntity<Map<String, Object>> error(HttpServletRequest request) {
+		HttpStatus status = getStatus(request);
+		if (status == HttpStatus.NO_CONTENT) {
+			return new ResponseEntity<>(status);
+		}
+		Map<String, Object> body = getErrorAttributes(request, getErrorAttributeOptions(request, MediaType.ALL));
+		return new ResponseEntity<>(body, status);
+	}
+    ...생략...
+}
+```
+
+- /error 동일한 경로를 처리하는 `errorHtml()` , `error()` 두 메서드를 확인할 수 있다.
+- `errorHtml()` : produces = MediaType.TEXT_HTML_VALUE : 클라이언트 요청의 Accept 해더 값이 text/html 인 경우에는 errorHtml() 을 호출해서 view를 제공한다.
+- `error()` : 그외 경우에 호출되고 ResponseEntity 로 HTTP Body에 JSON 데이터를 반환한다.
+- 결론: 같은 `/error` 경로로 오류 요청을 하되 요청의 `Accept` 헤더의 종류에 따라 결과를 오류페이지로 보낼지, json 으로 보낼지 결정된다.
+
+- GET http://localhost:8080/api/members/ex 요청해보자
+  - Accept 만 바꿔보기 (application/json, text/html)
+
+### Html 페이지 vs API 오류
+
+- 스프링 부트가 제공하는 BasicErrorController
+  - HTML 페이지를 제공하는 경우에는 매우 편리
+    - 컨벤션 or 지정한 곳에 HTML 페이지만 정의하면 됨
+  - API 오류 처리
+    - API 마다, 각각의 컨트롤러나 예외마다 서로 다른 응답 결과를 출력해야 할 수도 있다.
+    - API는 유연하게 대처위해 `@ExceptionHandler` 를 사용
