@@ -177,3 +177,43 @@ filterRegistrationBean.setDispatcherTypes(DispatcherType.REQUEST, DispatcherType
    3. `resources/static/error/4xx.html`
 3. 적용 대상이 없을 때 뷰 이름(error)
    1. `resources/templates/error.html`
+
+### BasicErrorController 가 제공하는 기본 정보들
+
+에러 페이지 뷰 탬플릿은 다음 정보를 전달 받을 수 있다.(BasicErrorController 에 의해 model 에 담김)
+
+- timestamp: Fri Feb 05 00:00:00 KST 2021
+- status: 400
+- error: Bad Request
+- exception: org.springframework.validation.BindException * trace: 예외 trace
+- message: Validation failed for object='data'. Error count: 1 * errors: Errors(BindingResult)
+- path: 클라이언트 요청 경로 (`/hello`)
+
+> 중요!
+>
+> 실무에서는 이것들을 노출하면 안된다! 사용자에게는 이쁜 오류 화면과 고객이 이해할 수 있는 간단한 오류 메시지를 보여주고 오류는 서버에 로그로 남겨서 로그로 확인해야 한다.
+
+### application.properties
+
+```properties
+server.error.include-exception=true
+server.error.include-message=on_param
+server.error.include-stacktrace=on_param
+server.error.include-binding-errors=on_param
+```
+
+- server.error.include-exception=false : exception 포함 여부( true , false )
+- server.error.include-message=never : message 포함 여부
+- server.error.include-stacktrace=never : trace 포함 여부
+- server.error.include-binding-errors=never : errors
+
+기본 값이 naver인 부분은 다음 3가지 옵션을 사용할 수 있다.
+
+- never : 사용하지 않음
+- always :항상 사용
+- on_param : 파라미터가 있을 때 사용
+
+스프링 부트 오류 관련 옵션
+
+- `server.error.whitelabel.enabled=true` : 오류 처리 화면을 못 찾을 시, 스프링 whitelabel 오류 페이지 적용
+- `server.error.path=/error` : 오류 페이지 경로, 스프링이 자동 등록하는 서블릿 글로벌 오류 페이지 경로와 BasicErrorController 오류 컨트롤러 경로에 함께 사용된다.
