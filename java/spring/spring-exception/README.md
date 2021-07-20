@@ -101,3 +101,36 @@ public class WebServerCustomizer implements WebServerFactoryCustomizer<Configura
 
 WAS는 오류 페이지를 단순히 다시 요청만 하는 것이 아니라, 오류 정보를 request 의 attribute 에 추가해서 넘겨준다.
 필요하면 오류 페이지에서 이렇게 전달된 오류 정보를 사용할 수 있다.
+
+## 서블릿 예외 처리 - 필터
+
+### DispatcherType
+
+클라이언트로 부터 발생한 정상 요청인지, 아니면 오류 페이지를 출력하기 위한 내부 요청인지 구분함. DispatcherType 은 서블릿은 이런 문제를 해결하기 위해 존재함.
+
+```java
+public enum DispatcherType {
+      FORWARD,
+      INCLUDE,
+      REQUEST,
+      ASYNC,
+      ERROR
+}
+```
+
+- **REQUEST** : 클라이언트 요청
+- **ERROR** : 오류 요청
+- FORWARD : MVC에서 배웠던 서블릿에서 다른 서블릿이나 JSP를 호출할 때 `RequestDispatcher.forward(request, response);`
+- INCLUDE : 서블릿에서 다른 서블릿이나 JSP의 결과를 포함할 때 `RequestDispatcher.include(request, response);`
+- ASYNC : 서블릿 비동기 호출
+
+### 필터와 DispatcherType
+
+```java
+filterRegistrationBean.setDispatcherTypes(DispatcherType.REQUEST, DispatcherType.ERROR)
+```
+
+- 필터 호출이 `클라이언트 요청`, `오류 페이지 요청` 둘다 됨
+- 기본 값은 `DispatcherType.REQUEST` - 클라이언트의 요청이 있는 경우에만 필터가 적용
+- `DispatcherType.ERROR` 만 지정 - 오류 페이지 요청 전용 필터
+
