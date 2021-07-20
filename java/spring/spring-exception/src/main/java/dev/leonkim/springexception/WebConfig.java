@@ -3,6 +3,7 @@ package dev.leonkim.springexception;
 import dev.leonkim.springexception.filter.LogFilter;
 import dev.leonkim.springexception.interceptor.LogInterceptor;
 import dev.leonkim.springexception.resolver.MyHandlerExceptionResolver;
+import dev.leonkim.springexception.resolver.UserHandlerExceptionResolver;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,6 +32,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void extendHandlerExceptionResolvers(List<HandlerExceptionResolver> resolvers) {
         resolvers.add(new MyHandlerExceptionResolver());
+        resolvers.add(new UserHandlerExceptionResolver());
     }
 
     //    @Bean

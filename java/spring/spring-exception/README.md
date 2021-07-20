@@ -332,3 +332,9 @@ ExceptionResolver 활용
 - API 응답 처리
   - `response.getWriter().println("hello");` 처럼 HTTP 응답 바디에 직접 데이터를 넣어주는
   것도 가능하다. 여기에 JSON 으로 응답하면 API 응답 처리를 할 수 있다.
+
+## API 예외 처리 - HandlerExceptionResolver 활용
+
+`ExceptionResolver` 를 사용하면 컨트롤러에서 예외가 발생해도 `ExceptionResolver` 에서 예외를 처리해버린다.
+따라서 예외가 발생해도 서블릿 컨테이너까지 예외가 전달되지 않고, 스프링 MVC에서 예외 처리는 끝이난다.
+결과적으로 WAS 입장에서는 정상 처리가 된 것이다. 이렇게 예외를 이곳에서 모두 처리할 수 있다는 것이 핵심이다.
