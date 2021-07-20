@@ -134,3 +134,23 @@ filterRegistrationBean.setDispatcherTypes(DispatcherType.REQUEST, DispatcherType
 - 기본 값은 `DispatcherType.REQUEST` - 클라이언트의 요청이 있는 경우에만 필터가 적용
 - `DispatcherType.ERROR` 만 지정 - 오류 페이지 요청 전용 필터
 
+## 서블릿 예외 처리 - 인터셉터
+
+필터의 경우에는 필터를 등록할 때 어떤 DispatcherType 인 경우에 필터를 적용할 지 선택할 수 있었다.
+그런데 인터셉터는 서블릿이 제공하는 기능이 아니라 스프링이 제공하는 기능이다.
+따라서 DispatcherType 과 무관하게 항상 호출된다.
+
+대신에 인터셉터는 다음과 같이 요청 경로에 따라서 추가하거나 제외하기 쉽게 되어 있기 때문에, 이러한 설정을 사용해서 오류 페이지 경로를 `excludePathPatterns` 를 사용해서 빼주면 된다.
+
+### 전체 흐름 정리
+
+- /error-ex 오류 요청
+  - 필터는 DispatchType 으로 중복 호출 제거 ( dispatchType=REQUEST )
+  - 인터셉터는 경로 정보로 중복 호출 제거( excludePathPatterns("/error-page/**") )
+
+```
+1. WAS(/error-ex, dispatchType=REQUEST) -> 필터 -> 서블릿 -> 인터셉터 -> 컨트롤러
+2. WAS(여기까지 전파) <- 필터 <- 서블릿 <- 인터셉터 <- 컨트롤러(예외발생)
+3. WAS 오류 페이지 확인
+4. WAS(/error-page/500, dispatchType=ERROR) -> 필터(x) -> 서블릿 -> 인터셉터(x) -> 컨트롤러(/error-page/500) -> View
+```
