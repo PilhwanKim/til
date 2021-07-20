@@ -217,3 +217,16 @@ server.error.include-binding-errors=on_param
 
 - `server.error.whitelabel.enabled=true` : 오류 처리 화면을 못 찾을 시, 스프링 whitelabel 오류 페이지 적용
 - `server.error.path=/error` : 오류 페이지 경로, 스프링이 자동 등록하는 서블릿 글로벌 오류 페이지 경로와 BasicErrorController 오류 컨트롤러 경로에 함께 사용된다.
+
+#  API 예외 처리
+
+## API 예외 처리 - 시작
+
+- 오류 페이지는 단순히 고객에게 오류 화면을 보여주고 끝
+- API는 각 오류 상황에 맞는 오류 응답 스펙을 정하고, JSON으로 데이터를 내려주어야 함
+
+`http://localhost:8080/api/members/ex` 호출 시..
+
+- API를 요청했는데, 정상의 경우 API로 JSON 형식으로 데이터가 정상 반환된다.
+- 그런데 오류가 발생하면 우리가 미리 만들어둔 오류 페이지 HTML이 반환된다.
+- 클라이언트는 정상 요청이든, 오류 요청이든 JSON이 반환되기를 기대한다.
