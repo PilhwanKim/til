@@ -154,3 +154,26 @@ filterRegistrationBean.setDispatcherTypes(DispatcherType.REQUEST, DispatcherType
 3. WAS 오류 페이지 확인
 4. WAS(/error-page/500, dispatchType=ERROR) -> 필터(x) -> 서블릿 -> 인터셉터(x) -> 컨트롤러(/error-page/500) -> View
 ```
+
+## 스프링 부트 - 오류 페이지
+
+스프링 부트는 이제까지 했던 오류 페이지 설정 과정을 모두 기본으로 제공한다.
+
+- ErrorPage 를 자동으로 등록한다. 이때 /error 라는 경로로 기본 오류 페이지를 설정한다.
+  - `new ErrorPage("/error")` , 상태코드와 예외를 설정하지 않으면 기본 오류 페이지로 사용된다. 
+  - 서블릿 밖으로 예외가 발생하거나, `response.sendError(...)` 가 호출되면 모든 오류는 `/error` 를 호출하게 된다.
+- `BasicErrorController` 라는 스프링 컨트롤러를 자동으로 등록한다. 
+  - `ErrorPage` 에서 등록한 `/error` 를 매핑해서 처리하는 컨트롤러다.
+- `ErrorMvcAutoConfiguration` 클래스가 오류 페이지를 자동으로 등록
+
+### 뷰 선택 우선순위 - BasicErrorController 의 처리 순서
+
+1. 뷰템플릿
+   1. `resources/templates/error/500.html`
+   2. `resources/templates/error/5xx.html`
+2. 정적리소스(static,public)
+   1. `resources/static/error/400.html`
+   2. `resources/static/error/404.html`
+   3. `resources/static/error/4xx.html`
+3. 적용 대상이 없을 때 뷰 이름(error)
+   1. `resources/templates/error.html`
