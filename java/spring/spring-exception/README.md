@@ -373,4 +373,33 @@ reason 을 `MessageSource` 에서 찾는 기능도 제공한다.
 
 ### DefaultHandlerExceptionResolver
 
-스프링 내부 기본 예외를 처리한다.
+- 스프링 내부에서 발생하는 스프링 예외를 해결
+- 파라미터 바인딩은 대부분 클라이언트가 HTTP 요청 정보를 잘못 호출해서 발생하는 문제이다. HTTP 에서는 이런 경우 HTTP 상태 코드 400을 사용하도록 되어 있다. `DefaultHandlerExceptionResolver` 는 이것을 500 오류가 아니라 HTTP 상태 코드 400 오류로 변경한다.
+
+```java
+public class DefaultHandlerExceptionResolver extends AbstractHandlerExceptionResolver {
+
+	@Override
+	@Nullable
+	protected ModelAndView doResolveException(
+			HttpServletRequest request, HttpServletResponse response, @Nullable Object handler, Exception ex) {
+
+                ...
+
+
+			else if (ex instanceof TypeMismatchException) {
+				return handleTypeMismatch(
+						(TypeMismatchException) ex, request, response, handler);
+			}
+```
+
+```java
+	protected ModelAndView handleTypeMismatch(TypeMismatchException ex,
+			HttpServletRequest request, HttpServletResponse response, @Nullable Object handler) throws IOException {
+
+		response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+		return new ModelAndView();
+	}
+```
+
+- 결국 response.sendError() 를 통해서 문제를 해결한다.
