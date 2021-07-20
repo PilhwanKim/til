@@ -11,6 +11,8 @@
   * 상품 등록 웹 페이지 만들기 예제를 통해 스프링의 html 템플릿, 타임리프, validation 을 이해한다.
 * [Spring MVC : 로그인 처리](https://github.com/PilhwanKim/til/tree/master/java/spring/spring-login)
   * 상품 등록 웹 페이지 만들기에서 로그인 기능 구현하는 프로젝트. 쿠키, 세션, 필터, 인터셉터의 개념을 이해하고 구현한다.
+* [Spring MVC : 예외 처리](https://github.com/PilhwanKim/til/tree/master/java/spring/spring-exception)
+  * Spring Web 에서 Exception 처리는 어떻게 이루어지는지 실습해보자.
 
 ## JPA
 
