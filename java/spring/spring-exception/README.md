@@ -338,3 +338,39 @@ ExceptionResolver 활용
 `ExceptionResolver` 를 사용하면 컨트롤러에서 예외가 발생해도 `ExceptionResolver` 에서 예외를 처리해버린다.
 따라서 예외가 발생해도 서블릿 컨테이너까지 예외가 전달되지 않고, 스프링 MVC에서 예외 처리는 끝이난다.
 결과적으로 WAS 입장에서는 정상 처리가 된 것이다. 이렇게 예외를 이곳에서 모두 처리할 수 있다는 것이 핵심이다.
+
+## API 예외 처리 - 스프링이 제공하는 ExceptionResolver
+
+HandlerExceptionResolverComposite 에 다음 순서로 등록
+
+1. `ExceptionHandlerExceptionResolver`
+2. `ResponseStatusExceptionResolver`
+3. `DefaultHandlerExceptionResolver` <- 우선 순위가 가장 낮다
+
+### ExceptionHandlerExceptionResolver
+
+`@ExceptionHandler` 을 처리한다. API 예외 처리는 대부분 이 기능으로 해결한다. 조금 뒤에 자세히 설명한다.
+
+### ResponseStatusExceptionResolver
+
+예외에 따라서 HTTP 상태 코드를 지정해준다.
+
+- `@ResponseStatus` 가 달려있는 예외
+- `ResponseStatusException` 예외
+
+예)
+
+```java
+@ResponseStatus(code = HttpStatus.BAD_REQUEST, reason = "잘못된 요청 오류") 
+public class BadRequestException extends RuntimeException { }
+```
+
+reason 을 `MessageSource` 에서 찾는 기능도 제공한다.
+
+`reason = "error.bad"`
+
+`ResponseStatusException` 는 내가 코드를 수정할 수 없는 라이브러리의 예외 코드에 사용
+
+### DefaultHandlerExceptionResolver
+
+스프링 내부 기본 예외를 처리한다.
