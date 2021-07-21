@@ -187,3 +187,24 @@ http://localhost:8080/converter-view
 
 http://localhost:8080/hello-v2?data=10,000
 
+## 스프링이 제공하는 기본 포맷터
+
+- `Formatter` 인터페이스의 구현 클래스를 찾아보면 수 많은 날짜나 시간 관련 포맷터가 제공
+- 포맷터는 기본 형식이 지정되어 있기 때문에, 객체의 각 필드마다 다른 형식으로 포맷을 지정하기는 어렵다
+  - 그래서 2가지 유용한 애노테이션 기반 포멧터가 있다.
+    - `@NumberFormat` : 숫자 관련 형식 지정 포맷터 사용, `NumberFormatAnnotationFormatterFactory` 
+    - `@DateTimeFormat` : 날짜 관련 형식 지정 포맷터 사용, `Jsr310DateTimeFormatAnnotationFormatterFactory`
+
+> 참고
+>
+> `@NumberFormat` , `@DateTimeFormat` 의 자세한 사용법이 궁금한 분들은 다음 링크를 참고하거나 관련 애노테이션을 검색해보자.
+> https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#format-CustomFormatAnnotations
+
+## 마지막 주의점
+
+메시지 컨버터(`HttpMessageConverter`)에는 컨버전 서비스가 적용되지 않는다.
+특히 객체를 JSON으로 변환할 때 메시지 컨버터를 사용하면서 이 부분을 많이 오해하는데,  `HttpMessageConverter` 의 역할은 HTTP 메시지 바디의 내용을 객체로 변환하거나 객체를 HTTP 메시지 바디에 입력하는 것이다. 예를 들어서 JSON을 객체로 변환하는 메시지 컨버터는 내부에서 Jackson 같은 라이브러리를 사용한다. 객체를 JSON으로 변환한다면 그 결과는 이 라이브러리에 달린 것이다. 따라서 JSON 결과로 만들어지는 숫자나 날짜 포맷을 변경하고 싶으면 해당 라이브러리가 제공하는 설정을 통해서 포맷을 지정해야 한다. 
+
+결과적으로 이것은 컨버전 서비스와 전혀 관계가 없다.
+
+컨버전 서비스는 `@RequestParam`, `@ModelAttribute`, `@PathVariable`, 뷰 템플릿 등에서 사용할 수 있다.
