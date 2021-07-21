@@ -45,8 +45,29 @@ class UserData {
 
 ```java
 package org.springframework.core.convert.converter;
-    public interface Converter<S, T> {
-      T convert(S source);
+public interface Converter<S, T> {
+    T convert(S source);
 }
 
 ```
+
+## 타입 컨버터 - Converter
+
+StringToIntegerConverter - 문자를 숫자로 변환하는 타입 컨버터
+(코드 참고)
+
+IntegerToStringConverter - 숫자를 문자로 변환하는 타입 컨버터
+(코드 참고)
+
+StringToIpPortConverter - Ip 문자열을 IpPort 객체로 변환
+(코드 참고)
+
+IpPortToStringConverter -  IpPort 객체를 Ip 문자열로 변환
+(코드 참고)
+
+이쯤되면...
+타입 컨버터를 등록하고 관리하면서 편리하게 변환 기능을 제공하는 역할을 하는 무언가가 필요하다.
+
+> 참고
+>
+> 스프링은 문자, 숫자, 불린, Enum등 일반적인 타입에 대한 대부분의 컨버터를 기본으로 제공한다. IDE에서 `Converter` , `ConverterFactory` , `GenericConverter` 의 구현체를 찾아보면 수 많은 컨버터를 확인할 수 있다.
