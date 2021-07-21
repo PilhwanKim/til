@@ -351,7 +351,7 @@ HandlerExceptionResolverComposite 에 다음 순서로 등록
 
 `@ExceptionHandler` 을 처리한다. API 예외 처리는 대부분 이 기능으로 해결한다.
 
-[API 예외 처리 - HandlerExceptionResolver 활용](./#API-예외-처리---@ExceptionHandler)
+[API 예외 처리 - HandlerExceptionResolver 활용](./#api-예외-처리---exceptionhandler)
 에서 자세히 설명한다.
 
 ### ResponseStatusExceptionResolver
