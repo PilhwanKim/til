@@ -31,9 +31,9 @@ https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-mvc-1
 - 헤더 생성
 - 바디 생성
 - 편의 기능 제공
-   - Content-type
-   - Cookie
-   - Redirect
+  - Content-type
+  - Cookie
+  - Redirect
 
 ### HTTP 응답 데이터
 
@@ -44,24 +44,24 @@ https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-mvc-1
 ## MVC 프레임워크 만들기
 
 - v1: 프론트 컨트롤러 도입
-    - 기존 구조를 최대한 유지하면서 프론트 컨트롤러 도입
-      ![v1](img/v1.png)
+  - 기존 구조를 최대한 유지하면서 프론트 컨트롤러 도입
+  - ![v1](img/v1.png)
 - v2: View 분류
-    - 단순 반복 뷰 로직 분리
-      ![v2](img/v2.png)
+  - 단순 반복 뷰 로직 분리
+  - ![v2](img/v2.png)
 - v3: Model 추가
-    - 서블릿 종속성 제거
-    - 뷰 이름 중복 제거 
-    - 프레임워크나 공통 기능이 수고로워야 사용하는 개발자가 편리해진다.
-      ![v3](img/v3.png)
+  - 서블릿 종속성 제거
+  - 뷰 이름 중복 제거 
+  - 프레임워크나 공통 기능이 수고로워야 사용하는 개발자가 편리해진다.
+  - ![v3](img/v3.png)
 - v4: 단순하고 실용적인 컨트롤러
-    - v3와 비슷
-    - 구현 입장에서 ModelView를 직접 생성해서 반환하지 않도록 편리한 인터페이스 제공
-      ![v4](img/v4.png)
+  - v3와 비슷
+  - 구현 입장에서 ModelView를 직접 생성해서 반환하지 않도록 편리한 인터페이스 제공
+  - ![v4](img/v4.png)
 - v5: 유연한 컨트롤러
-    - 어댑터 도입
-    - 어댑터를 추가해서 프레임워크를 유연하고 확장성 있게 설계
-      ![v5](img/v5.png)
+  - 어댑터 도입
+  - 어댑터를 추가해서 프레임워크를 유연하고 확장성 있게 설계
+  - ![v5](img/v5.png)
 
 여기에 에노테이션 스타일로 컨트롤러를 만들려면 에노테이션 어뎁터를 추가하면 된다.
 
@@ -77,10 +77,10 @@ https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-mvc-1
 |-------------------|-------------------|
 | FrontController   | DispatcherServlet |
 | handlerMappingMap | HandlerMapping    |
-| MyHandlerAdapter  | HandlerAdapter    | 
-| ModelView         | ModelAndView      | 
-| viewResolver      | ViewResolver      | 
-| MyView            | View              | 
+| MyHandlerAdapter  | HandlerAdapter    |
+| ModelView         | ModelAndView      |
+| viewResolver      | ViewResolver      |
+| MyView            | View              |
 
 ### DispatcherServlet 구조 살펴보기
 
@@ -96,7 +96,9 @@ https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-mvc-1
 3. `FrameworkServlet.service()` -> `DispatcherServlet.doDispatch()` 가 호출
 
 #### 동작 순서
+
 ![스프링 MVC](img/spring-mvc-flow.png)
+
 1. `핸들러 조회`: 핸들러 매핑을 통해 요청 URL에 매핑된 핸들러(컨트롤러)를 조회한다.
 2. `핸들러 어댑터 조회`: 핸들러를 실행할 수 있는 핸들러 어댑터를 조회한다.
 3. `핸들러 어댑터 실행`: 핸들러 어댑터를 실행한다.
@@ -118,23 +120,23 @@ https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-mvc-1
 ### 핸들러 매핑과 핸들러 어댑터
 
 - *HandlerMapping*(핸들러 매핑)
-    - 핸들러 매핑에서 이 컨트롤러를 찾을 수 있어야 한다.
-    - 예) 스프링 빈의 이름으로 핸들러를 찾을 수 있는 핸들러 매핑이 필요하다.
+  - 핸들러 매핑에서 이 컨트롤러를 찾을 수 있어야 한다.
+  - 예) 스프링 빈의 이름으로 핸들러를 찾을 수 있는 핸들러 매핑이 필요하다.
 - *HandlerAdapter*(핸들러 어댑터)
-    - 핸들러 매핑을 통해서 찾은 핸들러를 실행할 수 있는 핸들러 어댑터가 필요하다.
-    - 예) Controller 인터페이스를 실행할 수 있는 핸들러 어댑터를 찾고 실행해야 한다.
+  - 핸들러 매핑을 통해서 찾은 핸들러를 실행할 수 있는 핸들러 어댑터가 필요하다.
+  - 예) Controller 인터페이스를 실행할 수 있는 핸들러 어댑터를 찾고 실행해야 한다.
 
 #### 우선순위
 
 - *HandlerMapping*
-    - 0 = RequestMappingHandlerMapping : 애노테이션 기반의 컨트롤러인 @RequestMapping에서 사용
-    - 1 = BeanNameUrlHandlerMapping : 스프링 빈의 이름으로 핸들러를 찾는다.
-    - ...
+  - 0 = RequestMappingHandlerMapping : 애노테이션 기반의 컨트롤러인 @RequestMapping에서 사용
+  - 1 = BeanNameUrlHandlerMapping : 스프링 빈의 이름으로 핸들러를 찾는다.
+  - ...
 - *HandlerAdapter*
-    - 0 = RequestMappingHandlerAdapter : 애노테이션 기반의 컨트롤러인 @RequestMapping에서 사용
-    - 1 = HttpRequestHandlerAdapter : HttpRequestHandler 처리
-    - 2 = SimpleControllerHandlerAdapter : Controller 인터페이스(애노테이션X, 과거에 사용) 처리
-    - ...
+  - 0 = RequestMappingHandlerAdapter : 애노테이션 기반의 컨트롤러인 @RequestMapping에서 사용
+  - 1 = HttpRequestHandlerAdapter : HttpRequestHandler 처리
+  - 2 = SimpleControllerHandlerAdapter : Controller 인터페이스(애노테이션X, 과거에 사용) 처리
+  - ...
 
 #### @RequestMapping
 
@@ -160,17 +162,17 @@ https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-mvc-1
 
 - annotation 을 활용하여, 유연하고 실용적으로 바뀜
 - `@RequestMapping` - 에노테이션 기반 컨트롤러
-    - 핸들러 매핑 - *RequestMappingHandlerMapping*
-    - 핸들러 어뎁터 - *RequestMappingHandlerAdapter*
-    - 요청 정보를 매핑. 해당 URL이 호출되면 메서드가 호출됨
+  - 핸들러 매핑 - *RequestMappingHandlerMapping*
+  - 핸들러 어뎁터 - *RequestMappingHandlerAdapter*
+  - 요청 정보를 매핑. 해당 URL이 호출되면 메서드가 호출됨
 - `@Controller`
-    - 스프링이 자동으로 스프링 빈 등록
-    - 스프링 MVC 에서 애노테이션 기반 컨트롤러로 인식함
+  - 스프링이 자동으로 스프링 빈 등록
+  - 스프링 MVC 에서 애노테이션 기반 컨트롤러로 인식함
 - `ModelAndView` - 모델과 뷰 정보를 담아서 반환
 
 ### 스프링 MVC 실용적인 방식
 
-- Model 파라미터 
+- Model 파라미터
 - viewName 직접 반환
 - @RequestParam 사용
 - @RequestMapping -> @GetMapping, @PostMapping
