@@ -108,3 +108,28 @@ HelloController 에 IpPort 객체 `@RequestParam` 적용(소스 참고)
 ### Converter 처리 과정
 
 `@RequestParam` 은 @`RequestParam` 을 처리하는 `ArgumentResolver` 인 `RequestParamMethodArgumentResolver` 에서 `ConversionService` 를 사용해서 타입을 변환한다.
+
+## 뷰 템플릿에 컨버터 적용하기
+
+이전까지는 문자를 객체로 변환했다면, 이번에는 그 반대로 객체를 문자로 변환하는 작업을 확인할 수 있다.
+
+### 뷰 렌더링(타임리프)
+
+- 변수 표현식 : `${...}`
+- 컨버전 서비스 적용 : `${{...}}`
+
+#### 실행 결과
+
+- `${{number}}` : 뷰 템플릿은 데이터를 문자로 출력한다. 따라서 컨버터를 적용하게 되면 Integer 타입인 10000 을 String 타입으로 변환하는 컨버터인 `IntegerToStringConverter` 를 실행하게 된다. 이 부분은 컨버터를 실행하지 않아도 타임리프가 숫자를 문자로 자동으로 변환히기 때문에 컨버터를 적용할 때와 하지 않을 때가 같다.
+- `${{ipPort}}` : 뷰 템플릿은 데이터를 문자로 출력한다. 따라서 컨버터를 적용하게 되면 IpPort 타입을 String 타입으로 변환해야 하므로 `IpPortToStringConverter` 가 적용된다. 그 결과 `127.0.0.1:8080` 가 출력된다
+
+### 폼에 적용하기
+
+타임리프의 `th:field` 는 앞서 설명했듯이 id , name 를 출력하는 등 다양한 기능이 있는데, 여기에 **컨버전 서비스**도 함께 적용된다.
+
+#### 폼 실행 결과
+
+- `GET /converter/edit`
+  - `th:field` 가 자동으로 컨버전 서비스를 적용해주어서 `${{ipPort}}` 처럼 적용이 되었다. 따라서 IpPort String 으로 변환된다.
+- `POST /converter/edit`
+  - `@ModelAttribute` 를 사용해서 `String` -> `IpPort` 로 변환된다

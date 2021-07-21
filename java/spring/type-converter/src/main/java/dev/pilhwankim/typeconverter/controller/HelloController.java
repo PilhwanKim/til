@@ -18,12 +18,18 @@ public class HelloController {
         return "ok";
     }
 
+    /**
+     * 문자를 객체로 변환하는 작업을 확인
+     */
     @GetMapping("/hello-v2")
     public String helloV2(@RequestParam Integer data) {
         System.out.println("data = " + data);
         return "ok";
     }
 
+    /**
+     * 문자를 객체로 변환하는 작업을 확인
+     */
     @GetMapping("/ip-port")
     public String ipPort(@RequestParam IpPort ipPort) {
         System.out.println("ipPort.getIp() = " + ipPort.getIp());
