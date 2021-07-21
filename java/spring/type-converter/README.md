@@ -98,3 +98,13 @@ Integer value = conversionService.convert("10", Integer.class)
 이렇게 인터페이스를 분리하면 컨버터를 사용하는 클라이언트와 컨버터를 등록하고 관리하는 클라이언트의 관심사를 명확하게 분리할 수 있다. 특히 컨버터를 사용하는 클라이언트는 ConversionService 만 의존하면 되므로, 컨버터를 어떻게 등록하고 관리하는지는 전혀 몰라도 된다. 결과적으로 컨버터를 사용하는 클라이언트는 꼭 필요한 메서드만 알게된다. 
 
 스프링은 내부에서 `ConversionService` 를 사용해서 타입을 변환한다. 예를 들어서 앞서 살펴본 `@RequestParam` 같은 곳에서 이 기능을 사용해서 타입을 변환한다.
+
+## 스프링에 Converter 적용하기
+
+WebConfig - 컨버터 등록(소스 참고)
+
+HelloController 에 IpPort 객체 `@RequestParam` 적용(소스 참고)
+
+### Converter 처리 과정
+
+`@RequestParam` 은 @`RequestParam` 을 처리하는 `ArgumentResolver` 인 `RequestParamMethodArgumentResolver` 에서 `ConversionService` 를 사용해서 타입을 변환한다.
