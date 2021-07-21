@@ -133,3 +133,31 @@ HelloController 에 IpPort 객체 `@RequestParam` 적용(소스 참고)
   - `th:field` 가 자동으로 컨버전 서비스를 적용해주어서 `${{ipPort}}` 처럼 적용이 되었다. 따라서 IpPort String 으로 변환된다.
 - `POST /converter/edit`
   - `@ModelAttribute` 를 사용해서 `String` -> `IpPort` 로 변환된다
+
+## 포맷터 - Formatter
+
+- `Converter`: 입력과 출력 타입에 제한이 없는, 범용 타입 변환 기능
+- `Formatter`: 객체를 특정한 포멧에 맞추어 문자로 출력하거나 또는 그 반대의 역할을 하는 것에 특화된 기능. 
+  - 문자에 특화한 Converter
+
+### 포맷터 - Formatter 만들기
+
+#### Formatter 인터페이스
+
+```java
+public interface Printer<T> {
+    String print(T object, Locale locale);
+}
+  public interface Parser<T> {
+    T parse(String text, Locale locale) throws ParseException;
+}
+  public interface Formatter<T> extends Printer<T>, Parser<T> {
+}
+```
+
+- `String print(T object, Locale locale)` : 객체를 문자로 변경한다.
+- `T parse(String text, Locale locale)` : 문자를 객체로 변경한다.
+
+#### MyNumberFormatter 구현
+
+(소스 참고)
