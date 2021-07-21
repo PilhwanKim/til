@@ -343,13 +343,16 @@ ExceptionResolver 활용
 
 HandlerExceptionResolverComposite 에 다음 순서로 등록
 
-1. `ExceptionHandlerExceptionResolver`
-2. `ResponseStatusExceptionResolver`
-3. `DefaultHandlerExceptionResolver` <- 우선 순위가 가장 낮다
+1. `ExceptionHandlerExceptionResolver` - `@ExceptionHandler` 설정한 것을 찾아 Exception 처리
+2. `ResponseStatusExceptionResolver` - HTTP 응답 코드 변경
+3. `DefaultHandlerExceptionResolver` - 스프링 내부 예외 처리 <- 우선 순위가 가장 낮다
 
 ### ExceptionHandlerExceptionResolver
 
-`@ExceptionHandler` 을 처리한다. API 예외 처리는 대부분 이 기능으로 해결한다. 조금 뒤에 자세히 설명한다.
+`@ExceptionHandler` 을 처리한다. API 예외 처리는 대부분 이 기능으로 해결한다.
+
+[API 예외 처리 - HandlerExceptionResolver 활용](./#API-예외-처리---@ExceptionHandler)
+에서 자세히 설명한다.
 
 ### ResponseStatusExceptionResolver
 
@@ -402,4 +405,84 @@ public class DefaultHandlerExceptionResolver extends AbstractHandlerExceptionRes
 	}
 ```
 
-- 결국 response.sendError() 를 통해서 문제를 해결한다.
+- 결국 `response.sendError()` 를 통해서 문제를 해결한다.
+
+## API 예외 처리 - @ExceptionHandler
+
+API 오류시 예외 응답은 매우 세밀한 제어가 필요하다.
+
+### API 예외처리의 어려운 점
+
+- `HandlerExceptionResolver` 를 떠올려 보면 `ModelAndView` 를 반환해야 했다. 이것은 API 응답에는
+필요하지 않다.
+- API 응답을 위해서 `HttpServletResponse` 에 직접 응답 데이터를 넣어주었다. 이것은 매우 불편하다. 스프링 컨트롤러에 비유하면 마치 과거 서블릿을 사용하던 시절로 돌아간 것 같다.
+- 특정 컨트롤러에서만 발생하는 예외를 별도로 처리하기 어렵다. 예를 들어서 회원을 처리하는 컨트롤러에서 발생하는 `RuntimeException` 예외와 상품을 관리하는 컨트롤러에서 발생하는 동일한 `RuntimeException` 예외를 서로 다른 방식으로 처리하고 싶다면 어떻게 해야할까?
+
+### @ExceptionHandler
+
+- 스프링은 `ExceptionHandlerExceptionResolver` 를 기본으로 제공한다.
+- 기본으로 제공하는 ExceptionResolver 중에 우선순위도 가장 높다. 
+- 실무에서 API 예외 처리는 대부분 이 기능을 사용한다.
+
+### @ExceptionHandler 예외 처리 방법
+
+- `@ExceptionHandler` 애노테이션을 선언하고, 해당 컨트롤러에서 처리하고 싶은 예외를 지정해주면 된다. 해당 컨트롤러에서 예외가 발생하면 이 메서드가 호출된다.
+- 지정한 예외 또는 그 예외의 자식 클래스는 모두 잡을 수 있다.
+
+### 우선순위
+
+스프링의 우선순위는 항상 자세한 것이 우선권을 가진다. 예를 들어서 부모, 자식 클래스가 있고 다음과 같이 예외가 처리된다.
+
+```java
+@ExceptionHandler(부모예외.class) public String 부모예외처리()(부모예외 e) {}
+@ExceptionHandler(자식예외.class) public String 자식예외처리()(자식예외 e) {}
+```
+
+- 더 자세한 쪽이 우선권을 가진다.
+- 물론 부모예외 가 호출되면 부모예외처리() 만 호출 대상이 되므로 부모예외처리()가 호출된다.
+
+### 다양한 예외
+
+다음과 같이 다양한 예외를 한번에 처리할 수 있다.
+
+```java
+@ExceptionHandler({AException.class, BException.class})
+public String ex(Exception e) {
+    log.info("exception e", e);
+}
+```
+
+### 예외 생략
+
+`@ExceptionHandler` 에 예외를 생략할 수 있다. 생략하면 메서드 파라미터의 예외가 지정된다.
+
+```java
+@ExceptionHandler
+  public ResponseEntity<ErrorResult> userExHandle(UserException e) {}
+```
+
+### 파리미터와 응답
+
+@ExceptionHandler 에는 마치 스프링의 컨트롤러의 파라미터 응답처럼 다양한 파라미터와 응답을 지정할 수 있다.
+
+참고 : https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#mvc-ann-exceptionhandler-args
+
+### 실행 흐름
+
+- 컨트롤러를 호출한 결과 `IllegalArgumentException` 예외가 컨트롤러 밖으로 던져진다. 
+- 예외가 발생했으로 `ExceptionResolver` 가 작동한다. 가장 우선순위가 높은 `ExceptionHandlerExceptionResolver` 가 실행된다.
+- `ExceptionHandlerExceptionResolver` 는 해당 컨트롤러에 `IllegalArgumentException` 을 처리할 수 있는 `@ExceptionHandler` 가 있는지 확인한다.
+- `illegalExHandle()` 를 실행한다. `@RestController` 이므로 `illegalExHandle()` 에도 `@ResponseBody` 가 적용된다. 따라서 HTTP 컨버터가 사용되고, 응답이 다음과 같은 JSON으로 반환된다.
+- `@ResponseStatus(HttpStatus.BAD_REQUEST)` 를 지정했으므로 HTTP 상태 코드 400으로 응답한다.
+
+### HTML 오류 화면
+
+다음과 같이 ModelAndView 를 사용해서 오류 화면(HTML)을 응답하는데 사용할 수도 있다.
+
+```java
+@ExceptionHandler(ViewException.class)
+  public ModelAndView ex(ViewException e) {
+      log.info("exception e", e);
+      return new ModelAndView("error");
+  }
+```
