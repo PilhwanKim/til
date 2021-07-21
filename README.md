@@ -13,6 +13,8 @@
   * 상품 등록 웹 페이지 만들기에서 로그인 기능 구현하는 프로젝트. 쿠키, 세션, 필터, 인터셉터의 개념을 이해하고 구현한다.
 * [Spring MVC : 예외 처리](https://github.com/PilhwanKim/til/tree/master/java/spring/spring-exception)
   * Spring Web 에서 Exception 처리는 어떻게 이루어지는지 실습해보자.
+* [Spring : 스프링 타입 컨버터](https://github.com/PilhwanKim/til/tree/master/java/spring/type-converter)
+  * Spring 에서 타입을 변환하는 기능을 개발할 때 참고!
 
 ## JPA
 
