@@ -58,3 +58,38 @@ spring.servlet.multipart.max-request-size=10MB
 > `MultipartHttpServletRequest` 는 `HttpServletRequest` 의 자식 인터페이스이고, 멀티파트와 관련된 추가 기능을 제공한다.
 > 스프링이 제공하는 기본 멀티파트 리졸버는 `MultipartHttpServletRequest` 인터페이스를 구현한 `StandardMultipartHttpServletRequest` 를 반환한다.
 > 이제 컨트롤러에서 `HttpServletRequest` 대신에 `MultipartHttpServletRequest` 를 주입받을 수 있는데, 이것을 사용하면 멀티파트와 관련된 여러가지 처리를 편리하게 할 수 있다. 그런데 이후 강의에서 설명할 MultipartFile 이라는 것을 사용하는 것이 더 편하기 때문에 `MultipartHttpServletRequest` 를 잘 사용하지는 않는다. 더 자세한 내용은 `MultipartResolver` 를 검색해보자.
+
+### 실제 파일을 서버에 업로드 하기
+
+application.properties
+
+```properties
+file.dir=파일 업로드 경로 설정(예): /Users/kimyounghan/study/file/
+```
+
+주의
+
+1. 꼭해당경로에실제폴더를미리만들어두자.
+2. application.properties 에서 설정할 때 마지막에 / (슬래시)가 포함된 것에 주의하자.
+
+#### ServletUploadControllerV2
+
+(소스코드 참고)
+
+application.properties 에서 설정한 file.dir 의 값을 주입한다.
+
+```java
+   @Value("${file.dir}")
+  private String fileDir;
+```
+
+멀티파트 형식은 전송 데이터를 하나하나 각각 부분( Part )으로 나누어 전송한다. 
+parts 에는 이렇게 나누어진 데이터가 각각 담긴다.
+
+Part 주요 메서드
+
+- `part.getSubmittedFileName()` : 클라이언트가 전달한 파일명
+- `part.getInputStream()`: Part의 전송 데이터를 읽을 수 있다.
+- `part.write(...)`: Part를 통해 전송된 데이터를 저장할 수 있다.
+
+서블릿이 제공하는 Part 는 편하기는 하지만, `HttpServletRequest` 를 사용해야 하고, 추가로 파일 부분만 구분하려면 여러가지 코드를 넣어야 한다.
