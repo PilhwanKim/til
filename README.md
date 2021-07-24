@@ -2,6 +2,8 @@
 
 ## Spring
 
+* [Spring Core](https://github.com/PilhwanKim/til/tree/master/java/spring/spring-core)
+  * 순수 POJO 기반 개발에서 Spring DI 컨테이너를 어떻게 적용하는지 과정을 볼 수 있다.
 * [Spring MVC : 백엔드 웹 개발 핵심 기술](https://github.com/PilhwanKim/til/tree/master/java/spring/spring-playground-servlet)
   * 본 프로젝트는 `servlet` -> `JSP` -> `MVC 패턴` -> `Spring MVC` 로 점진적으로 변화하는 코드를 포함하고 있다.
   * 스프링 MVC 의 전체 흐름을 이해하기 위해 반드시 필요한 내용이다.
@@ -15,6 +17,8 @@
   * Spring Web 에서 Exception 처리는 어떻게 이루어지는지 실습해보자.
 * [Spring : 스프링 타입 컨버터](https://github.com/PilhwanKim/til/tree/master/java/spring/type-converter)
   * Spring 에서 타입을 변환하는 기능을 개발할 때 참고!
+* [Spring : 파일 업로드](https://github.com/PilhwanKim/til/tree/master/java/spring/file-upload)
+  * Spring Web 에서 파일 업로드를 `multipart/form-data` 로 구현하는 방법을 이론과 예제를 다룬다.
 
 ## JPA
 
