@@ -18,7 +18,7 @@
 * [Spring : 스프링 타입 컨버터](https://github.com/PilhwanKim/til/tree/master/java/spring/type-converter)
   * Spring 에서 타입을 변환하는 기능을 개발할 때 참고!
 * [Spring : 파일 업로드](https://github.com/PilhwanKim/til/tree/master/java/spring/file-upload)
-  * Spring Web 에서 파일 업로드를 `multipart/form-data` 로 구현하는 방법을 이론과 예제를 다룬다.
+  * Spring Web 에서 파일 업로드를 `multipart/form-data` 로 구현하는 방법을 이론정리와 예제로 다룬다.
 
 ## JPA
 
