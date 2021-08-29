@@ -1,8 +1,12 @@
 import React, {useState} from "react";
+import {authService, createUserWithEmailAndPassword, signInWithEmailAndPassword} from "../fbase";
 
 const Auth = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [newAccount, setNewAccount] = useState(true);
+    const [error, setError] = useState("");
+
     const onChange = (event) => {
         const {target: {name, value}} = event;
         if(name === "email") {
@@ -11,10 +15,24 @@ const Auth = () => {
             setPassword(value)
         }
     }
-    const onSubmit = (event) => {
-        event.preventDefault();
 
+    const onSubmit = async (event) => {
+        event.preventDefault();
+        try {
+            let data;
+            if(newAccount) {
+                data = await createUserWithEmailAndPassword(authService, email, password);
+            } else {
+                data = await signInWithEmailAndPassword(authService, email, password);
+            }
+            console.log(data);
+        } catch (error) {
+            setError(error.message);
+            console.log(error);
+        }
     }
+    const toggleAccount = () => setNewAccount((prev) => !prev);
+
     return (
         <div>
             <form onSubmit={onSubmit}>
@@ -34,7 +52,11 @@ const Auth = () => {
                     value={password}
                     onChange={onChange}
                 />
-                <input type="submit" value="Log In"/>
+                <input type="submit" value={newAccount ? "Create Account" : "Sign In"} />
+                {error}
+                <span onClick={toggleAccount}>
+                    {newAccount ? "Sign In" : "Create Account"}
+                </span>
                 <div>
                     <button>Continue with Google</button>
                     <button>Continue with Github</button>
