@@ -1,12 +1,12 @@
 import React, {useState} from "react";
+import {authService} from "fbase";
 import {
-    authService,
     createUserWithEmailAndPassword,
     GithubAuthProvider,
     GoogleAuthProvider,
     signInWithEmailAndPassword,
     signInWithPopup
-} from "../fbase";
+} from "firebase/auth";
 
 const Auth = () => {
     const [email, setEmail] = useState("");
