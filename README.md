@@ -27,5 +27,5 @@
 
 ## Kotlin
 
-* [코틀린 플레이그라운드](https://github.com/PilhwanKim/til/tree/master/kotlin-playground)
+* [코틀린 기본](https://github.com/PilhwanKim/til/tree/master/kotlin-basic)
   * 순수 코틀린 문법을 다루는 프로젝트
