@@ -1,6 +1,6 @@
 # 스프링 시큐리티
 
-## 스프링 시큐리티 기본 API 및 FILTER 이해
+## 스프링 시큐리티 기본 API 및 Filter 이해
 
 ### 스프링 시큐리티 의존성 추가
 
@@ -41,4 +41,24 @@
 ```properties
 spring.security.user.name=user
 spring.security.user.password=1111
+```
+
+### Form Login 인증
+
+![Form 인증 절차](img/ss-1-3.png)
+
+- Form Login API 설명
+
+```java
+protected void configure(HttpSecurity http) throws Exception {
+    http.formLogin()
+      .loginPage("/login.html")   		// 사용자 정의 로그인 페이지
+      .defaultSuccessUrl("/home")		// 로그인 성공 후 이동 페이지
+      .failureUrl("/login.html?error=true")	// 로그인 실패 후 이동 페이지
+      .usernameParameter("username")		// 아이디 파라미터명 설정
+      .passwordParameter("password")		// 패스워드 파라미터명 설정
+      .loginProcessingUrl("/login")             // 로그인 Form Action Url
+      .successHandler(loginSuccessHandler())    // 로그인 성공 후 핸들러
+      .failureHandler(loginFailureHandler())    // 로그인 실패 후 핸들러
+}
 ```
