@@ -16,3 +16,29 @@
 - 문제점
   - 기능의 부족 : 계정 추가, 권한 추가, DB 연동
   - 더 세부적이고 추가적인 보안 기능 필요
+
+### 사용자 정의 보안 기능 구현
+
+![스프링 시큐리티 간략 구조](img/ss-1-2.png)
+
+- WebSecurityConfigurerAdapter 를 통해 초기화를 진행한다.
+- 핵심은 HttpSecurity
+  - http 객체의 설정에 따라 인증 인가 기능이 동작한다.
+  - 예제
+```java
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .authorizeRequests()
+            .anyRequest().authenticated()
+        .and()
+            .formLogin();
+    }
+```
+
+- 프로퍼티 설정도 가능
+
+```properties
+spring.security.user.name=user
+spring.security.user.password=1111
+```
