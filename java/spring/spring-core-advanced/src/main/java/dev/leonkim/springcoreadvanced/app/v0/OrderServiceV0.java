@@ -1,4 +1,4 @@
-package dev.leonkim.springcoreadvanced.app;
+package dev.leonkim.springcoreadvanced.app.v0;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class OrderServiceV0 {
-    private final OrderRepositoryV0 orderRepositoryV0;
+    private final OrderRepositoryV0 orderRepository;
 
     public void orderItem(String itemId) {
-        orderRepositoryV0.save(itemId);
+        orderRepository.save(itemId);
     }
 }

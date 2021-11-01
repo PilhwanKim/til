@@ -1,4 +1,4 @@
-package dev.leonkim.springcoreadvanced.app;
+package dev.leonkim.springcoreadvanced.app.v0;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

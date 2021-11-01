@@ -47,3 +47,48 @@
   - trace.hellotrace.HelloTraceV1
 - test
   - trace.hellotrace.HelloTraceV1Test
+
+## 로그 추적기 V1 - 적용
+
+### 관련 소스
+
+- src
+  - app.v1.OrderControllerV1dev.leonkim.springcoreadvanced.app.v1.OrderControllerV1
+  - app.v1.OrderServiceV1
+  - app.v1.OrderRepositoryV1
+
+
+### 정상 실행 로그
+
+```
+[c41539c3] OrderController.request()
+[7f805f4e] OrderService.orderItem()
+[98a03000] OrderRepository.save()
+[98a03000] OrderRepository.save() time=1003ms
+[7f805f4e] OrderService.orderItem() time=1004ms
+[c41539c3] OrderController.request() time=1005ms
+```
+
+![실행 플로우](./img/log-trace-v1.png)
+
+### 예외 실행 로그
+
+```
+[27c333f6] OrderController.request()
+[62d40a7f] OrderService.orderItem()
+[5fbb6590] OrderRepository.save()
+[5fbb6590] OrderRepository.save() time=1ms, ex=java.lang.IllegalStateException: 예외 발생!
+[62d40a7f] OrderService.orderItem() time=1ms, ex=java.lang.IllegalStateException: 예외 발생!
+[27c333f6] OrderController.request() time=1ms, ex=java.lang.IllegalStateException: 예외 발생!
+```
+
+로그를 남기기 위한 코드가 생각보다 복잡하다. 
+일단은 요구사항을 맞추는 것에 집중한다.
+
+### 남은 요구사항
+
+- 메서드 호출의 깊이 표현
+- HTTP 요청을 구분
+  - HTTP 요청 단위로 특정 ID를 남겨서 어떤 HTTP 요청에서 시작된 것인지 명확하게 구분이 가능해야 함
+  - 트랜잭션 ID (DB 트랜잭션X)
+  
