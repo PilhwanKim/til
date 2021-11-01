@@ -36,3 +36,14 @@
 [b7119f27] |<X-OrderService.orderItem() time=10ms ex=java.lang.IllegalStateException: 예외 발생! 
 [b7119f27] OrderController.request() time=11ms ex=java.lang.IllegalStateException: 예외 발생!
 ```
+
+## 로그 추적기 V1 - 프로토타입 개발
+
+### 관련 소스
+
+- src
+  - trace.TraceId
+  - trace.TraceStatus
+  - trace.hellotrace.HelloTraceV1
+- test
+  - trace.hellotrace.HelloTraceV1Test
