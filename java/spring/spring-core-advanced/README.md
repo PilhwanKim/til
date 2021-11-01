@@ -91,4 +91,33 @@
 - HTTP 요청을 구분
   - HTTP 요청 단위로 특정 ID를 남겨서 어떤 HTTP 요청에서 시작된 것인지 명확하게 구분이 가능해야 함
   - 트랜잭션 ID (DB 트랜잭션X)
-  
+
+
+## 로그 추적기 V2 - 파라미터로 동기화 개발
+
+### 관련 소스
+
+- src
+  - trace.hellotrace.HelloTraceV2
+- test
+  - trace.hellotrace.HelloTraceV2Test
+
+### 정상 실행 로그
+
+```
+[5e985874] hello1
+[5e985874] |-->hello2
+[5e985874] |<--hello2 time=3ms
+[5e985874] hello1 time=7ms
+```
+
+### 예외 실행 로그
+
+```
+[c62f819c] hello1
+[c62f819c] |-->hello2
+[c62f819c] |<--hello2 time=3ms, ex=java.lang.IllegalStateException
+[c62f819c] hello1 time=7ms, ex=java.lang.IllegalStateException
+```
+
+같은 트렌잭션 ID를 유지하고 level 을 통햇 메서드 호출의 깊이를 표현 가능해졌다.
