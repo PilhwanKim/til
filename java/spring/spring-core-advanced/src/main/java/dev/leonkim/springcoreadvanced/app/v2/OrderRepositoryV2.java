@@ -1,5 +1,6 @@
 package dev.leonkim.springcoreadvanced.app.v2;
 
+import dev.leonkim.springcoreadvanced.trace.TraceId;
 import dev.leonkim.springcoreadvanced.trace.TraceStatus;
 import dev.leonkim.springcoreadvanced.trace.hellotrace.HelloTraceV2;
 import lombok.RequiredArgsConstructor;
@@ -11,11 +12,10 @@ public class OrderRepositoryV2 {
 
     private final HelloTraceV2 trace;
 
-    public void save(String itemId) {
+    public void save(TraceId traceId, String itemId) {
         TraceStatus status = null;
         try {
-
-            status = trace.begin("OrderRepository.save()");
+            status = trace.beginSync(traceId, "OrderRepository.save()");
             // 저장 로직
             if (itemId.equals("ex")) {
                 throw new IllegalStateException("예외 발생!");
