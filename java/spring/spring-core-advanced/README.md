@@ -284,3 +284,13 @@
 ![img.png](img/thread-local-02.png)
 
 - `ThreadLocal`은 자바 언어 차원에서 지원한다.
+
+### 스레드 로컬 예제
+
+- 사용하는 측 : `ThreadLocalServiceTest`
+- 적용된 측 : `ThreadLocalService`
+- ThreadLocal 사용시 주의점
+  - 쓰레드가 로컬을 모두 사용하고 나면 `ThreadLocal.remove()` 를 호출해서 로컬에 저장된 값을 제거해주어야 함
+  - Why?
+    - 메모리 누수
+    - ???? 그외에 ????
