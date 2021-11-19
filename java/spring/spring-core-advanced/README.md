@@ -277,11 +277,13 @@
 - 각 쓰레드 마다 별도의 내부 저장소를 제공!
 - 따라서 같은 ThreadLocal 인스턴스와 필드에 쓰기-읽기를 해도 동시성 문제를 겪지 않음
 
-스레드 로컬에서 값을 쓸때
-![img.png](img/thread-local-01.png)
+#### 스레드 로컬에서 값을 쓸때
 
-스레드 로컬에서 값을 가져올때
-![img.png](img/thread-local-02.png)
+![스레드 로컬에서 값을 쓸때](img/thread-local-01.png)
+
+#### 스레드 로컬에서 값을 가져올때
+
+![스레드 로컬에서 값을 가져올때](img/thread-local-02.png)
 
 - `ThreadLocal`은 자바 언어 차원에서 지원한다.
 
@@ -291,7 +293,9 @@
 - 적용된 측 : `ThreadLocalService`
 - ThreadLocal 사용시 주의점
   - 쓰레드가 로컬을 모두 사용하고 나면 `ThreadLocal.remove()` 를 호출해서 로컬에 저장된 값을 제거해주어야 함
-  - Why? 메모리 누수문제
+  - Why? 
+    - 메모리 누수문제
+    - 쓰레드 풀 환경에서는 이전 상태값이 그대로 남아있어서 오동작을 일으키기 쉽다.([스레드 로컬 사용시 주의사항](#스레드-로컬-사용시-주의사항) 참고)
 
 ### 스레드 로컬 동기화
 
@@ -338,3 +342,26 @@
 [nio-8080-exec-8] d.l.s.t.logtrace.ThreadLocalLogTrace     : [bdd9a6bc] |<--OrderService.orderItem() time=1005ms
 [nio-8080-exec-8] d.l.s.t.logtrace.ThreadLocalLogTrace     : [bdd9a6bc] OrderController.request() time=1005ms
 ```
+
+### 스레드 로컬 사용시 주의사항
+
+- WAS 환경은 대부분 효율성을 위해 쓰레드 풀을 두어 다수의 요청을 처리함
+- 즉 쓰레드를 미리 만들어두고 재사용한다는 뜻
+- 이전에 쓰던 스레드가 살아있다는 뜻은? ThreadLocal 의 내용도 계속 살아있음
+- HTTP 요청은 무상태 프로토콜
+- 사용자 구분없이 스레드는 요청을 처리하기 때문에, 이전 ThreadLocal 상태값은 간섭을 받을 수 있다.
+
+#### step1) 사용자A 저장 요청
+
+![step1) 사용자A 저장 요청](thread-local-warn-0.png)
+
+#### step2) 사용자A 저장 요청 종료
+
+![step2) 사용자A 저장 요청 종료](thread-local-warn-1.png)
+
+#### step3) 사용자B 조회 요청
+
+![step3) 사용자B 조회 요청](thread-local-warn-2.png)
+
+- 결과적으로 사용자B는 사용자A의 데이터를 확인하게 되는 심각한 문제가 발생
+- 해결책) 모든 요청이 종료될 때마다  사용자A의 요청이 끝날 때 쓰레드 로컬의 값을 `ThreadLocal.remove()` 를 통해서 꼭 제거해야 함
