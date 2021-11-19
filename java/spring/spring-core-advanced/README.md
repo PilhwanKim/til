@@ -353,15 +353,15 @@
 
 #### step1) 사용자A 저장 요청
 
-![step1) 사용자A 저장 요청](thread-local-warn-0.png)
+![step1) 사용자A 저장 요청](img/thread-local-warn-0.png)
 
 #### step2) 사용자A 저장 요청 종료
 
-![step2) 사용자A 저장 요청 종료](thread-local-warn-1.png)
+![step2) 사용자A 저장 요청 종료](img/thread-local-warn-1.png)
 
 #### step3) 사용자B 조회 요청
 
-![step3) 사용자B 조회 요청](thread-local-warn-2.png)
+![step3) 사용자B 조회 요청](img/thread-local-warn-2.png)
 
 - 결과적으로 사용자B는 사용자A의 데이터를 확인하게 되는 심각한 문제가 발생
 - 해결책) 모든 요청이 종료될 때마다  사용자A의 요청이 끝날 때 쓰레드 로컬의 값을 `ThreadLocal.remove()` 를 통해서 꼭 제거해야 함
@@ -392,3 +392,28 @@
   - 좋은 어플리케이션 설계의 원리
   - 핵심기능: 변함 / 부가기능: 변하지 않음
   - 양쪽 코드를 분리시켜서 모듈화 하는 방법을 알아보자!
+
+#### 템플릿 메서드 예제
+
+- `TemplateMethodTest` 클래스 참고
+
+#### 템플릿 메서드 구조와 예제
+
+![img.png](img/template-method-structure.png)
+
+- 전체 틀(템플릿)이 있다 - 변하지 않는것
+- 자식 클래스에서 상속받는 부분 - 변하는 부분
+- 예제
+  - 구현부 - `AbstractTemplate`, `SubClassLogic1`, `SubClassLogic2`
+  - 실행부 - `TemplateMethodTest.templateMethodV1()`
+  - ![img.png](img/template-method-ex.png)
+
+#### 템플릿 메서드 패턴을 좀 더 간략히 사용하기
+
+- 템플릿 메서드 단점
+  - 자식 클래스를 계속 정의해서 만들어야 함
+- 익명 내부 클래스 사용
+  - 1타 2피 = 객체 인스턴스 생성 + 상속받은 자식 클래스 정의
+  - 지정하는 이름이 없는 클래스
+  - 내부에 선언됨
+- 예제 : `TemplateMethodTest.templateMethodV2()`
