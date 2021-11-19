@@ -18,8 +18,7 @@
 
 ### 예시 
 
-```java
-
+```
 정상 요청
 [796bccd9] OrderController.request()
 [796bccd9] |-->OrderService.orderItem()
@@ -202,3 +201,54 @@
 - OrderControllerV3, OrderServiceV3, OrderRepositoryV3
 - 파라메터로 넘기지 않아서 좀 더 적용하기 편해짐..
 - 그러나... 여기엔 동시성 문제가 도사리고 있다!
+
+### 필드 동기화 - 동시성 문제
+
+- 동시성 문제 확인 : 1초 이내에 2회 이상 호출해보자!
+- `nio-8080-exec-1` << 스레드 이름
+- `[8798ec62]` << traceId
+- 요청은 2개인데 traceId는 같은걸로 나온다.
+
+```
+[nio-8080-exec-1] d.l.s.trace.logtrace.FieldLogTrace       : [8798ec62] OrderController.request()
+[nio-8080-exec-1] d.l.s.trace.logtrace.FieldLogTrace       : [8798ec62] |-->OrderService.orderItem()
+[nio-8080-exec-1] d.l.s.trace.logtrace.FieldLogTrace       : [8798ec62] |   |-->OrderRepository.save()
+[nio-8080-exec-2] d.l.s.trace.logtrace.FieldLogTrace       : [8798ec62] |   |   |-->OrderController.request()
+[nio-8080-exec-2] d.l.s.trace.logtrace.FieldLogTrace       : [8798ec62] |   |   |   |-->OrderService.orderItem()
+[nio-8080-exec-2] d.l.s.trace.logtrace.FieldLogTrace       : [8798ec62] |   |   |   |   |-->OrderRepository.save()
+[nio-8080-exec-1] d.l.s.trace.logtrace.FieldLogTrace       : [8798ec62] |   |<--OrderRepository.save() time=1004ms
+[nio-8080-exec-1] d.l.s.trace.logtrace.FieldLogTrace       : [8798ec62] |<--OrderService.orderItem() time=1004ms
+[nio-8080-exec-1] d.l.s.trace.logtrace.FieldLogTrace       : [8798ec62] OrderController.request() time=1004ms
+[nio-8080-exec-2] d.l.s.trace.logtrace.FieldLogTrace       : [8798ec62] |   |   |   |   |<--OrderRepository.save() time=1003ms
+[nio-8080-exec-2] d.l.s.trace.logtrace.FieldLogTrace       : [8798ec62] |   |   |   |<--OrderService.orderItem() time=1004ms
+[nio-8080-exec-2] d.l.s.trace.logtrace.FieldLogTrace       : [8798ec62] |   |   |<--OrderController.request() time=1004ms
+```
+
+- 스레드 별로 로그를 나눠보면 이렇다.
+
+```
+[nio-8080-exec-1] d.l.s.trace.logtrace.FieldLogTrace       : [8798ec62] OrderController.request()
+[nio-8080-exec-1] d.l.s.trace.logtrace.FieldLogTrace       : [8798ec62] |-->OrderService.orderItem()
+[nio-8080-exec-1] d.l.s.trace.logtrace.FieldLogTrace       : [8798ec62] |   |-->OrderRepository.save()
+[nio-8080-exec-1] d.l.s.trace.logtrace.FieldLogTrace       : [8798ec62] |   |<--OrderRepository.save() time=1004ms
+[nio-8080-exec-1] d.l.s.trace.logtrace.FieldLogTrace       : [8798ec62] |<--OrderService.orderItem() time=1004ms
+[nio-8080-exec-1] d.l.s.trace.logtrace.FieldLogTrace       : [8798ec62] OrderController.request() time=1004ms
+```
+
+```
+[nio-8080-exec-2] d.l.s.trace.logtrace.FieldLogTrace       : [8798ec62] |   |   |-->OrderController.request()
+[nio-8080-exec-2] d.l.s.trace.logtrace.FieldLogTrace       : [8798ec62] |   |   |   |-->OrderService.orderItem()
+[nio-8080-exec-2] d.l.s.trace.logtrace.FieldLogTrace       : [8798ec62] |   |   |   |   |-->OrderRepository.save()
+[nio-8080-exec-2] d.l.s.trace.logtrace.FieldLogTrace       : [8798ec62] |   |   |   |   |<--OrderRepository.save() time=1003ms
+[nio-8080-exec-2] d.l.s.trace.logtrace.FieldLogTrace       : [8798ec62] |   |   |   |<--OrderService.orderItem() time=1004ms
+[nio-8080-exec-2] d.l.s.trace.logtrace.FieldLogTrace       : [8798ec62] |   |   |<--OrderController.request() time=1004ms
+```
+
+#### 왜 그런가? 동시성 문제
+
+- FieldLogTrace 는 스프링 컨텍스트 상에서 싱글톤으로 존재함
+- 즉 JVM 안에서 인스턴스가 딱 1개 존재한다는 의미
+- 2개 이상의 쓰레드가 동시 접근시에 상태를 같이 사용한다는 의미이기도 하다
+- 여기서 FieldLogTrace 상태는 2가지이다 : `level`, `traceId`
+- 메서드가 호출될 때마다 `level` 을 update(write) 한다.
+- 동시에 들어온다면? 서로의 `level` 을 쓰고 읽기 때문에 순서가 우리가 원하는 대로 진행되지 않는다.
