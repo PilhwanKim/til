@@ -295,6 +295,46 @@
 
 ### 스레드 로컬 동기화
 
-- `TraceId traceIdHolder` 필드를 `ThreadLocal<TraceId> traceIdHolder` 로 바꾸면 된다.
-- `ThreadLocalLogTrace` 클래스에 개발함
-- `releaseTraceId()` 메서드에서 마지막 단계에서 스레드 로컬의 데이터 제거를 위해 `remove()` 를 호출함(**중요**)
+- 구현
+  - `TraceId traceIdHolder` 필드를 `ThreadLocal<TraceId> traceIdHolder` 로 바꾸면 된다.
+  - `ThreadLocalLogTrace` 클래스에 개발함
+  - `releaseTraceId()` 메서드에서 마지막 단계에서 스레드 로컬의 데이터 제거를 위해 `remove()` 를 호출함(**중요**)
+- 적용
+  - 적용 : LogTraceConfig 의 bean 등록을 단순히 ThreadLocalLogTrace 로 바꿔치기 하면 됨
+  - 스프링 DI 컨테이너의 힘!
+  - 실제 적용해서 요청을 1초 이내로 해보면 원하는 결과로 나옴
+
+```
+[nio-8080-exec-7] d.l.s.t.logtrace.ThreadLocalLogTrace     : [27078086] OrderController.request()
+[nio-8080-exec-7] d.l.s.t.logtrace.ThreadLocalLogTrace     : [27078086] |-->OrderService.orderItem()
+[nio-8080-exec-7] d.l.s.t.logtrace.ThreadLocalLogTrace     : [27078086] |   |-->OrderRepository.save()
+[nio-8080-exec-8] d.l.s.t.logtrace.ThreadLocalLogTrace     : [bdd9a6bc] OrderController.request()
+[nio-8080-exec-8] d.l.s.t.logtrace.ThreadLocalLogTrace     : [bdd9a6bc] |-->OrderService.orderItem()
+[nio-8080-exec-8] d.l.s.t.logtrace.ThreadLocalLogTrace     : [bdd9a6bc] |   |-->OrderRepository.save()
+[nio-8080-exec-7] d.l.s.t.logtrace.ThreadLocalLogTrace     : [27078086] |   |<--OrderRepository.save() time=1001ms
+[nio-8080-exec-7] d.l.s.t.logtrace.ThreadLocalLogTrace     : [27078086] |<--OrderService.orderItem() time=1001ms
+[nio-8080-exec-7] d.l.s.t.logtrace.ThreadLocalLogTrace     : [27078086] OrderController.request() time=1002ms
+[nio-8080-exec-8] d.l.s.t.logtrace.ThreadLocalLogTrace     : [bdd9a6bc] |   |<--OrderRepository.save() time=1005ms
+[nio-8080-exec-8] d.l.s.t.logtrace.ThreadLocalLogTrace     : [bdd9a6bc] |<--OrderService.orderItem() time=1005ms
+[nio-8080-exec-8] d.l.s.t.logtrace.ThreadLocalLogTrace     : [bdd9a6bc] OrderController.request() time=1005ms
+```
+
+분리해서 확인하기
+
+```
+[nio-8080-exec-7] d.l.s.t.logtrace.ThreadLocalLogTrace     : [27078086] OrderController.request()
+[nio-8080-exec-7] d.l.s.t.logtrace.ThreadLocalLogTrace     : [27078086] |-->OrderService.orderItem()
+[nio-8080-exec-7] d.l.s.t.logtrace.ThreadLocalLogTrace     : [27078086] |   |-->OrderRepository.save()
+[nio-8080-exec-7] d.l.s.t.logtrace.ThreadLocalLogTrace     : [27078086] |   |<--OrderRepository.save() time=1001ms
+[nio-8080-exec-7] d.l.s.t.logtrace.ThreadLocalLogTrace     : [27078086] |<--OrderService.orderItem() time=1001ms
+[nio-8080-exec-7] d.l.s.t.logtrace.ThreadLocalLogTrace     : [27078086] OrderController.request() time=1002ms
+```
+
+```
+[nio-8080-exec-8] d.l.s.t.logtrace.ThreadLocalLogTrace     : [bdd9a6bc] OrderController.request()
+[nio-8080-exec-8] d.l.s.t.logtrace.ThreadLocalLogTrace     : [bdd9a6bc] |-->OrderService.orderItem()
+[nio-8080-exec-8] d.l.s.t.logtrace.ThreadLocalLogTrace     : [bdd9a6bc] |   |-->OrderRepository.save()
+[nio-8080-exec-8] d.l.s.t.logtrace.ThreadLocalLogTrace     : [bdd9a6bc] |   |<--OrderRepository.save() time=1005ms
+[nio-8080-exec-8] d.l.s.t.logtrace.ThreadLocalLogTrace     : [bdd9a6bc] |<--OrderService.orderItem() time=1005ms
+[nio-8080-exec-8] d.l.s.t.logtrace.ThreadLocalLogTrace     : [bdd9a6bc] OrderController.request() time=1005ms
+```
