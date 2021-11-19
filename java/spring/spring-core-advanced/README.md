@@ -291,6 +291,10 @@
 - 적용된 측 : `ThreadLocalService`
 - ThreadLocal 사용시 주의점
   - 쓰레드가 로컬을 모두 사용하고 나면 `ThreadLocal.remove()` 를 호출해서 로컬에 저장된 값을 제거해주어야 함
-  - Why?
-    - 메모리 누수
-    - ???? 그외에 ????
+  - Why? 메모리 누수문제
+
+### 스레드 로컬 동기화
+
+- `TraceId traceIdHolder` 필드를 `ThreadLocal<TraceId> traceIdHolder` 로 바꾸면 된다.
+- `ThreadLocalLogTrace` 클래스에 개발함
+- `releaseTraceId()` 메서드에서 마지막 단계에서 스레드 로컬의 데이터 제거를 위해 `remove()` 를 호출함(**중요**)
