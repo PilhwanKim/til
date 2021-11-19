@@ -447,3 +447,17 @@
   - 부모-자식 클래스간 강결합(의존관계)
   - UML: `자식` -> `부모`
   - 상속보다 위임 -> 전략패턴 (Strategy Pattern)
+
+### 전략 패턴
+
+- 변하지 않는 부분(템플릿) : Context
+- 변하는 부분(알고리즘) : Strategy 인터페이스 위임
+
+- 알고리즘 제품군을 정의하고 각각을 캡슐화하여 상호 교환 가능하게 만들자. 전략을 사용하면 알고리즘을
+사용하는 클라이언트와 독립적으로 알고리즘을 변경할 수 있다.  [GOF]
+
+![전략 패턴](img/strategy-structure.png)
+
+- 예제 : `ContextV1`, `Strategy`, `StrategyLogic1`, `StrategyLogic2`
+- 스프링 의존관계 주입에서 사용하는 방식과 동일함
+- `ContextV1Test.strategyV1()` 에서 조립하고 사용함
