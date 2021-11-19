@@ -196,3 +196,9 @@
 [c80f5dbb] |<--OrderService.orderItem() time=1014ms //releaseTraceId(): level=1->0 감소
 [c80f5dbb] OrderController.request()    time=1017ms //releaseTraceId(): level==0, traceId 제거
 ```
+
+#### FieldLogTrace 클래스 적용
+
+- OrderControllerV3, OrderServiceV3, OrderRepositoryV3
+- 파라메터로 넘기지 않아서 좀 더 적용하기 편해짐..
+- 그러나... 여기엔 동시성 문제가 도사리고 있다!
