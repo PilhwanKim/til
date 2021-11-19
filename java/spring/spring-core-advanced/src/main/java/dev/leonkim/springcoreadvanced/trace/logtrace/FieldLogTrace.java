@@ -1,4 +1,4 @@
-package dev.leonkim.springcoreadvanced.trace.hellotrace;
+package dev.leonkim.springcoreadvanced.trace.logtrace;
 
 import dev.leonkim.springcoreadvanced.trace.TraceId;
 import dev.leonkim.springcoreadvanced.trace.TraceStatus;
@@ -6,54 +6,38 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Slf4j
-@Component
-public class HelloTraceV2 {
-    /**
-     * HelloTraceV2 는 기존 코드인 HelloTraceV1 과 같고, beginSync(..) 가 추가됨
-     */
+public class FieldLogTrace implements LogTrace {
+
     private static final String START_PREFIX = "-->";
     private static final String COMPLETE_PREFIX = "<--";
     private static final String EX_PREFIX = "<X-";
 
+    private TraceId traceIdHolder; //traceId 동기화, 동시성 이슈 발생
+
+    @Override
     public TraceStatus begin(String message) {
-        /**
-         * 로그를 시작한다.
-         * 로그 메시지를 파라미터로 받아서 시작 로그를 출력한다.
-         * 응답 결과로 현재 로그의 상태인 TraceStatus 를 반환한다.
-         */
-        TraceId traceId = new TraceId();
+        syncTraceId();
+        TraceId traceId = traceIdHolder;
         Long startTimeMs = System.currentTimeMillis();
         log.info("[{}] {}{}", traceId.getId(), addSpace(START_PREFIX, traceId.getLevel()), message);
         return new TraceStatus(traceId, startTimeMs, message);
     }
 
-    public TraceStatus beginSync(TraceId beforeTraceId, String message) {
-        /**
-         * 기존 TraceId 에서 createNextId() 를 통해 다음 ID를 구한다. createNextId() 의 TraceId 생성 로직은 다음과 같다.
-         * 트랜잭션ID는 기존과 같이 유지한다.
-         * 깊이를 표현하는 Level은 하나 증가한다. ( 0 -> 1 )
-         */
-        TraceId nextId = beforeTraceId.createNextId();
-        Long startTimeMs = System.currentTimeMillis();
-        log.info("[{}] {}{}", nextId.getId(), addSpace(START_PREFIX, nextId.getLevel()), message);
-        return new TraceStatus(nextId, startTimeMs, message);
+    private void syncTraceId() {
+        if (traceIdHolder == null) {
+            traceIdHolder = new TraceId();
+        } else {
+            traceIdHolder = traceIdHolder.createNextId();
+        }
     }
 
+    @Override
     public void end(TraceStatus status) {
-        /**
-         * 로그를 정상 종료한다.
-         * 파라미터로 시작 로그의 상태( TraceStatus )를 전달 받는다. 이 값을 활용해서 실행 시간을 계산하고, 종료시에도 시작할 때와 동일한 로그 메시지를 출력할 수 있다.
-         * 정상 흐름에서 호출한다.
-         */
         complete(status, null);
     }
 
+    @Override
     public void exception(TraceStatus status, Exception e) {
-        /**
-         * 로그를 예외 상황으로 종료한다.
-         * TraceStatus, Exception 정보를 함께 전달 받아서 실행시간, 예외 정보를 포함한 결과 로그를 출력한다.
-         * 예외가 발생했을 때 호출한다.
-         */
         complete(status, e);
     }
 
@@ -71,6 +55,16 @@ public class HelloTraceV2 {
             log.info("[{}] {}{} time={}ms, ex={}", traceId.getId(),
                     addSpace(EX_PREFIX, traceId.getLevel()), status.getMessage(), resultTimeMs,
                     e.toString());
+        }
+
+        releaseTraceId();
+    }
+
+    private void releaseTraceId() {
+        if (traceIdHolder.isFirstLevel()) {
+            traceIdHolder = null; // 파기
+        } else {
+            traceIdHolder = traceIdHolder.createPreviousId();
         }
     }
 

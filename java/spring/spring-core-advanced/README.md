@@ -163,5 +163,36 @@
 [55e54f79] OrderController.request() time=1ms, ex=java.lang.IllegalStateException: 예외 발생!
 ```
 
-모든 요구사항을 만족하지만.. 한가지 문제가 더 남아있다.
+### 문제점
 
+- 처음의 요구사항을 모두 만족하지만.. 한가지 문제가 더 남아있다.
+- 로그를 출력하는 모든 메서드에 TraceId 파라미터를 추가해야 하는 문제
+  - 기존의 모든 코드의 파라미터를 추가해야 한다.
+- 직접 클래스와 메서드를 기입해야 하는 문제
+  - 1~2개가 적용되는게 아니라 모든 메서드에 적용하는건 불가능에 가깝다.
+- 다른 해결책은 없을까?
+
+## Thread Local
+
+### 문제에 대한 해결책
+
+#### FieldLogTrace 클래스
+
+- 적용해야 하는 메서드의 파라메터를 사용하는 것에서 `FieldLogTrace` 클래스의 필드로 `TraceId` 로 사용하도록 변경함
+- 추가된 사항
+  - `syncTraceId()` 메서드
+    - 로그 시작시 : traceId 새로 만들기 & level = 0 으로 시작
+    - 직전 로그가 있는경우 : traceId 는 그대로, level 을 한단계 올림
+  - `releaseTraceId()` 메서드
+    - 직전 로그가 있는경우 : traceId 의 level 을 한단계 낮춤
+    - 로그 종료 : level 이 1단계면 추적이 끝나므로 TraceId 필드를 초기화(null)
+- 단위 테스트 : `FieldLogTraceTest`
+
+```
+[c80f5dbb] OrderController.request()                //syncTraceId(): 최초 호출 level=0 
+[c80f5dbb] |-->OrderService.orderItem()             //syncTraceId(): 직전 로그 있음 level=1 증가
+[c80f5dbb] | |-->OrderRepository.save()             //syncTraceId(): 직전 로그 있음 level=2 증가
+[c80f5dbb] | |<--OrderRepository.save() time=1005ms //releaseTraceId(): level=2->1 감소
+[c80f5dbb] |<--OrderService.orderItem() time=1014ms //releaseTraceId(): level=1->0 감소
+[c80f5dbb] OrderController.request()    time=1017ms //releaseTraceId(): level==0, traceId 제거
+```
