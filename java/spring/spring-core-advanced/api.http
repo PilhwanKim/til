@@ -12,3 +12,7 @@ GET http://localhost:8080/v2/request?itemId=hello
 GET http://localhost:8080/v3/request?itemId=hello
 
 ###
+
+GET http://localhost:8080/v4/request?itemId=hello
+
+###

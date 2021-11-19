@@ -417,3 +417,18 @@
   - 지정하는 이름이 없는 클래스
   - 내부에 선언됨
 - 예제 : `TemplateMethodTest.templateMethodV2()`
+
+#### 템플릿 메서드 적용
+
+- OrderControllerV4, OrderServiceV4, OrderRepositoryV4
+- 변하지 않는 부분의 중복이 없어짐
+
+- OrderServiceV0 : 핵심 기능만
+- OrderServiceV3 : 핵심 기능, 부가 기능이 섞여있음
+- OrderServiceV4 : 핵심 기능 템플릿을 호출하는 코드가 섞여있음
+
+- 좋은 설계란?
+  - `변경` 이 일어날때 드러남
+  - 중복을 없애는 코드
+  - SRP(단일 책임 원칙)
+    - 변경이 일어날 때 더 중요함
