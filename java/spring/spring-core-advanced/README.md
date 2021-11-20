@@ -504,3 +504,7 @@
   - `JdbcTemplate`, `TransationTemplate`, `RedisTemplate` 등 이 패턴이 사용되는 곳은 `~~Template` 이란 명칭이 주로 붙는다.
 
 ![img.png](img/template-callback-structure.png)
+
+#### 콜백 예제
+
+- `TemplateCallbackTest` 참고하기
