@@ -1,4 +1,4 @@
-package dev.leonkim.proxy.app;
+package dev.leonkim.proxy.app.v1;
 
 public class OrderControllerV1Impl implements OrderControllerV1 {
 

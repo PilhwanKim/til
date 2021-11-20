@@ -11,7 +11,7 @@
 
 - `OrderControllerV1`
   - @RequestMapping, @ResponseBody 는 인터페이스에 사용가능
-  - @Controller 는 구체 클래스에 사용가능
+  - @Controller 컴포넌트 스캔 대상이기 때문
   - 인터페이스에는 `@RequestParam("itemId")` 명시적으로 적용해야 함
   - `request()` 는 LogTrace 를 적용할 대상
   - `noLog()` 는 LogTrace 를 적용하지 않을 대상
@@ -23,3 +23,7 @@
   - `@SpringBootApplication(scanBasePackages = "dev.leonkim.proxy.app")`
     - 컴포넌트 스켄의 패키지 범위 지정: `dev.leonkim.proxy.app`
     - 왜? `dev.leonkim.proxy.trace` 나 `dev.leonkim.proxy.config` 패키지는 나중에 선택적으로 빈 등록 위함
+    
+### v2 - 인터페이스 없는 구체 클래스
+
+- `AppV2Config`, `OrderControllerV2`, `OrderServiceV2`, `OrderRepositoryV2` 예제코드

@@ -1,6 +1,6 @@
 package dev.leonkim.proxy.config;
 
-import dev.leonkim.proxy.app.*;
+import dev.leonkim.proxy.app.v1.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

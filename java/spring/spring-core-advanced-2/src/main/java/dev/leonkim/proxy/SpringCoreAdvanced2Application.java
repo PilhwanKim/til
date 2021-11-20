@@ -1,11 +1,12 @@
 package dev.leonkim.proxy;
 
 import dev.leonkim.proxy.config.AppV1Config;
+import dev.leonkim.proxy.config.AppV2Config;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 
-@Import(AppV1Config.class)
+@Import({AppV1Config.class, AppV2Config.class})
 @SpringBootApplication(scanBasePackages = "dev.leonkim.proxy.app")
 public class SpringCoreAdvanced2Application {
 

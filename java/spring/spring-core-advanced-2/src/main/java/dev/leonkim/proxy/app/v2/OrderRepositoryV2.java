@@ -1,7 +1,7 @@
-package dev.leonkim.proxy.app;
+package dev.leonkim.proxy.app.v2;
 
-public class OrderRepositoryV1Impl implements OrderRepositoryV1 {
-    @Override
+public class OrderRepositoryV2 {
+    
     public void save(String itemId) {
         //저장 로직
         if (itemId.equals("ex")) {
