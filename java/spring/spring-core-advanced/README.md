@@ -501,10 +501,21 @@
 - 스프링에서의 콜백
   - 예제 `ContextV2`와 같은 특수한 전략패턴을 탬플릿 콜백 패턴이라 함
   - 스프링에서만 부르는 용어(스프링 전매특허)
-  - `JdbcTemplate`, `TransationTemplate`, `RedisTemplate` 등 이 패턴이 사용되는 곳은 `~~Template` 이란 명칭이 주로 붙는다.
+  - (**중요!**)`JdbcTemplate`, `TransationTemplate`, `RedisTemplate` 등 이 패턴이 사용되는 곳은 `~~Template` 이란 명칭이 주로 붙는다.
 
 ![img.png](img/template-callback-structure.png)
 
 #### 콜백 예제
 
 - `TemplateCallbackTest` 참고하기
+
+#### 콜백 적용
+
+- `TraceTemplate`, `OrderControllerV5`, `OrderServiceV5`, `OrderRepositoryV5` 참고하기
+
+#### 한계점
+
+- LogTrace를 적용하려면 사용하는 측의 코드를 변경해야하는 한계점이 존재함.
+- 수정이 조금 쉬워진 면은 있지만...
+- 원본 코드를 손대지 않고 로그 추적기를 적용할 수 있는 방법을 계속 찾아보자!
+- 결론은? 프록시!
