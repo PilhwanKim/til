@@ -93,3 +93,16 @@
 - 핵심
   - `RealSubject` 코드와 클라이언트 코드를 전혀 변경하지 않고, 프록시를 도입해서 접근 제어를 했다는 점
   - 클라이언트 코드의 변경 없이 자유롭게 프록시를 넣고 뺄 수 있다
+
+### 데코레이터 패턴 예제
+
+- 데코레이터 적용 전: `DecoratorPatternTest.noDecorator()` 참고하기
+- 데코레이터 적용 후: `DecoratorPatternTestdecorator1()` 참고하기
+  - ![데코레이터 적용 후 - 클래스 의존관계](img/decorator-class.png)
+  - ![데코레이터 적용 후 - 런타임 객체 의존관계](img/decorator-runtime.png)
+- 전/후 클라이언트 코드의 수정사항은 없다! `Component` 구현체 간의 구현만 바뀐다.
+- 프록시 체인
+  - 예제 : `DecoratorPatternTestdecorator2()` 참고하기
+  ![데코레이터 채인 - 클래스 의존관계](img/decorator-chain-class.png)
+  ![데코레이터 채인 - 런타임 객체 의존관계](img/decorator-chain-runtime.png)
+
