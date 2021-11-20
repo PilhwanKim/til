@@ -27,3 +27,9 @@
 ### v2 - 인터페이스 없는 구체 클래스
 
 - `AppV2Config`, `OrderControllerV2`, `OrderServiceV2`, `OrderRepositoryV2` 예제코드
+- `@Import({AppV1Config.class, AppV2Config.class})` import 에너테이션 복수개의 빈 등록 방법 
+
+### v3 - 컴포넌트 스캔으로 스프링 빈 자동 등록
+
+- `OrderControllerV3`, `OrderServiceV3`, `OrderRepositoryV3` 예제코드
+- `@SpringBootApplication(scanBasePackages = "dev.leonkim.proxy.app")` 컴포넌트 스켄 범위에 위의 3개 인스턴스가 잡혀 있음 따라서 빈 등록 됨
