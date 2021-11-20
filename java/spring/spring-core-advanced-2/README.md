@@ -90,3 +90,6 @@
 - 목표: 이미 개발된 로직을 전혀 수정하지 않고 프록시 객체를 통해 캐시 기능을 추가하기!
   - 프록시 도입 전 : `ProxyPatternTest.noProxyTest()` 참고
   - 프록시 도입 :`ProxyPatternTest.cacheProxyTest()` 참고
+- 핵심
+  - `RealSubject` 코드와 클라이언트 코드를 전혀 변경하지 않고, 프록시를 도입해서 접근 제어를 했다는 점
+  - 클라이언트 코드의 변경 없이 자유롭게 프록시를 넣고 뺄 수 있다
