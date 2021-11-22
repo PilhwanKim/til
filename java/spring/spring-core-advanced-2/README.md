@@ -121,3 +121,12 @@
   - ![프록시 적용 후 클래스 구조](img/proxy-after-class.png)
   - ![프록시 적용 후 런타임](img/proxy-after-runtime.png)
   - ![프록시 적용 후 컨테이너](img/proxy-after.png)
+
+### 구체 클래스 기반 프록시 - 예제
+
+- 프록시 적용 전: `ConcreteProxyTest.noProxy()` 참고
+  - ![프록시 적용 전 클래스 구조](img/concrete-class-proxy-before-claas.png)
+  - ![프록시 적용 전 런타임](img/concrete-class-proxy-before-runtime.png)
+- 프록시 적용 후: `ConcreteProxyTest.addProxy()` 참고
+  - ![프록시 적용 후 클래스 구조](img/concrete-class-proxy-after-class.png)
+  - ![프록시 적용 후 런타임](img/concrete-class-proxy-after-runtime.png)
