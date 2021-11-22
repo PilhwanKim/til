@@ -110,3 +110,14 @@
 
 - 프록시 패턴의 의도(intent): 다른 개체에 대한 **접근을 제어**하기 위해 대리자를 제공
 - 데코레이터 패턴의 의도(intent): **객체에 추가 책임(기능)을 동적으로 추가**하고, 기능 확장을 위한 유연한 대안 제공
+
+### 인터페이스 기반 프록시 - 적용
+
+- 프록시 적용 전: `AppV1Config` config 인스턴스 참고
+  - ![프록시 적용 전 클래스 구조](img/proxy-before-class.png)
+  - ![프록시 적용 전 런타임](img/proxy-before-runtime.png)
+  - ![프록시 적용 전 컨테이너](img/proxy-before.png)
+- 프록시 적용 후: `InterfaceProxyConfig` config 인스턴스 참고
+  - ![프록시 적용 후 클래스 구조](img/proxy-after-class.png)
+  - ![프록시 적용 후 런타임](img/proxy-after-runtime.png)
+  - ![프록시 적용 후 컨테이너](img/proxy-after.png)
