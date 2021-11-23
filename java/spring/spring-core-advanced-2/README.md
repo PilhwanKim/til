@@ -131,3 +131,28 @@
   - ![프록시 적용 후 클래스 구조](img/concrete-class-proxy-after-class.png)
   - ![프록시 적용 후 런타임](img/concrete-class-proxy-after-runtime.png)
 - 적용 : `ConcreteProxyConfig` 참고
+
+### 인터페이스 기반 프록시 vs 클래스 기반 프록시
+
+## 동적 프록시 기술
+
+### 리플랙션
+
+- JDK 동적 프록시 기술을 이해하려면 자바의 리플렉션 기술을 알아야 함
+- 예제 `ReflectionTest` 참고하기
+  - 클래스의 메타 정보 조회 : `Class.forName("dev.leonkim.proxy.jdkdynamic.ReflectionTest$Hello")`
+  - 메서드의 메타 정보 조회 : `classHello.getMethod("callA")`
+  - 획득한 메서드 메타 정보로 호출하기 : `methodCallA.invoke(target)`
+- 왜 이렇게 번거롭게 호출하냐?
+  - 클래스나 메서드의 정보를 동적으로 변경 가능하기 때문!
+  - 메서드 자체를 추상화 했기 때문에 공통 로직으로 만들 수 있는 토대가 된다!
+- `dynamicCall()` 메서드 참고하기
+  - 드디어 까다로운 공통로직 처리를 해결함!
+  - 파라메터 `Method method` - 호출할 메서드 정보. 기존 메서드 직접 호출대신 메서드 메타정보를 통해 호출한다.
+  - 파라메터 `Object target` - 실제 실행할 인스턴스 정보. 어떤 인스턴스도 받을수 있도록 Object 타입. 
+  - `invoke` 시 해당 실행 인스턴스(`target`)에 없는 메서드 정보로 호출하면 Exception 발생함.
+- 주의점
+  - 리플렉션은 런타임 시점에 동작하기에 컴파일 오류로 잡을 수 없음
+  - 예를 들어 `getMethod("callA")` 의 문자 "callA" 가 틀리면 컴파일 오류는 발생하지 않지만, 실행시에 런타임 오류 발생한다. 
+  - 가장 좋은 오류는 개발자가 즉시 확인할 수 있는 컴파일 오류, 가장 무서운 오류는 사용자가 직접 실행할 때 발생하는 런타임 오류
+  - 리플렉션은 프레임워크 개발이나 또는 매우 일반적인 공통 처리가 필요할 때 부분적으로 주의해서 사용해야 한다.
