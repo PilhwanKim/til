@@ -174,10 +174,9 @@
   - 적용 대상만 차이가 있음
 - 이 문제를 해결할 기술: 동적 프록시
 
-> 주의 
-> 
+> 주의
+>
 > JDK 동적 프록시는 인터페이스 기반으로 프록시를 동적으로 만들어준다. 인터페이스가 필수이다.
- 
 
 #### JDK 동적 프록시가 제공하는 `InvocationHandler`
 
@@ -194,7 +193,16 @@ public interface InvocationHandler {
 - `Method method` : 호출한 메서드
 - `Object[] args` : 메서드를 호출할 때 전달한 인수
 
-- 직접 프록시 생성시
-  - 
-- JDK 동적 프록시 도입
-  - 
+#### `ProxyPatternTest.dynamicA()` 실행 순서
+1. 클라이언트는 JDK 동적 프록시의 `call()` 을 실행한다.
+2. JDK 동적 프록시는 `InvocationHandler.invoke()` 를 호출한다. `TimeInvocationHandler` 가 구현체로 있으로 `TimeInvocationHandler.invoke()` 가 호출된다.
+3. `TimeInvocationHandler` 가 내부 로직을 수행하고, `method.invoke(target, args)` 를 호출해서 target 인 실제 객체( `AImpl` )를 호출한다.
+4. `AImpl` 인스턴스의 `call()` 이 실행된다.
+5. `AImpl` 인스턴스의 `call()` 의 실행이 끝나면 `TimeInvocationHandler` 로 응답이 돌아온다. 시간 로그를 출력하고 결과를 반환한다.
+
+- 직접 프록시 생성시 : `ProxyPatternTest`
+  - ![img.png](img/dynamic-proxy-before-class.png)
+  - ![img_2.png](img/dynamic-proxy-before-runtime.png)
+- JDK 동적 프록시 도입 : `JdkDynamicProxyTest`
+  - ![img_1.png](img/dynamic-proxy-after-class.png)
+  - ![img_3.png](img/dynamic-proxy-after-runtime.png)
