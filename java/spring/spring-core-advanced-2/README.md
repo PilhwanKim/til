@@ -156,3 +156,36 @@
   - 예를 들어 `getMethod("callA")` 의 문자 "callA" 가 틀리면 컴파일 오류는 발생하지 않지만, 실행시에 런타임 오류 발생한다. 
   - 가장 좋은 오류는 개발자가 즉시 확인할 수 있는 컴파일 오류, 가장 무서운 오류는 사용자가 직접 실행할 때 발생하는 런타임 오류
   - 리플렉션은 프레임워크 개발이나 또는 매우 일반적인 공통 처리가 필요할 때 부분적으로 주의해서 사용해야 한다.
+
+### JDK 동적 프록시
+
+- 문제 : 적용 대상이 100 개면 프록시 클래스도 100개 만들어야 함
+- 현재 상황 복기
+  - 프록시의 로직은 같음
+  - 적용 대상만 차이가 있음
+- 이 문제를 해결할 기술: 동적 프록시
+
+> 주의 
+> 
+> JDK 동적 프록시는 인터페이스 기반으로 프록시를 동적으로 만들어준다. 인터페이스가 필수이다.
+ 
+
+#### JDK 동적 프록시가 제공하는 `InvocationHandler`
+
+```java
+package java.lang.reflect;
+
+public interface InvocationHandler {
+    
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable;
+}
+```
+
+- `Object proxy` : 프록시 자신
+- `Method method` : 호출한 메서드
+- `Object[] args` : 메서드를 호출할 때 전달한 인수
+
+- 직접 프록시 생성시
+  - 
+- JDK 동적 프록시 도입
+  - 
