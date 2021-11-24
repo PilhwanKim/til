@@ -206,3 +206,15 @@ public interface InvocationHandler {
 - JDK 동적 프록시 도입 : `JdkDynamicProxyTest`
   - ![img_1.png](img/dynamic-proxy-after-class.png)
   - ![img_3.png](img/dynamic-proxy-after-runtime.png)
+
+#### JDK 동적 프록시 - 적용
+
+- `LogTraceBasicHandler`, `DynamicProxyBasicConfig` 참고
+  - 프록시 생성한 모든 메서드가 적용된다는 문제가 있음
+  - 특정 메소드만 적용되도록 filter 기능 추가 필요
+  - ![JDK 동적 프록시 사용 - 클래스 의존관계](img/apply-dp-class.png)
+  - ![JDK 동적 프록시 사용 - 런타임 인스턴스](img/apply-dp-runtime.png)
+- `LogTraceFilterHandler`, `DynamicProxyFilterConfig` 참고
+  - Handler 에 메서드 이름 필터 추가
+  - 스프링의 `PatternMatchUtils.simpleMatch(..)` 을 사용해 단순 메서드 이름 매칭 사용
+  - Config 에 프록시 빈 생성시 Filter 헨들러를 적용 
