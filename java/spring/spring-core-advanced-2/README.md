@@ -327,3 +327,49 @@ package org.aopalliance.intercept;
   - 포인트컷(Pointcut): 어디에 부가 기능을 적용할지, 어디에 부가 기능을 적용하지 않을지 판단하는 필터링 로직. 주로 클래스와 메서드 이름으로 필터링. 어떤 포인트(Point)에 기능을 적용할지 하지 않을지 잘라서(cut) 구분하는 것.
   - 어드바이스(Advice): 프록시가 호출하는 부가 기능. 단순하게 프록시 로직이라 생각하면 됨.
   - 어드바이저(Advisor): 1개 포인트컷 + 1개 어드바이스
+
+#### 예제
+
+그림으로 흐름 정리
+
+포인트 컷 대상일 경우
+![어드바이저 코드 흐름 정리 1](img/proxy-factory/advisor-flow.png)
+
+포인트 컷 대상이 아닐 경우
+![어드바이저 코드 흐름 정리 2](img/proxy-factory/advisor-flow-no-target.png)
+
+- 어드바이저
+  - `AdvisorTest.advisorTest1()` 예제 참고
+- 직접 만든 포인트 컷
+  - `AdvisorTest.advisorTest2()` 예제 참고
+  - 스프링이 제공하는 인터페이스
+  ```java
+  public interface Pointcut {
+    ClassFilter getClassFilter();
+    MethodMatcher getMethodMatcher();
+  }
+  
+  public interface ClassFilter {
+    boolean matches(Class<?> clazz);
+  }
+  
+  public interface MethodMatcher {
+    boolean matches(Method method, Class<?> targetClass);
+    //..
+  }
+  ```
+- 스프링이 제공하는 포인트 컷
+  - `AdvisorTest.advisorTest3()` 예제 참고
+  - 종류
+    - `NameMatchMethodPointcut` : 메서드 이름을 기반으로 매칭한다. 내부에서는 PatternMatchUtils 를 사용한다. 예) *xxx* 허용
+    - `JdkRegexpMethodPointcut` : JDK 정규 표현식을 기반으로 포인트컷을 매칭한다. 
+    - `TruePointcut` : 항상 참을 반환한다.
+    - `AnnotationMatchingPointcut` : 애노테이션으로 매칭한다. 
+    - **(제일 중요함. 실제 주로 사용!)** `AspectJExpressionPointcut` : aspectJ 표현식으로 매칭한다.
+      - aspectJ 표현식과 사용방법은 중요해서 이후 AOP를 설명할 때 자세히 설명
+- 여러 어드바이저 함께 사용 
+  - `MultiAdvisorTest.multiAdvisorTest1()` 참고
+    - ![여러 프록시](img/proxy-factory/multi-proxy-multi-advisor.png)
+  - `MultiAdvisorTest.multiAdvisorTest2()` 참고
+    - ![단일 프록시](img/proxy-factory/one-proxy-multi-advisor.png)
+    - (**중요!**) 스프링 AOP는 이 구조로 되어 있다.
