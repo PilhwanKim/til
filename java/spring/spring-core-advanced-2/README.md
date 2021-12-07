@@ -242,9 +242,9 @@ public interface InvocationHandler {
   - `enhancer.create()` : 프록시를 생성. `setSuperclass()` 에서 지정한 클래스를 상속 받은 프록시이다.
 
 - 클래스 의존 관계
-  - ![img.png](img/cglib-class-dep.png)
+  - ![img.png](img/cglib/cglib-class-dep.png)
 - 런타임 의존 관계
-  - ![img_1.png](img/cglib-runtime-dep.png)
+  - ![img_1.png](img/cglib/cglib-runtime-dep.png)
 
 - CGLIB 제약
   - 클래스 기반 프록시는 상속을 사용하기 때문에 몇가지 제약이 존재함 (JPA Entity 도 동일한 제약)
@@ -259,3 +259,32 @@ public interface InvocationHandler {
   - 구체 클래스만 정의 : CGLIB 사용
 - 문제는 2기술이 쓰는 Handler 인터페이스가 다름 -> 즉 구현체들이 중복 관리필요
 - 케이스에 맞게 프록시 로직을 적용하는 기능도 필요함
+
+## 스프링이 지원하는 프록시
+
+### 프록시 팩토리
+
+#### 소개
+
+- PSA((Portable Service Abstraction)): 
+  - 유사한 구체적인 기술들이 있을 때, 
+  - 그것들을 통합해서 일관성 있게 접근할 수 있고, 
+  - 더욱 편리하게 사용할 수 있는 추상화된 기술을 제공
+- 프록시 팩토리 : 동적 프록시를 통합해서 편리하게 만들어 줌 
+  - 인터페이스가 있으면 JDK 동적 프록시를 사용 
+  - 구체 클래스만 있다면 CGLIB를 사용
+  - 이런 동작 설정들 또한 변경가능
+  
+![img.png](img/proxy-factory/proxy-factory-dep.png)
+
+![img_1.png](img/proxy-factory/proxy-factory-flow.png)
+
+- InvocationHandler, MethodInterceptor 의 중복으로 사용해야 하는 문제는 어떻게 해결했을까?
+  - 부가 기능을 적용할 때 `Advice` 라는 새로운 개념을 도입
+  - 결과적으로 `InvocationHandler` 나 `MethodInterceptor`는 설정한 Advice 를 무조건 호출
+  - 프록시 팩토리를 사용하면 Advice 를 호출하는 전용 `InvocationHandler`, `MethodInterceptor`(스프링이 정의한) 를 내부에서 사용
+
+![img_3.png](img/proxy-factory/with-advice-flow.png)
+
+- 특정 조건에 맞을 때 프록시 로직을 적용하는 기능은 어떻게 해결되었을까?
+  - `Pointcut` 이라는 개념을 도입해 해결하였음 (이후에 다룸)
