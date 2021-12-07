@@ -217,4 +217,45 @@ public interface InvocationHandler {
 - `LogTraceFilterHandler`, `DynamicProxyFilterConfig` 참고
   - Handler 에 메서드 이름 필터 추가
   - 스프링의 `PatternMatchUtils.simpleMatch(..)` 을 사용해 단순 메서드 이름 매칭 사용
-  - Config 에 프록시 빈 생성시 Filter 헨들러를 적용 
+  - Config 에 프록시 빈 생성시 Filter 헨들러를 적용
+
+### CGLIB
+
+#### 소개
+
+- 바이트코드를 조작해서 동적으로 클래스를 생성하는 기술을 제공하는 라이브러리
+- 사용하는 이유 : 인터페이스가 없어도 구체 클래스만 가지고 동적 프록시를 만들어 낼 수 있음
+- 스프링 프레임워크가 스프링 내부 소스 코드에 포함했다. 따라서 스프링을 사용한다면 별도의 외부 라이브러리를 추가하지 않아도 사용할 수 있음
+- 직접 사용하는 경우는 거의 없다. (그러나 개념은 이해해야 AOP를 이해할 수 있다)
+
+#### 예제
+
+- `class TimeMethodInterceptor` 
+  - `MethodInterceptor` 인터페이스를 구현해서 CGLIB 프록시의 실행 로직을 정의
+  - `Object target` : 프록시가 호출할 실제 대상
+  - `proxy.invoke(target, args)` : 실제 대상을 동적으로 호출
+    - 참고로 `method` 를 사용해도 되지만, CGLIB는 성능상 `MethodProxy proxy` 를 사용하는 것을 권장
+- `class CglibTest` - Cglib 사용 예제
+  - `Enhancer` : 프록시를 생성하는 주체
+  - `enhancer.setSuperclass(ConcreteService.class)` : 어떤 구체 클래스를 상속 받을지 지정
+  - `enhancer.setCallback(new TimeMethodInterceptor(target))` : 프록시에 적용할 실행 로직을 할당
+  - `enhancer.create()` : 프록시를 생성. `setSuperclass()` 에서 지정한 클래스를 상속 받은 프록시이다.
+
+- 클래스 의존 관계
+  - ![img.png](img/cglib-class-dep.png)
+- 런타임 의존 관계
+  - ![img_1.png](img/cglib-runtime-dep.png)
+
+- CGLIB 제약
+  - 클래스 기반 프록시는 상속을 사용하기 때문에 몇가지 제약이 존재함 (JPA Entity 도 동일한 제약)
+  - 부모 클래스의 생성자를 체크 필요 -> CGLIB 는 자식 클래스를 동적으로 생성하기 때문에 기본 생성자가 필요
+  - 클래스에 `final` 키워드가 붙으면 상속이 불가능 -> CGLIB 에서 예외가 발생
+  - 메서드에 `final` 키워드가 붙으면 해당 메서드를 오버라이딩 할 수 없음 -> CGLIB 에서 프록시 로직이 동작하지 않음
+
+#### 남은 문제
+
+- 2기술을 같이 적용?
+  - 인터페이스 정의 : JDK 동적 프록시 사용
+  - 구체 클래스만 정의 : CGLIB 사용
+- 문제는 2기술이 쓰는 Handler 인터페이스가 다름 -> 즉 구현체들이 중복 관리필요
+- 케이스에 맞게 프록시 로직을 적용하는 기능도 필요함
