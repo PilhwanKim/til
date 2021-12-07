@@ -373,3 +373,12 @@ package org.aopalliance.intercept;
   - `MultiAdvisorTest.multiAdvisorTest2()` 참고
     - ![단일 프록시](img/proxy-factory/one-proxy-multi-advisor.png)
     - (**중요!**) 스프링 AOP는 이 구조로 되어 있다.
+    
+#### 적용
+
+- `LogTraceAdvice` 참고
+  - 추가 로직을 Advice 에 넣음
+- `ProxyFactoryConfigV1` 참고
+  - JDK 동적 프록시로 생성
+- `ProxyFactoryConfigV2` 참고
+  - CGLIB 로 프록시 생성
