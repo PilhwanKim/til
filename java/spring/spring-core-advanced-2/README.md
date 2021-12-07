@@ -275,16 +275,46 @@ public interface InvocationHandler {
   - 구체 클래스만 있다면 CGLIB를 사용
   - 이런 동작 설정들 또한 변경가능
   
-![img.png](img/proxy-factory/proxy-factory-dep.png)
+![프록시 팩토리 의존관계](img/proxy-factory/proxy-factory-dep.png)
 
-![img_1.png](img/proxy-factory/proxy-factory-flow.png)
+![프록시 팩토리 흐름](img/proxy-factory/proxy-factory-flow.png)
 
 - InvocationHandler, MethodInterceptor 의 중복으로 사용해야 하는 문제는 어떻게 해결했을까?
   - 부가 기능을 적용할 때 `Advice` 라는 새로운 개념을 도입
   - 결과적으로 `InvocationHandler` 나 `MethodInterceptor`는 설정한 Advice 를 무조건 호출
   - 프록시 팩토리를 사용하면 Advice 를 호출하는 전용 `InvocationHandler`, `MethodInterceptor`(스프링이 정의한) 를 내부에서 사용
 
-![img_3.png](img/proxy-factory/with-advice-flow.png)
+![어드바이스 흐름](img/proxy-factory/with-advice-flow.png)
 
 - 특정 조건에 맞을 때 프록시 로직을 적용하는 기능은 어떻게 해결되었을까?
   - `Pointcut` 이라는 개념을 도입해 해결하였음 (이후에 다룸)
+
+#### MethodInterceptor - 스프링이 제공하는 코드
+
+```java
+package org.aopalliance.intercept;
+  public interface MethodInterceptor extends Interceptor {
+      Object invoke(MethodInvocation invocation) throws Throwable;
+}
+```
+- `MethodInvocation invocation` : 
+  - 내부에는 다음 메서드를 호출하는 방법, 현재 프록시 객체 인스턴스, args , 메서드 정보 등이 포함
+  - 기존에 파라미터로 제공되는 부분들이 이 클래스로 통합되었다고 보면 됨
+- (주의) CGLIB의 `MethodInterceptor` 와 이름은 같고 패키지 경로만 다르다
+- 상속 관계 : `MethodInterceptor` -> `Interceptor` -> `Advice` 따라서 이들을 상송하는 것들을 다 어드바이스 라고 부름
+- 사용예제 : `TimeAdvice` 참고
+
+#### 사용 예제
+
+- `ProxyFactoryTest.interfaceProxy()`
+  - 대상에 인터페이스가 있으면: JDK 동적 프록시, 인터페이스 기반 프록시
+- `ProxyFactoryTest.concreteProxy()`
+  - 대상에 인터페이스가 없으면: CGLIB, 구체 클래스 기반 프록시
+- `ProxyFactoryTest.proxyTargetClass()`
+  - `proxyTargetClass=true` 설정. CGLIB, 구체 클래스 기반 프록시, 인터페이스 여부와 상관없음
+
+결론: 프록시 팩토리 덕분에 같은 역할의 2가지 다른 구현 기술을 하나로 통일해서 쓸수있게 됨
+
+> #### 스프링에서의 참고 사항
+> 스프링 부트는 AOP를 적용할 때 기본적으로 proxyTargetClass=true 로 설정해서 사용. 
+> 따라서 인터페이스가 있어도 항상 CGLIB를 사용해서 구체 클래스를 기반으로 프록시를 생성
