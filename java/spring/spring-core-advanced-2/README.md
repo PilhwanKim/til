@@ -400,7 +400,6 @@ package org.aopalliance.intercept;
 - 빈을 생성한 후에 무언가를 처리하는 용도
 - 객체를 조작할 수도 있고, 완전히 다른 객체로 바꿔치기 하는 것도 가능
 
-
 #### 빈 등록 과정
 
 ![빈 등록 과정 - 바꿔치기](img/bean-post-processor/bean-post-processor-flow.png)
@@ -409,3 +408,24 @@ package org.aopalliance.intercept;
 2. 전달: 생성된 객체를 빈 저장소에 등록하기 직전에 빈 후처리기에 전달한다.
 3. 후 처리 작업: 빈 후처리기는 전달된 스프링 빈 객체를 조작하거나 다른 객체로 바뀌치기 할 수 있다. 
 4. 등록: 빈 후처리기는 빈을 반환한다. 전달 된 빈을 그대로 반환하면 해당 빈이 등록되고, 바꿔치기 하면 다른 객체가 빈 저장소에 등록된다.
+
+#### 예제
+
+- `BasicTest.basicConfig()`: 일반적인 스프링 빈 등록 예제 
+  - `BasicConfig` 에 등록된 bean 객체만 스프링 컨테이너에서 찾을 수 있음
+- `BasicPostProcessorTest.basicConfig()`:  빈 후처리기 적용 예제
+  - 빈 후처리기 `AToBPostProcessor`: A 객체를 B 객체로 바꿔치기 함
+  ```java
+  public interface BeanPostProcessor {
+      Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException
+      Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException
+  }
+  ```
+  - 빈 후처리기를 사용하려면 BeanPostProcessor 인터페이스를 구현 -> 빈 등록
+  - `postProcessBeforeInitialization` : 객체 생성 이후에 `@PostConstruct` 같은 초기화가 발생하기
+    전에 호출되는 포스트 프로세서
+  - `postProcessAfterInitialization` : 객체 생성 이후에 `@PostConstruct` 같은 초기화가 발생한
+    다음에 호출되는 포스트 프로세서
+- 빈 후처리기는 빈을 조작하고 변경할 수 있는 후킹 포인트
+- 일반적으로 스프링 컨테이너가 등록하는, 특히 컴포넌트 스캔의 대상이 되는 빈들은 중간에 조작할 방법이 없는데, 빈 후처리기를 사용하면 개발자가 등록하는 모든 빈을 중간에 조작할 수 있다
+- **(결론)** 즉! 빈 객체를 프록시로 교체하는 것도 가능하다.
