@@ -10,6 +10,7 @@ import dev.leonkim.proxy.config.v3_proxyfactory.ProxyFactoryConfigV1;
 import dev.leonkim.proxy.config.v3_proxyfactory.ProxyFactoryConfigV2;
 import dev.leonkim.proxy.config.v4_postprocessor.BeanPostProcessorConfig;
 import dev.leonkim.proxy.config.v5_autoproxy.AutoProxyConfig;
+import dev.leonkim.proxy.config.v6_aop.AopConfig;
 import dev.leonkim.proxy.trace.logtrace.LogTrace;
 import dev.leonkim.proxy.trace.logtrace.ThreadLocalLogTrace;
 import org.springframework.boot.SpringApplication;
@@ -17,7 +18,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 
-@Import(AutoProxyConfig.class)
+@Import(AopConfig.class)
+//@Import(AutoProxyConfig.class)
 //@Import(BeanPostProcessorConfig.class)
 //@Import(ProxyFactoryConfigV2.class)
 //@Import(ProxyFactoryConfigV1.class)
