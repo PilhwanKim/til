@@ -429,3 +429,50 @@ package org.aopalliance.intercept;
 - 빈 후처리기는 빈을 조작하고 변경할 수 있는 후킹 포인트
 - 일반적으로 스프링 컨테이너가 등록하는, 특히 컴포넌트 스캔의 대상이 되는 빈들은 중간에 조작할 방법이 없는데, 빈 후처리기를 사용하면 개발자가 등록하는 모든 빈을 중간에 조작할 수 있다
 - **(결론)** 즉! 빈 객체를 프록시로 교체하는 것도 가능하다.
+
+#### 적용
+
+- 참고할 예제 범위
+  - `PackageLogTracePostProcessor` : 빈 후처리기
+    - 패키지 기준으로 프록시를 적용할지 필터링 하는 코드 존재함
+      - 지정한 하위 패키지 내 빈들만 적용
+      - 원본 객체는 스프링 빈으로 등록되지 않아야 함
+    - `advisor` 는 DI 함
+  - `BeanPostProcessorConfig` : `PackageLogTracePostProcessor` 빈 후처리기와 `LogTraceAdvice` 를 등록하는 Config
+    - 이제 프록시를 생성하는 코드가 설정 파일에는 필요 없어짐
+    - 즉 설정 코드의 중복이 없어짐
+- 애플리케이션 로딩 로그로 본 결과
+```
+#v1 애플리케이션 프록시 생성 - JDK 동적 프록시
+create proxy: target=v1.OrderRepositoryV1Impl proxy=class com.sun.proxy. $Proxy50
+create proxy: target=v1.OrderServiceV1Impl proxy=class com.sun.proxy.$Proxy51 
+create proxy: target=v1.OrderControllerV1Impl proxy=class com.sun.proxy. $Proxy52
+#v2 애플리케이션 프록시 생성 - CGLIB
+create proxy: target=v2.OrderRepositoryV2 proxy=v2.OrderRepositoryV2$ $EnhancerBySpringCGLIB$$x4
+create proxy: target=v2.OrderServiceV2 proxy=v2.OrderServiceV2$ $EnhancerBySpringCGLIB$$x5
+create proxy: target=v2.OrderControllerV2 proxy=v2.OrderControllerV2$ $EnhancerBySpringCGLIB$$x6
+#v3 애플리케이션 프록시 생성 - CGLIB
+create proxy: target=v3.OrderRepositoryV3 proxy=3.OrderRepositoryV3$ $EnhancerBySpringCGLIB$$x1
+create proxy: target=v3.orderServiceV3 proxy=3.OrderServiceV3$ $EnhancerBySpringCGLIB$$x2
+create proxy: target=v3.orderControllerV3 proxy=3.orderControllerV3$ $EnhancerBySpringCGLIB$$x3
+```
+  - v1: 인터페이스가 있으므로 JDK 동적 프록시가 적용
+  - v2: 구체 클래스만 있으므로 CGLIB 프록시가 적용
+  - v3: 구체 클래스만 있으므로 CGLIB 프록시가 적용
+
+#### 정리
+
+서두에 있었던 2가지 문제가 정리됨
+- 문제1 - 너무 많이 중복된 프록시 코드 설정
+- 문제2 - 컴포넌트 스캔 대상은 프록시 생성 불가능
+- 문제 해결 : 
+  - 프록시를 생성하는 부분을 하나로 집중
+  - 컴포넌트 스캔처럼 스프링이 직접 대상을 빈으로 등록하는 경우에도 중간에 빈 등록 과정을 가로채서 원본 대신에 프록시를 스프링 빈으로 등록 가능해짐
+  - 애플리케이션에 수 많은 스프링 빈이 추가되어도 프록시와 관련된 코드는 전혀 변경하지 않아도 됨
+- 좀더 깔끔하게 다듬어 보자!
+  - 프록시의 적용 대상 여부 로직 조건 : 패키지를 기준 -> 포인트 컷 설정 기준
+  - 프록시 적용 대상 여부를 정밀하게 설정할 수 있다.
+
+> 결과적으로 포인트컷은 다음 두 곳에 사용된다.
+> 1. 프록시 적용 대상 여부를 체크해서 꼭 필요한 곳에만 프록시를 적용한다. (빈 후처리기 - 자동 프록시 생성)
+> 2. 프록시의 어떤 메서드가 호출 되었을 때 어드바이스를 적용할 지 판단한다. (프록시 내부)
