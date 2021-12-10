@@ -514,3 +514,20 @@ implementation 'org.springframework.boot:spring-boot-starter-aop'
    2. 앞서 설명한 예에서 `orderControllerV1` 은 이미 프록시가 걸려있다. 
    3. `orderControllerV1` 의 `request()` 는 현재 포인트컷 조건에 만족하므로 프록시는 어드바이스를 먼저 호출하고, target 을 호출한다. 
    4. `orderControllerV1` 의 `noLog()` 는 현재 포인트컷 조건에 만족하지 않으므로 어드바이스를 호출하지 않고 바로 target 만 호출한다.
+
+#### AspectJExpressionPointcut
+
+- AspectJ라는 AOP에 특화된 포인트컷 표현식을 적용
+- 특별한 표현식으로 복잡한 포인트컷을 만들 수 있음
+- `AutoProxyConfig.advisor2()` 참고
+
+#### 하나의 프록시, 여러 Advisor 적용
+
+- 프록시 자동 생성기 상황별 정리
+- `advisor1` 의 포인트컷만 만족 -> 프록시1개 생성, 프록시에 `advisor1` 만 포함
+- `advisor1` , `advisor2` 의 포인트컷을 모두 만족 -> 프록시1개 생성, 프록시에 `advisor1`, `advisor2` 모두 포함
+- `advisor1` , `advisor2` 의 포인트컷을 모두 만족하지 않음 -> 프록시가 생성되지 않음
+
+![자동 프록시 생성기](img/bean-post-processor/multi-advisor-create.png)
+
+![하나의 프록시, 여러 Advisor](img/bean-post-processor/one-proxy-muitl-advisor.png)
