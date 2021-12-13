@@ -10,3 +10,8 @@
 
 - `AopTest` 기본 테스트 참고
 - `OrderRepository`, `OrderService` 구현 로직 참고
+
+### 구현1 - 시작
+
+- `AspectV1` 에스펙트 구현
+- `AopTest` 에 `@Import(AspectV1.class)` 추가
