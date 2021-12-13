@@ -20,3 +20,14 @@
 
 - `AspectV2` 에스펙트 구현
 - `AopTest` 에 `@Import(AspectV2.class)` 추가
+
+### 스프링 AOP 구현3 - 어드바이스 추가
+
+- `AspectV3` 에스펙트 구현
+- `AopTest` 에 `@Import(AspectV3.class)` 추가
+
+![img.png](img/aop-apply-flow.png)
+
+- 포인트것이 적용된 AOP 결과는 다음과 같다. 
+  - `orderService` : doLog() , doTransaction() 어드바이스 적용 
+  - `orderRepository` : doLog() 어드바이스 적용
