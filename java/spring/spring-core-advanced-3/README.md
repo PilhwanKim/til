@@ -15,3 +15,8 @@
 
 - `AspectV1` 에스펙트 구현
 - `AopTest` 에 `@Import(AspectV1.class)` 추가
+
+### 스프링 AOP 구현2 - 포인트컷 분리
+
+- `AspectV2` 에스펙트 구현
+- `AopTest` 에 `@Import(AspectV2.class)` 추가
