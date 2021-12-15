@@ -38,3 +38,10 @@
 - `AspectV4Pointcut` 에스펙트 구현
 - `Pointcuts` 포인트컷 모음
 - `AopTest` 에 `@Import(AspectV4Pointcut.class)` 추가
+
+### 스프링 AOP 구현5 - 어드바이스 순서
+
+- 적용 후 실행순서 정하기 `@Order(1)`
+- 문제는 class 단위로만 지정됨 -> 그냥 inner class 로 선언하자
+- `AspectV5Order` 에스펙트 구현
+- `AopTest` 에 `@Import({AspectV5Order.LogAspect.class, AspectV5Order.TxAspect.class})`
