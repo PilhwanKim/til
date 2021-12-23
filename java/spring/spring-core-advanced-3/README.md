@@ -78,3 +78,7 @@
 - `dev.leonkim.aop.member.annotation.ClassAop` 어노테이션 생성
 - `MemberService`, `MemberServiceImpl` 구현
 - `ExecutionTest.printMethod()` 로 메서드 이름 확인
+
+### execution 문법
+
+- `ExecutionTest.exactMatch()` ~ `ExecutionTest.packageMatchSubPackage2()` 의 구현 확인하기
