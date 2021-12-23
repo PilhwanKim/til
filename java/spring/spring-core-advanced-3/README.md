@@ -69,3 +69,12 @@
 - 순서
 
 ![어노테이션 어드바이스 순서](img/advice-order.png)
+
+## 스프링 AOP - 포인트컷
+
+### 예제 만들기
+
+- `dev.leonkim.aop.member.annotation.MethodAop` 어노테이션 생성
+- `dev.leonkim.aop.member.annotation.ClassAop` 어노테이션 생성
+- `MemberService`, `MemberServiceImpl` 구현
+- `ExecutionTest.printMethod()` 로 메서드 이름 확인
