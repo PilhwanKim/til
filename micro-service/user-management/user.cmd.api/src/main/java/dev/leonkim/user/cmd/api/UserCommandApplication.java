@@ -1,13 +1,13 @@
-package dev.leonkim.user.query.api;
+package dev.leonkim.user.cmd.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Application {
+public class UserCommandApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
+		SpringApplication.run(UserCommandApplication.class, args);
 	}
 
 }
