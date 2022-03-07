@@ -7,19 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 
+import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @Import({CallLogAspect.class})
 @SpringBootTest
-// 스프링 부트 2.6부터는 순환 참조를 기본적으로 금지하도록 정책이 변경됨
-class CallServiceV1Test {
+class CallServiceV2Test {
 
     @Autowired
-    CallServiceV1 callServiceV1;
+    CallServiceV2 callServiceV2;
 
     @Test
     void external() {
-        callServiceV1.external();
+        callServiceV2.external();
     }
-
 }
