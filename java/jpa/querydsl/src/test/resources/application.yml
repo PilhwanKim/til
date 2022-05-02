@@ -2,10 +2,10 @@ spring:
   profiles:
     active: test
   datasource:
-    url: jdbc:h2:tcp://localhost/~/querydsl
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+    url: jdbc:mysql://localhost:3306/querydsl?serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
+    password: "!234Qwer"
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
