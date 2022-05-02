@@ -32,6 +32,8 @@
 
 * [스프링 Data JPA 정리](https://github.com/PilhwanKim/til/tree/master/java/jpa/spring-data-jpa)
   * 김영한 님의 인프런 강좌 실전! 스프링 데이터 JPA 를 실습한 프로젝트
+* [스프링 Querydsl](https://github.com/PilhwanKim/til/tree/master/java/jpa/querydsl)
+  * 김영한 님의 인프런 강좌 실전! 스프링 Querydsl 를 실습한 프로젝트
 
 ## Kotlin
 
