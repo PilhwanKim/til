@@ -4,6 +4,7 @@ import dev.leonkim.springdb1.domain.Member;
 import dev.leonkim.springdb1.repository.MemberRepository;
 import dev.leonkim.springdb1.repository.MemberRepositoryV4_1;
 import dev.leonkim.springdb1.repository.MemberRepositoryV4_2;
+import dev.leonkim.springdb1.repository.MemberRepositoryV5;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -49,8 +50,10 @@ class MemberServiceV4Test {
 
         @Bean
         MemberRepository memberRepository() {
+            // 버전의 변화 과정을 참고하자!
 //            return new MemberRepositoryV4_1(dataSource);
-            return new MemberRepositoryV4_2(dataSource);
+//            return new MemberRepositoryV4_2(dataSource);
+            return new MemberRepositoryV5(dataSource);
         }
 
         @Bean
