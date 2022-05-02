@@ -15,7 +15,7 @@ import java.util.NoSuchElementException;
  * DataSourceUtils.releaseConnection()
  */
 @Slf4j
-public class MemberRepositoryV3 {
+public class MemberRepositoryV3 implements MemberRepositoryEx {
 
     private final DataSource dataSource;
 
