@@ -28,12 +28,12 @@
 
         <properties>
             <!-- 필수 속성 javax 는 JPA 표준 -->
-            <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
-            <property name="javax.persistence.jdbc.user" value="sa"/>
-            <property name="javax.persistence.jdbc.password" value=""/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:h2:tcp://localhost/~/test"/>
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="javax.persistence.jdbc.user" value="root"/>
+            <property name="javax.persistence.jdbc.password" value="!234Qwer"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/jpa_playground?serverTimezone=UTC&amp;characterEncoding=UTF-8"/>
             <!-- dialect: 각 DB의 SQL 표준이 아닌 것을 번역한다. -->
-            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+<!--            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>-->
 
             <!-- 옵션: hibernate 전용 옵션들 -->
             <property name="hibernate.show_sql" value="true"/>
