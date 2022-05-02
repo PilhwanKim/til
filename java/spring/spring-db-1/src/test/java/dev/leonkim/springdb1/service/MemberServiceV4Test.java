@@ -2,8 +2,8 @@ package dev.leonkim.springdb1.service;
 
 import dev.leonkim.springdb1.domain.Member;
 import dev.leonkim.springdb1.repository.MemberRepository;
-import dev.leonkim.springdb1.repository.MemberRepositoryV3;
 import dev.leonkim.springdb1.repository.MemberRepositoryV4_1;
+import dev.leonkim.springdb1.repository.MemberRepositoryV4_2;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,7 +15,6 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 
 import javax.sql.DataSource;
-import java.sql.SQLException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -50,7 +49,8 @@ class MemberServiceV4Test {
 
         @Bean
         MemberRepository memberRepository() {
-            return new MemberRepositoryV4_1(dataSource);
+//            return new MemberRepositoryV4_1(dataSource);
+            return new MemberRepositoryV4_2(dataSource);
         }
 
         @Bean
