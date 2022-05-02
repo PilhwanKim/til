@@ -7,3 +7,18 @@
 를 공부하면서 개발한 프로젝트입니다.
 
 JPA(하이버네이트)를 실전에 어떻게 개발하는지 다룹니다.
+
+## Setup
+
+- MacOS 환경에서 Mysql 설치 및 구동
+```shell
+# mysql 설치
+$ brew install mysql@5.7
+# mysql 시작
+$ brew services start mysql@5.7
+```
+
+- Mysql 에서 schema 생성
+```sql
+create schema jpashop collate utf8_general_ci;
+```
