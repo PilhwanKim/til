@@ -30,6 +30,8 @@
 
 ## JPA
 
+* [실전! 스프링 부트와 JPA 활용 1,2](https://github.com/PilhwanKim/til/tree/master/java/jpa/jpashop)
+  * JPA(하이버네이트)를 실전에 어떻게 개발하는지 다루는 프로젝트
 * [스프링 Data JPA 정리](https://github.com/PilhwanKim/til/tree/master/java/jpa/spring-data-jpa)
   * 김영한 님의 인프런 강좌 실전! 스프링 데이터 JPA 를 실습한 프로젝트
 * [스프링 Querydsl](https://github.com/PilhwanKim/til/tree/master/java/jpa/querydsl)
