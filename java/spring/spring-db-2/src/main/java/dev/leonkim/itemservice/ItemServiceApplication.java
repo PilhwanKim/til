@@ -1,6 +1,5 @@
 package dev.leonkim.itemservice;
 
-import dev.leonkim.itemservice.config.MemoryConfig;
 import dev.leonkim.itemservice.config.*;
 import dev.leonkim.itemservice.repository.ItemRepository;
 import org.springframework.boot.SpringApplication;
@@ -11,7 +10,8 @@ import org.springframework.context.annotation.Profile;
 
 
 //@Import(MemoryConfig.class)
-@Import(JdbcTemplateV1Config.class)
+//@Import(JdbcTemplateV1Config.class)
+@Import(JdbcTemplateV2Config.class)
 @SpringBootApplication(scanBasePackages = "dev.leonkim.itemservice.web")
 public class ItemServiceApplication {
 

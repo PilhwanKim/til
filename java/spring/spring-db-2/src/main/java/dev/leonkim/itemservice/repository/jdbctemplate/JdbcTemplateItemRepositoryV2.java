@@ -106,7 +106,7 @@ public class JdbcTemplateItemRepositoryV2 implements ItemRepository {
             if (andFlag) {
                 sql += " and";
             }
-            sql += " :price <= ?";
+            sql += " price <= :maxPrice";
         }
 
         log.info("sql={}", sql);
