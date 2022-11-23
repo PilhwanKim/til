@@ -31,16 +31,17 @@ public class ItemServiceApplication {
 		return new TestDataInit(itemRepository);
 	}
 
-	@Bean
-	@Profile("test")
-	public DataSource dataSource() {
-		log.info("메모리 데이터베이스 초기화");
-		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		dataSource.setDriverClassName("org.h2.Driver");
-		dataSource.setUrl("jdbc:h2:mem:db;DB_CLOSE_DELAY=-1");
-		dataSource.setUsername("sa");
-		dataSource.setPassword("");
-		return dataSource;
-	}
+// test 프로필 설정일 때. 자동으로 이미 빈이 만들어지게 되어 있음
+//	@Bean
+//	@Profile("test")
+//	public DataSource dataSource() {
+//		log.info("메모리 데이터베이스 초기화");
+//		DriverManagerDataSource dataSource = new DriverManagerDataSource();
+//		dataSource.setDriverClassName("org.h2.Driver");
+//		dataSource.setUrl("jdbc:h2:mem:db;DB_CLOSE_DELAY=-1");
+//		dataSource.setUsername("sa");
+//		dataSource.setPassword("");
+//		return dataSource;
+//	}
 
 }
