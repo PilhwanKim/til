@@ -26,6 +26,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	//mysql 데이터베이스 추가
 	runtimeOnly 'mysql:mysql-connector-java'
+	//test 는 h2 데이터베이스 추가
+	testRuntimeOnly 'com.h2database:h2'
 
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
