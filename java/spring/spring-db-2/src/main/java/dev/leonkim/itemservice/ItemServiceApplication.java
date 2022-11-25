@@ -3,6 +3,7 @@ package dev.leonkim.itemservice;
 import dev.leonkim.itemservice.config.JdbcTemplateV3Config;
 import dev.leonkim.itemservice.config.JpaConfig;
 import dev.leonkim.itemservice.config.MyBatisConfig;
+import dev.leonkim.itemservice.config.SpringDataJpaConfig;
 import dev.leonkim.itemservice.repository.ItemRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
@@ -20,8 +21,9 @@ import javax.sql.DataSource;
 //@Import(JdbcTemplateV2Config.class)
 //@Import(JdbcTemplateV3Config.class)
 //@Import(MyBatisConfig.class)
+//@Import(JpaConfig.class)
 @Slf4j
-@Import(JpaConfig.class)
+@Import(SpringDataJpaConfig.class)
 @SpringBootApplication(scanBasePackages = "dev.leonkim.itemservice.web")
 public class ItemServiceApplication {
 
