@@ -1,6 +1,7 @@
 package dev.leonkim.helloboot;
 
 
+import dev.leonkim.config.MySpringBootApplication;
 import org.springframework.boot.SpringApplication;
 
 @MySpringBootApplication
