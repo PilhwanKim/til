@@ -1,3 +1,4 @@
+dev.leonkim.config.autoconfig.DataSourceConfig
 dev.leonkim.config.autoconfig.PropertyPlaceholderConfig
 dev.leonkim.config.autoconfig.PropertyPostProcessorConfig
 dev.leonkim.config.autoconfig.TomcatWebServerConfig
