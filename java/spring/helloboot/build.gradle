@@ -22,7 +22,6 @@ dependencies {
 	runtimeOnly('com.h2database:h2:2.1.214')
 	implementation 'hikari-cp:hikari-cp:3.0.1'
 
-
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
