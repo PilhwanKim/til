@@ -1,5 +1,5 @@
 dev.leonkim.config.autoconfig.PropertyPlaceholderConfig
-dev.leonkim.config.autoconfig.ServerPropertiesConfig
+dev.leonkim.config.autoconfig.PropertyPostProcessorConfig
 dev.leonkim.config.autoconfig.TomcatWebServerConfig
 dev.leonkim.config.autoconfig.JettyWebServerConfig
 dev.leonkim.config.autoconfig.DispatcherServletConfig
