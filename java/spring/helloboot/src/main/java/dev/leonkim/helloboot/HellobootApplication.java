@@ -1,13 +1,15 @@
 package dev.leonkim.helloboot;
 
 
-import dev.leonkim.config.MySpringBootApplication;
+//import dev.leonkim.config.MySpringBootApplication;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.annotation.PostConstruct;
 
-@MySpringBootApplication
+//@MySpringBootApplication
+@SpringBootApplication
 public class HellobootApplication {
 	private final JdbcTemplate jdbcTemplate;
 

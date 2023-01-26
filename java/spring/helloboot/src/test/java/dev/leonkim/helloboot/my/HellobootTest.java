@@ -1,5 +1,6 @@
-package dev.leonkim.helloboot;
+package dev.leonkim.helloboot.my;
 
+import dev.leonkim.helloboot.HellobootApplication;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;

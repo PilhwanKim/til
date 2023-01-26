@@ -1,6 +1,6 @@
-package dev.leonkim.helloboot;
+package dev.leonkim.helloboot.my;
 
-import org.junit.jupiter.api.BeforeEach;
+import dev.leonkim.helloboot.HelloRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
