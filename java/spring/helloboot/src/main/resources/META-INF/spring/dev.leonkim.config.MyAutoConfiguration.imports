@@ -1,2 +1,3 @@
 dev.leonkim.config.autoconfig.TomcatWebServerConfig
+dev.leonkim.config.autoconfig.JettyWebServerConfig
 dev.leonkim.config.autoconfig.DispatcherServletConfig
