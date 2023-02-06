@@ -13,7 +13,7 @@ public class Pointcuts {
     public void allService() {} //pointcut signature
 
     //allOrder & allService
-    @Pointcut("allOrder() & allService()")
+    @Pointcut("allOrder() && allService()")
     public void orderAndService() {}
 
 }
