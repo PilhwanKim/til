@@ -1,4 +1,4 @@
-package dev.leonkim.member;
+package dev.leonkim.hello.member;
 
 import lombok.Data;
 

@@ -1,4 +1,4 @@
-package dev.leonkim.config;
+package dev.leonkim.hello.config;
 
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;

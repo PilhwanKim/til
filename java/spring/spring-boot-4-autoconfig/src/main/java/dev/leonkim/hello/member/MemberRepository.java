@@ -1,4 +1,4 @@
-package dev.leonkim.member;
+package dev.leonkim.hello.member;
 
 import java.util.List;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
