@@ -1,11 +1,13 @@
 package dev.leonkim;
 
 import dev.leonkim.config.MyDataSourceEnvConfig;
+import dev.leonkim.config.MyDataSourceValueConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 
-@Import(MyDataSourceEnvConfig.class)
+//@Import(MyDataSourceEnvConfig.class)
+@Import(MyDataSourceValueConfig.class)
 @SpringBootApplication(scanBasePackages = "dev.leonkim.datasource")
 public class ExternalReadApplication {
 
