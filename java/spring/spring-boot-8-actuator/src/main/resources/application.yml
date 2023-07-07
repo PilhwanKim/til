@@ -21,3 +21,7 @@ info:
   app:
     name: hello-actuator
     company: dev.leonkim
+
+logging:
+  level:
+    dev.leonkim.controller: debug
