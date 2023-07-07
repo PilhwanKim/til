@@ -1,4 +1,13 @@
 management:
+  info:
+    java:
+      enabled: true
+    os:
+      enabled: true
+    env:
+      enabled: true
+#    git:
+#      mode: full
   endpoint:
     health:
       show-components: always
@@ -8,3 +17,7 @@ management:
     web:
       exposure:
         include: "*"
+info:
+  app:
+    name: hello-actuator
+    company: dev.leonkim
