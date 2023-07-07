@@ -1,4 +1,6 @@
 management:
+  server:
+    port: 8080
   info:
     java:
       enabled: true
@@ -17,6 +19,7 @@ management:
     web:
       exposure:
         include: "*"
+
 info:
   app:
     name: hello-actuator
