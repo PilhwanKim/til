@@ -1,5 +1,7 @@
 management:
   endpoint:
+    health:
+      show-components: always
     shutdown:
       enabled: true
   endpoints:
