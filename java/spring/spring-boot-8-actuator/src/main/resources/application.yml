@@ -28,3 +28,8 @@ info:
 logging:
   level:
     dev.leonkim.controller: debug
+
+server:
+  tomcat:
+    mbeanregistry:
+      enabled: true
