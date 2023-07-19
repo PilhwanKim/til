@@ -2,13 +2,15 @@ package dev.leonkim;
 
 import dev.leonkim.order.v0.OrderConfigV0;
 import dev.leonkim.order.v1.OrderConfigV1;
+import dev.leonkim.order.v2.OrderConfigV2;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.web.exchanges.InMemoryHttpExchangeRepository;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 
-@Import(OrderConfigV1.class)
+@Import(OrderConfigV2.class)
+//@Import(OrderConfigV1.class)
 //@Import(OrderConfigV0.class)
 @SpringBootApplication(scanBasePackages = "dev.leonkim.controller")
 public class ActuatorApplication {
