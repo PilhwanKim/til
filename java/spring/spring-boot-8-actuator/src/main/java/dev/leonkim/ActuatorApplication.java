@@ -1,5 +1,7 @@
 package dev.leonkim;
 
+import dev.leonkim.order.gauge.StockConfigV1;
+import dev.leonkim.order.gauge.StockConfigV2;
 import dev.leonkim.order.v0.OrderConfigV0;
 import dev.leonkim.order.v1.OrderConfigV1;
 import dev.leonkim.order.v2.OrderConfigV2;
@@ -11,7 +13,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 
-@Import(OrderConfigV4.class)
+@Import({OrderConfigV4.class, StockConfigV2.class})
+//@Import({OrderConfigV4.class, StockConfigV1.class})
 //@Import(OrderConfigV3.class)
 //@Import(OrderConfigV2.class)
 //@Import(OrderConfigV1.class)
