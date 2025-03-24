@@ -1,0 +1,19 @@
+[project]
+name = "inflearn-llm-application"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "pilhwan.kim",email = "pilhwan.kim@navercorp.com"}
+]
+readme = "README.md"
+requires-python = "<4.0,>=3.10"
+dependencies = [
+    "python-dotenv (>=1.0.1,<2.0.0)",
+    "docx2txt (>=0.8,<0.9)",
+    "langchain-text-splitters (>=0.3.7,<0.4.0)",
+    "langchain-chroma (>=0.2.2,<0.3.0)",
+    "langchain-ollama (>=0.3.0,<0.4.0)",
+    "langchain-naver>=0.1.0",
+    "langchain-community>=0.3.24",
+    "langchainhub>=0.1.21",
+]
