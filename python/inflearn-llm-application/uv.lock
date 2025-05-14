@@ -962,6 +962,11 @@ dependencies = [
     { name = "tiktoken" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "tiktoken" },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "chromadb", specifier = ">=0.6.3" },
@@ -976,6 +981,9 @@ requires-dist = [
     { name = "python-dotenv", specifier = ">=1.0.1,<2.0.0" },
     { name = "tiktoken", specifier = ">=0.9.0" },
 ]
+
+[package.metadata.requires-dev]
+dev = [{ name = "tiktoken", specifier = ">=0.9.0" }]
 
 [[package]]
 name = "jiter"
